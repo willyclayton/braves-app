@@ -6,7 +6,7 @@ Optimized for every iPhone size (SE → Pro Max). Add to Home Screen on Safari f
 
 ## Live
 
-Hosted on Vercel after deploy.
+**https://braves-app.vercel.app**
 
 ## Open on your iPhone
 
