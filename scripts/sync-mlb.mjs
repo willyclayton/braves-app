@@ -1,5 +1,6 @@
 /**
- * Pulls live Braves data from MLB Stats API into data/live.json
+ * Pulls Braves data from MLB Stats API into data/live.json
+ * Player-first: hitters/pitchers with L5/L10/L20/L30 + recent game logs.
  * Run: node scripts/sync-mlb.mjs
  */
 import fs from 'node:fs';
@@ -12,6 +13,8 @@ const OUT = path.join(ROOT, 'data', 'live.json');
 const BRAVES_ID = 144;
 const SEASON = 2026;
 const BASE = 'https://statsapi.mlb.com/api/v1';
+const WINDOWS = [5, 10, 20, 30];
+const LOG_GAMES = 30;
 
 const DIVISION_NAMES = {
   200: 'West',
@@ -32,46 +35,141 @@ function abbrMap(teams) {
   return Object.fromEntries(teams.map((t) => [t.id, t.abbreviation]));
 }
 
-function rankMetric(rows, metric, reverse = true) {
-  const ordered = [...rows].sort((a, b) =>
-    reverse ? b[metric] - a[metric] : a[metric] - b[metric]
-  );
-  const idx = ordered.findIndex((r) => r.id === BRAVES_ID);
-  const leader = ordered[0];
-  const us = ordered[idx];
-  return {
-    rank: idx + 1,
-    of: ordered.length,
-    value: us[metric],
-    leaderAbbr: leader.abbr,
-    leaderValue: leader[metric],
-  };
-}
-
 function ordinal(n) {
   const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-function formatRank(rank, of) {
-  if (rank === 1) return 'Best in MLB';
-  if (rank === of) return `Last in MLB`;
-  return `${ordinal(rank)} in MLB`;
+function formHit(w) {
+  if (!w) return 'neutral';
+  const ab = Number(w.ab) || 0;
+  const g = Number(w.g) || 0;
+  if (ab < 6 && g < 3) return 'neutral';
+  const ops = parseFloat(w.ops);
+  const avg = parseFloat(w.avg);
+  if ((!Number.isNaN(ops) && ops >= 0.9) || (!Number.isNaN(avg) && avg >= 0.32)) return 'hot';
+  if ((!Number.isNaN(ops) && ops <= 0.65) || (!Number.isNaN(avg) && avg <= 0.2)) return 'cold';
+  return 'neutral';
+}
+
+function formPitch(w) {
+  if (!w) return 'neutral';
+  const ip = parseFloat(w.ip) || 0;
+  const g = Number(w.g) || 0;
+  if (ip < 3 && g < 2) return 'neutral';
+  const era = parseFloat(w.era);
+  const whip = parseFloat(w.whip);
+  if ((!Number.isNaN(era) && era <= 2.5) || (!Number.isNaN(whip) && whip <= 1.0)) return 'hot';
+  if ((!Number.isNaN(era) && era >= 5.0) || (!Number.isNaN(whip) && whip >= 1.55)) return 'cold';
+  return 'neutral';
+}
+
+function hitWindow(st) {
+  return {
+    g: st.gamesPlayed || 0,
+    avg: st.avg || '.000',
+    ops: st.ops || '.000',
+    obp: st.obp || '.000',
+    slg: st.slg || '.000',
+    hr: st.homeRuns || 0,
+    h: st.hits || 0,
+    ab: st.atBats || 0,
+    r: st.runs || 0,
+    rbi: st.rbi || 0,
+    bb: st.baseOnBalls || 0,
+    so: st.strikeOuts || 0,
+    sb: st.stolenBases || 0,
+  };
+}
+
+function pitWindow(st) {
+  return {
+    g: st.gamesPlayed || 0,
+    gs: st.gamesStarted || 0,
+    ip: st.inningsPitched || '0.0',
+    era: st.era || '—',
+    whip: st.whip || '—',
+    so: st.strikeOuts || 0,
+    bb: st.baseOnBalls || 0,
+    h: st.hits || 0,
+    er: st.earnedRuns || 0,
+    w: st.wins || 0,
+    l: st.losses || 0,
+    sv: st.saves || 0,
+  };
+}
+
+async function loadWindows(group) {
+  const byId = {};
+  for (const n of WINDOWS) {
+    const res = await get(
+      `${BASE}/stats?stats=lastXGames&group=${group}&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&gamesBack=${n}&playerPool=all`
+    );
+    for (const sp of res.stats?.[0]?.splits || []) {
+      const id = sp.player.id;
+      byId[id] ||= {
+        id,
+        name: sp.player.fullName,
+        pos: sp.position?.abbreviation || (group === 'pitching' ? 'P' : 'DH'),
+        windows: {},
+      };
+      byId[id].windows[`l${n}`] =
+        group === 'hitting' ? hitWindow(sp.stat) : pitWindow(sp.stat);
+      if (sp.position?.abbreviation) byId[id].pos = sp.position.abbreviation;
+    }
+  }
+  return byId;
+}
+
+async function gameLog(id, group) {
+  try {
+    const res = await get(
+      `${BASE}/people/${id}/stats?stats=gameLog&group=${group}&season=${SEASON}&sportId=1`
+    );
+    const splits = res.stats?.[0]?.splits || [];
+    const recent = splits.slice(-LOG_GAMES);
+    if (group === 'hitting') {
+      return recent.map((g) => ({
+        date: g.date,
+        gamePk: g.game?.gamePk,
+        opp: g.team?.id === BRAVES_ID ? g.opponent?.abbreviation || g.opponent?.name : g.team?.abbreviation,
+        ab: g.stat.atBats || 0,
+        r: g.stat.runs || 0,
+        h: g.stat.hits || 0,
+        hr: g.stat.homeRuns || 0,
+        rbi: g.stat.rbi || 0,
+        bb: g.stat.baseOnBalls || 0,
+        so: g.stat.strikeOuts || 0,
+        avg: g.stat.avg,
+        ops: g.stat.ops,
+      }));
+    }
+    return recent.map((g) => ({
+      date: g.date,
+      gamePk: g.game?.gamePk,
+      opp: g.opponent?.abbreviation || g.opponent?.name,
+      ip: g.stat.inningsPitched || '0.0',
+      h: g.stat.hits || 0,
+      r: g.stat.runs || 0,
+      er: g.stat.earnedRuns || 0,
+      bb: g.stat.baseOnBalls || 0,
+      so: g.stat.strikeOuts || 0,
+      era: g.stat.era,
+      whip: g.stat.whip,
+      decision: g.stat.note || '',
+    }));
+  } catch {
+    return [];
+  }
 }
 
 async function main() {
-  console.log('Syncing MLB data…');
+  console.log('Syncing MLB data (player-first)…');
 
   const teamsRes = await get(`${BASE}/teams?sportId=1&season=${SEASON}`);
   const teams = teamsRes.teams;
   const byId = abbrMap(teams);
-  const teamMeta = Object.fromEntries(
-    teams.map((t) => [
-      t.abbreviation,
-      { id: t.id, abbr: t.abbreviation, name: t.name, leagueId: t.league.id, divisionId: t.division.id },
-    ])
-  );
 
   const scheduleRes = await get(
     `${BASE}/schedule?teamId=${BRAVES_ID}&season=${SEASON}&sportId=1&gameType=R`
@@ -107,14 +205,11 @@ async function main() {
         bravesScore: us.score ?? undefined,
         oppScore: opp.score ?? undefined,
         venue: g.venue?.name || '',
-        tv: undefined,
-        starter: undefined,
       });
     }
   }
 
-  // Probable starters for next few upcoming
-  for (const game of schedule.filter((g) => g.status === 'upcoming').slice(0, 8)) {
+  for (const game of schedule.filter((g) => g.status === 'upcoming').slice(0, 5)) {
     try {
       const feed = await get(`${BASE}.1/game/${game.gamePk}/feed/live`);
       const prob = feed.gameData?.probablePitchers || {};
@@ -127,55 +222,6 @@ async function main() {
       /* ignore */
     }
   }
-
-  const [hitStats, pitStats] = await Promise.all([
-    get(`${BASE}/teams/stats?stats=season&group=hitting&season=${SEASON}&sportIds=1`),
-    get(`${BASE}/teams/stats?stats=season&group=pitching&season=${SEASON}&sportIds=1`),
-  ]);
-  const hitSplits = hitStats.stats[0].splits;
-  const pitSplits = pitStats.stats[0].splits;
-  const rows = hitSplits.map((h) => {
-    const p = pitSplits.find((x) => x.team.id === h.team.id);
-    return {
-      id: h.team.id,
-      abbr: byId[h.team.id],
-      avg: parseFloat(h.stat.avg),
-      ops: parseFloat(h.stat.ops),
-      hr: parseInt(h.stat.homeRuns, 10),
-      era: parseFloat(p.stat.era),
-    };
-  });
-  const atlHit = hitSplits.find((h) => h.team.id === BRAVES_ID).stat;
-  const atlPit = pitSplits.find((p) => p.team.id === BRAVES_ID).stat;
-
-  const kpiDefs = [
-    { key: 'avg', label: 'AVG', value: atlHit.avg, reverse: true },
-    { key: 'ops', label: 'OPS', value: atlHit.ops, reverse: true },
-    { key: 'era', label: 'ERA', value: atlPit.era, reverse: false },
-    { key: 'hr', label: 'HR', value: String(atlHit.homeRuns), reverse: true },
-  ];
-  const formatStat = (label, v) => {
-    if (v == null || Number.isNaN(v)) return String(v);
-    if (label === 'HR') return String(Math.round(Number(v)));
-    if (label === 'AVG' || label === 'OPS') {
-      const s = Number(v).toFixed(3);
-      return s.replace(/^0/, '');
-    }
-    if (label === 'ERA') return Number(v).toFixed(2);
-    return String(v);
-  };
-  const keyStats = kpiDefs.map((k) => {
-    const r = rankMetric(rows, k.key, k.reverse);
-    return {
-      label: k.label,
-      value: formatStat(k.label, k.value),
-      detail: formatRank(r.rank, r.of),
-      rank: r.rank,
-      of: r.of,
-      leaderAbbr: r.leaderAbbr,
-      leaderValue: formatStat(k.label, r.leaderValue),
-    };
-  });
 
   const standingsRes = await get(
     `${BASE}/standings?leagueId=103,104&season=${SEASON}&standingsTypes=regularSeason,wildCard`
@@ -215,7 +261,6 @@ async function main() {
     }
   }
 
-  // Pulse from NL East
   const nlEast = divisions.find((d) => d.league === 'NL' && d.division.includes('East'));
   const atl = nlEast?.teams.find((t) => t.highlight);
   const standingsPulse = await get(
@@ -238,189 +283,154 @@ async function main() {
   }
 
   const teamPulse = {
-    record: atl ? `${atl.w}-${atl.l}` : `${atlPit.wins}-${atlPit.losses}`,
+    record: atl ? `${atl.w}-${atl.l}` : '—',
     rank: atl ? `${ordinal(atl.rank)} · NL East` : 'NL East',
     streak: atl?.streak || '—',
     ...pulseExtra,
   };
 
-  // Leaders season
-  const hitLeaders = await get(
-    `${BASE}/stats?stats=season&group=hitting&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=8&order=desc&sortStat=ops`
-  );
-  const pitLeaders = await get(
-    `${BASE}/stats?stats=season&group=pitching&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=8&order=desc&sortStat=strikeOuts`
-  );
-  const leaders = [];
-  // Require a meaningful sample so cup-of-coffee .1000 AVGs don't lead the hub
-  const hitLeaderRows = (hitLeaders.stats[0]?.splits || []).filter(
-    (sp) =>
-      (sp.stat.plateAppearances || 0) >= 100 &&
-      sp.position?.abbreviation !== 'P' &&
-      (sp.stat.atBats || 0) >= 75
-  );
-  for (const sp of hitLeaderRows.slice(0, 2)) {
-    const st = sp.stat;
-    leaders.push({
+  // Season stats
+  const [hitSeason, pitSeason] = await Promise.all([
+    get(
+      `${BASE}/stats?stats=season&group=hitting&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=50&order=desc&sortStat=plateAppearances`
+    ),
+    get(
+      `${BASE}/stats?stats=season&group=pitching&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=40&order=desc&sortStat=inningsPitched`
+    ),
+  ]);
+
+  console.log('Loading trend windows…');
+  const [hitWindows, pitWindows] = await Promise.all([
+    loadWindows('hitting'),
+    loadWindows('pitching'),
+  ]);
+
+  const hitters = [];
+  for (const sp of hitSeason.stats?.[0]?.splits || []) {
+    if ((sp.stat.plateAppearances || 0) < 75) continue;
+    if (sp.position?.abbreviation === 'P') continue;
+    const id = sp.player.id;
+    const windows = hitWindows[id]?.windows || {};
+    const form = formHit(windows.l10 || windows.l5);
+    hitters.push({
+      id,
       name: sp.player.fullName,
-      stat: `${st.avg} · ${st.homeRuns} HR · ${st.rbi} RBI`,
-      role: sp.position?.abbreviation || 'BAT',
-    });
-  }
-  const pitLeaderRows = (pitLeaders.stats[0]?.splits || []).filter(
-    (sp) => (sp.stat.inningsPitched || 0) >= 20 || (sp.stat.gamesStarted || 0) >= 5
-  );
-  for (const sp of pitLeaderRows.slice(0, 2)) {
-    const st = sp.stat;
-    const role = st.gamesStarted > 0 ? 'SP' : st.saves > 0 ? 'CL' : 'RP';
-    leaders.push({
-      name: sp.player.fullName,
-      stat:
-        role === 'CL'
-          ? `${st.saves} SV · ${st.era} ERA`
-          : `${st.wins}-${st.losses} · ${st.era} ERA · ${st.strikeOuts} K`,
-      role,
-    });
-  }
-
-  // Lineup: prefer next game card; else most recent final batting order
-  let todayLineup = [];
-  let pitchingToday = { starter: null, bullpen: [] };
-  const recentFinal = [...schedule].reverse().find((g) => g.status === 'final');
-  const nextUp = schedule.find((g) => g.status === 'upcoming');
-
-  async function loadLineupFromGame(gamePk) {
-    const feed = await get(`${BASE}.1/game/${gamePk}/feed/live`);
-    const side =
-      feed.liveData.boxscore.teams.home.team.id === BRAVES_ID ? 'home' : 'away';
-    const teamBox = feed.liveData.boxscore.teams[side];
-    const order = teamBox.battingOrder || [];
-    return {
-      feed,
-      lineup: order.map((pid) => {
-        const p = teamBox.players[`ID${pid}`];
-        const season = p.seasonStats?.batting || {};
-        return {
-          id: pid,
-          number: Number(p.jerseyNumber) || 0,
-          name: p.person.fullName,
-          pos: p.position.abbreviation,
-          bats: p.person.batSide?.code,
-          avg: season.avg,
-          ops: season.ops,
-          hr: season.homeRuns,
-          rbi: season.rbi,
-        };
-      }),
-    };
-  }
-
-  try {
-    if (nextUp?.gamePk) {
-      const { feed, lineup } = await loadLineupFromGame(nextUp.gamePk);
-      if (lineup.length) todayLineup = lineup;
-      const prob = feed.gameData?.probablePitchers || {};
-      const starterP = nextUp.home ? prob.home : prob.away;
-      if (starterP) {
-        const pstats = await get(
-          `${BASE}/people/${starterP.id}/stats?stats=season&group=pitching&season=${SEASON}`
-        );
-        const st = pstats.stats?.[0]?.splits?.[0]?.stat || {};
-        pitchingToday.starter = {
-          id: starterP.id,
-          number: 0,
-          name: starterP.fullName,
-          pos: 'SP',
-          era: st.era,
-          whip: st.whip,
-          so: st.strikeOuts,
-        };
-      }
-    }
-    if (!todayLineup.length && recentFinal?.gamePk) {
-      const { lineup } = await loadLineupFromGame(recentFinal.gamePk);
-      todayLineup = lineup;
-    }
-  } catch (e) {
-    console.warn('lineup fetch', e.message);
-  }
-
-  // Fallback: qualified hitters only (min 50 PA-ish via AB)
-  if (!todayLineup.length) {
-    todayLineup = (hitLeaders.stats[0]?.splits || [])
-      .filter((sp) => (sp.stat.atBats || 0) >= 50 && sp.position?.abbreviation !== 'P')
-      .slice(0, 9)
-      .map((sp) => ({
-        id: sp.player.id,
-        number: 0,
-        name: sp.player.fullName,
-        pos: sp.position?.abbreviation || 'DH',
-        avg: sp.stat.avg,
-        ops: sp.stat.ops,
-        hr: sp.stat.homeRuns,
-        rbi: sp.stat.rbi,
-      }));
-  }
-
-  // Trends L10 / L15 / L30
-  const trends = {};
-  for (const n of [10, 15, 30]) {
-    const res = await get(
-      `${BASE}/stats?stats=lastXGames&group=hitting&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&gamesBack=${n}&playerPool=all`
-    );
-    for (const sp of res.stats[0]?.splits || []) {
-      const id = sp.player.id;
-      trends[id] ||= { id, name: sp.player.fullName, windows: {} };
-      const st = sp.stat;
-      const ops = parseFloat(st.ops || '0');
-      const avg = parseFloat(st.avg || '0');
-      trends[id].windows[`l${n}`] = {
-        g: st.gamesPlayed,
-        avg: st.avg,
-        ops: st.ops,
-        hr: st.homeRuns,
-        h: st.hits,
-        ab: st.atBats,
-      };
-      // form from L15 primarily
-      if (n === 15) {
-        let form = 'neutral';
-        if (ops >= 0.9 || avg >= 0.32) form = 'hot';
-        else if (ops <= 0.65 || avg <= 0.2) form = 'cold';
-        trends[id].form = form;
-      }
-    }
-  }
-
-  // Bullpen leaders
-  const bullpen = (pitLeaders.stats[0]?.splits || [])
-    .filter((sp) => (sp.stat.gamesStarted || 0) === 0)
-    .slice(0, 3)
-    .map((sp) => ({
-      id: sp.player.id,
+      pos: sp.position?.abbreviation || hitWindows[id]?.pos || 'DH',
       number: 0,
-      name: sp.player.fullName,
-      pos: (sp.stat.saves || 0) > 0 ? 'CL' : 'RP',
-      era: sp.stat.era,
-      whip: sp.stat.whip,
-      so: sp.stat.strikeOuts,
-    }));
-  pitchingToday.bullpen = bullpen;
-
-  if (!pitchingToday.starter) {
-    const sp = (pitLeaders.stats[0]?.splits || []).find((x) => (x.stat.gamesStarted || 0) > 0);
-    if (sp) {
-      pitchingToday.starter = {
-        id: sp.player.id,
-        number: 0,
-        name: sp.player.fullName,
-        pos: 'SP',
-        era: sp.stat.era,
-        whip: sp.stat.whip,
-        so: sp.stat.strikeOuts,
-      };
-    }
+      season: hitWindow(sp.stat),
+      windows,
+      form,
+      log: [],
+    });
   }
+
+  const pitchers = [];
+  for (const sp of pitSeason.stats?.[0]?.splits || []) {
+    const ip = parseFloat(sp.stat.inningsPitched) || 0;
+    if (ip < 10) continue;
+    const id = sp.player.id;
+    const windows = pitWindows[id]?.windows || {};
+    const form = formPitch(windows.l10 || windows.l5);
+    const gs = sp.stat.gamesStarted || 0;
+    pitchers.push({
+      id,
+      name: sp.player.fullName,
+      pos: gs >= 5 ? 'SP' : (sp.stat.saves || 0) > 0 ? 'CL' : 'RP',
+      number: 0,
+      season: pitWindow(sp.stat),
+      windows,
+      form,
+      log: [],
+    });
+  }
+
+  console.log(`Loading game logs for ${hitters.length} hitters + ${pitchers.length} pitchers…`);
+  // Batched to avoid hammering API
+  async function fillLogs(list, group, concurrency = 6) {
+    let i = 0;
+    async function worker() {
+      while (i < list.length) {
+        const idx = i++;
+        list[idx].log = await gameLog(list[idx].id, group);
+      }
+    }
+    await Promise.all(Array.from({ length: concurrency }, () => worker()));
+  }
+  await fillLogs(hitters, 'hitting');
+  await fillLogs(pitchers, 'pitching');
+
+  // Sort defaults: hot first then by L10 OPS / ERA
+  hitters.sort((a, b) => {
+    const ao = parseFloat(a.windows.l10?.ops || a.season.ops || '0');
+    const bo = parseFloat(b.windows.l10?.ops || b.season.ops || '0');
+    return bo - ao;
+  });
+  pitchers.sort((a, b) => {
+    const ae = parseFloat(a.windows.l10?.era || a.season.era || '99');
+    const be = parseFloat(b.windows.l10?.era || b.season.era || '99');
+    return ae - be;
+  });
+
+  // Legacy fields for older screens
+  const todayLineup = hitters.slice(0, 9).map((h) => ({
+    id: h.id,
+    number: 0,
+    name: h.name,
+    pos: h.pos,
+    avg: h.season.avg,
+    ops: h.season.ops,
+    hr: h.season.hr,
+    rbi: h.season.rbi,
+  }));
+  const pitchingToday = {
+    starter: pitchers.find((p) => p.pos === 'SP')
+      ? {
+          id: pitchers.find((p) => p.pos === 'SP').id,
+          number: 0,
+          name: pitchers.find((p) => p.pos === 'SP').name,
+          pos: 'SP',
+          era: pitchers.find((p) => p.pos === 'SP').season.era,
+          whip: pitchers.find((p) => p.pos === 'SP').season.whip,
+          so: pitchers.find((p) => p.pos === 'SP').season.so,
+        }
+      : null,
+    bullpen: pitchers
+      .filter((p) => p.pos !== 'SP')
+      .slice(0, 3)
+      .map((p) => ({
+        id: p.id,
+        number: 0,
+        name: p.name,
+        pos: p.pos,
+        era: p.season.era,
+        whip: p.season.whip,
+        so: p.season.so,
+      })),
+  };
+
+  const trends = hitters.map((h) => ({
+    id: h.id,
+    name: h.name,
+    form: h.form,
+    windows: {
+      l10: h.windows.l10,
+      l15: h.windows.l10,
+      l30: h.windows.l30,
+    },
+  }));
+
+  const leaders = [
+    ...hitters.slice(0, 2).map((h) => ({
+      name: h.name,
+      stat: `${h.season.avg} · ${h.season.hr} HR · ${h.season.rbi} RBI`,
+      role: h.pos,
+    })),
+    ...pitchers.slice(0, 2).map((p) => ({
+      name: p.name,
+      stat: `${p.season.w}-${p.season.l} · ${p.season.era} ERA · ${p.season.so} K`,
+      role: p.pos,
+    })),
+  ];
 
   const payload = {
     syncedAt: new Date().toISOString(),
@@ -431,7 +441,7 @@ async function main() {
       year: 'numeric',
     }),
     teamPulse,
-    keyStats,
+    keyStats: [],
     leaders,
     todayLineup,
     pitchingToday,
@@ -439,12 +449,15 @@ async function main() {
     divisions,
     wildCards,
     schedule,
-    trends: Object.values(trends),
-    teamMeta,
+    trends,
+    hitters,
+    pitchers,
   };
 
   fs.writeFileSync(OUT, JSON.stringify(payload, null, 2));
-  console.log('Wrote', OUT, 'games', schedule.length, 'syncedAt', payload.syncedAt);
+  console.log(
+    `Wrote ${OUT} hitters ${hitters.length} pitchers ${pitchers.length} games ${schedule.length}`
+  );
 }
 
 main().catch((e) => {

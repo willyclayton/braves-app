@@ -71,6 +71,13 @@ export default function RootLayout() {
                 animation: 'slide_from_right',
               }}
             />
+            <Stack.Screen
+              name="player/[id]"
+              options={{
+                headerShown: true,
+                animation: 'slide_from_right',
+              }}
+            />
           </Stack>
         </PhoneShell>
       </SafeAreaProvider>

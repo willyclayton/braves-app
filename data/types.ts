@@ -59,13 +59,100 @@ export type KeyStat = {
   leaderValue?: string;
 };
 
-export type TrendWindow = {
+export type HitWindow = {
   g: number;
   avg: string;
   ops: string;
+  obp?: string;
+  slg?: string;
   hr: number;
   h: number;
   ab: number;
+  r?: number;
+  rbi?: number;
+  bb?: number;
+  so?: number;
+  sb?: number;
+};
+
+export type PitchWindow = {
+  g: number;
+  gs?: number;
+  ip: string;
+  era: string;
+  whip: string;
+  so: number;
+  bb?: number;
+  h?: number;
+  er?: number;
+  w?: number;
+  l?: number;
+  sv?: number;
+};
+
+/** @deprecated use HitWindow */
+export type TrendWindow = HitWindow;
+
+export type HitGameLog = {
+  date: string;
+  gamePk?: number;
+  opp?: string;
+  ab: number;
+  r: number;
+  h: number;
+  hr: number;
+  rbi: number;
+  bb: number;
+  so: number;
+  avg?: string;
+  ops?: string;
+};
+
+export type PitchGameLog = {
+  date: string;
+  gamePk?: number;
+  opp?: string;
+  ip: string;
+  h: number;
+  r: number;
+  er: number;
+  bb: number;
+  so: number;
+  era?: string;
+  whip?: string;
+  decision?: string;
+};
+
+export type Hitter = {
+  id: number;
+  name: string;
+  pos: string;
+  number?: number;
+  season: HitWindow;
+  windows: {
+    l5?: HitWindow;
+    l10?: HitWindow;
+    l20?: HitWindow;
+    l30?: HitWindow;
+  };
+  form?: 'hot' | 'cold' | 'neutral';
+  log: HitGameLog[];
+};
+
+export type Pitcher = {
+  id: number;
+  name: string;
+  pos: string;
+  number?: number;
+  season: PitchWindow;
+  windows: {
+    l5?: PitchWindow;
+    l10?: PitchWindow;
+    l20?: PitchWindow;
+    l30?: PitchWindow;
+  };
+  form?: 'hot' | 'cold' | 'neutral';
+  log: PitchGameLog[];
 };
 
 export type PlayerTrend = {
@@ -73,9 +160,9 @@ export type PlayerTrend = {
   name: string;
   form?: 'hot' | 'cold' | 'neutral';
   windows: {
-    l10?: TrendWindow;
-    l15?: TrendWindow;
-    l30?: TrendWindow;
+    l10?: HitWindow;
+    l15?: HitWindow;
+    l30?: HitWindow;
   };
 };
 
@@ -117,4 +204,8 @@ export type LivePayload = {
   wildCards: WildCardBoard[];
   schedule: Game[];
   trends: PlayerTrend[];
+  hitters: Hitter[];
+  pitchers: Pitcher[];
 };
+
+export type WindowKey = 'l5' | 'l10' | 'l20' | 'l30';
