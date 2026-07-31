@@ -1,6 +1,6 @@
 {
-  "syncedAt": "2026-07-31T03:47:15.293Z",
-  "dataAsOf": "Jul 30, 2026",
+  "syncedAt": "2026-07-31T04:04:08.619Z",
+  "dataAsOf": "Jul 31, 2026",
   "teamPulse": {
     "record": "64-45",
     "rank": "1st · NL East",
@@ -18,7 +18,7 @@
       "rank": 10,
       "of": 30,
       "leaderAbbr": "LAD",
-      "leaderValue": "0.261"
+      "leaderValue": "0.262"
     },
     {
       "label": "OPS",
@@ -26,7 +26,7 @@
       "detail": "10th in MLB",
       "rank": 10,
       "of": 30,
-      "leaderAbbr": "WSH",
+      "leaderAbbr": "LAD",
       "leaderValue": "0.775"
     },
     {

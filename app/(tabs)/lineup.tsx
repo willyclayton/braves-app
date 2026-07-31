@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { TeamLogo } from '@/components/TeamLogo';
@@ -6,44 +7,75 @@ import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
 import { nextGame, pitchingToday, todayLineup, trendFor } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
+import { gameDayLabel } from '@/lib/dates';
+import { formFromWindow, formGlyph } from '@/lib/form';
 
 type WindowKey = 'l10' | 'l15' | 'l30';
 
 export default function LineupScreen() {
   const { screenTitle } = usePhoneLayout();
   const [window, setWindow] = useState<WindowKey>('l15');
+  const dayLabel = nextGame ? gameDayLabel(nextGame.date) : 'Next';
+  const gameHref = nextGame
+    ? {
+        pathname: '/game/[pk]' as const,
+        params: { pk: String(nextGame.gamePk || nextGame.id) },
+      }
+    : null;
 
   return (
     <Screen>
       <FadeIn>
         <View style={styles.headRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.kicker}>TODAY</Text>
+            <Text style={styles.kicker}>{dayLabel.toUpperCase()}</Text>
             <Text style={[styles.title, { fontSize: screenTitle }]}>Lineup</Text>
           </View>
           {nextGame ? <TeamLogo abbr={nextGame.opponentAbbr} size={44} /> : null}
         </View>
         <Text style={styles.sub}>
           {nextGame
-            ? `${nextGame.home ? 'vs' : '@'} ${nextGame.opponent} · ${nextGame.date}`
+            ? `${nextGame.home ? 'vs' : '@'} ${nextGame.opponent} · ${nextGame.date} · ${nextGame.time}`
             : 'Projected order'}
         </Text>
       </FadeIn>
 
-      <FadeIn delay={80} style={styles.spRow}>
-        <View style={styles.numBubble}>
-          <Text style={styles.num}>{pitchingToday.starter?.number || 'SP'}</Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.spLabel}>STARTING PITCHER</Text>
-          <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
-          {pitchingToday.starter ? (
-            <Text style={styles.spMeta}>
-              {pitchingToday.starter.era} ERA · {pitchingToday.starter.whip} WHIP ·{' '}
-              {pitchingToday.starter.so} K
-            </Text>
-          ) : null}
-        </View>
+      <FadeIn delay={80}>
+        {gameHref ? (
+          <Link href={gameHref} asChild>
+            <Pressable style={styles.spRow}>
+              <View style={styles.numBubble}>
+                <Text style={styles.num}>{pitchingToday.starter?.number || 'SP'}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.spLabel}>STARTING PITCHER</Text>
+                <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
+                {pitchingToday.starter ? (
+                  <Text style={styles.spMeta}>
+                    {pitchingToday.starter.era} ERA · {pitchingToday.starter.whip} WHIP ·{' '}
+                    {pitchingToday.starter.so} K
+                  </Text>
+                ) : null}
+              </View>
+            </Pressable>
+          </Link>
+        ) : (
+          <View style={styles.spRow}>
+            <View style={styles.numBubble}>
+              <Text style={styles.num}>{pitchingToday.starter?.number || 'SP'}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.spLabel}>STARTING PITCHER</Text>
+              <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
+              {pitchingToday.starter ? (
+                <Text style={styles.spMeta}>
+                  {pitchingToday.starter.era} ERA · {pitchingToday.starter.whip} WHIP ·{' '}
+                  {pitchingToday.starter.so} K
+                </Text>
+              ) : null}
+            </View>
+          </View>
+        )}
       </FadeIn>
 
       <Text style={styles.section}>Batting order</Text>
@@ -68,7 +100,8 @@ export default function LineupScreen() {
       {todayLineup.map((player, i) => {
         const trend = trendFor(player.id, player.name);
         const w = trend?.windows[window];
-        const form = trend?.form;
+        const form = formFromWindow(w);
+        const glyph = formGlyph(form);
         return (
           <FadeIn key={player.name} delay={120 + i * 35} style={styles.row}>
             <Text style={styles.order}>{i + 1}</Text>
@@ -78,14 +111,19 @@ export default function LineupScreen() {
             <View style={styles.playerInfo}>
               <View style={styles.nameRow}>
                 <Text style={styles.playerName}>{player.name}</Text>
-                {form === 'hot' ? <Text style={styles.form}>🔥</Text> : null}
-                {form === 'cold' ? <Text style={styles.form}>❄️</Text> : null}
+                {glyph ? <Text style={styles.form}>{glyph}</Text> : null}
               </View>
               <Text style={styles.playerMeta}>
                 Season {player.avg} · {player.ops} OPS
               </Text>
               {w ? (
-                <Text style={styles.trendMeta}>
+                <Text
+                  style={[
+                    styles.trendMeta,
+                    form === 'hot' && styles.trendHot,
+                    form === 'cold' && styles.trendCold,
+                  ]}
+                >
                   {window.toUpperCase()} {w.avg} AVG · {w.ops} OPS · {w.hr} HR ({w.g} G)
                 </Text>
               ) : (
@@ -238,6 +276,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 3,
   },
+  trendHot: { color: '#FF8A4C' },
+  trendCold: { color: '#7EC8FF' },
   pos: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.gold,

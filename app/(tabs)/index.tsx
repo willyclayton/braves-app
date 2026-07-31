@@ -18,6 +18,7 @@ import {
   dataAsOf,
   keyStats,
   leaders,
+  nextGame,
   pitchingToday,
   schedule,
   standings,
@@ -26,6 +27,8 @@ import {
   trendFor,
 } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
+import { gameDayLabel } from '@/lib/dates';
+import { formFromWindow, formGlyph } from '@/lib/form';
 import {
   countdownParts,
   resolveHero,
@@ -63,6 +66,11 @@ export default function HomeScreen() {
   const hero = useMemo(() => resolveHero(schedule, now), [now]);
   const east = standings.slice(0, 3);
   const upcoming = schedule.filter((g) => g.status === 'upcoming').slice(0, 3);
+  const nextLabel = nextGame ? gameDayLabel(nextGame.date, now) : 'Next';
+  const gameHref = (pk?: number | string) => ({
+    pathname: '/game/[pk]' as const,
+    params: { pk: String(pk) },
+  });
 
   return (
     <Screen>
@@ -72,129 +80,159 @@ export default function HomeScreen() {
 
       <FadeIn delay={60} style={[styles.heroBleed, { marginHorizontal: -pagePad }]}>
         {hero.mode === 'result' && hero.result ? (
-          <View style={[styles.hero, styles.heroResult, { paddingHorizontal: pagePad }]}>
-            <View style={styles.heroTop}>
-              <View style={styles.statusRow}>
-                <View style={[styles.liveDot, { backgroundColor: colors.white }]} />
-                <Text style={styles.statusLabel}>FINAL</Text>
+          <Link href={gameHref(hero.result.gamePk || hero.result.id)} asChild>
+            <Pressable style={[styles.hero, styles.heroResult, { paddingHorizontal: pagePad }]}>
+              <View style={styles.heroTop}>
+                <View style={styles.statusRow}>
+                  <View style={[styles.liveDot, { backgroundColor: colors.white }]} />
+                  <Text style={styles.statusLabel}>FINAL</Text>
+                </View>
+                <Text style={styles.heroWhen}>Box score ›</Text>
               </View>
-              <Text style={styles.heroWhen}>{hero.result.date}</Text>
-            </View>
 
-            {(() => {
-              const r = resultLabel(hero.result)!;
-              return (
-                <>
-                  <Text style={[styles.resultWord, r.win ? styles.winText : styles.lossText]}>
-                    {r.text}
-                  </Text>
-                  <Text style={styles.resultScore}>{r.score}</Text>
-                </>
-              );
-            })()}
+              {(() => {
+                const r = resultLabel(hero.result)!;
+                return (
+                  <>
+                    <Text style={[styles.resultWord, r.win ? styles.winText : styles.lossText]}>
+                      {r.text}
+                    </Text>
+                    <Text style={styles.resultScore}>{r.score}</Text>
+                  </>
+                );
+              })()}
 
-            <View style={styles.matchupRow}>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr="ATL" size={compact ? 48 : 56} />
-                <Text style={styles.teamAbbr}>ATL</Text>
+              <View style={styles.matchupRow}>
+                <View style={styles.teamBlock}>
+                  <TeamLogo abbr="ATL" size={compact ? 48 : 56} />
+                  <Text style={styles.teamAbbr}>ATL</Text>
+                </View>
+                <Text style={styles.vs}>{hero.result.home ? 'VS' : '@'}</Text>
+                <View style={styles.teamBlock}>
+                  <TeamLogo abbr={hero.result.opponentAbbr} size={compact ? 48 : 56} />
+                  <Text style={styles.teamAbbr}>{hero.result.opponentAbbr}</Text>
+                </View>
               </View>
-              <Text style={styles.vs}>{hero.result.home ? 'VS' : '@'}</Text>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr={hero.result.opponentAbbr} size={compact ? 48 : 56} />
-                <Text style={styles.teamAbbr}>{hero.result.opponentAbbr}</Text>
-              </View>
-            </View>
 
-            <Text style={styles.heroMeta}>{hero.result.venue}</Text>
-            <View style={styles.heroFooter}>
-              <Text style={styles.heroRank}>{teamPulse.rank}</Text>
-              <Text style={styles.heroStreak}>
-                {teamPulse.streak} · L10 {teamPulse.lastTen}
-              </Text>
-            </View>
-          </View>
+              <Text style={styles.heroMeta}>{hero.result.venue}</Text>
+              <View style={styles.heroFooter}>
+                <Text style={styles.heroRank}>{teamPulse.rank}</Text>
+                <Text style={styles.heroStreak}>
+                  {teamPulse.streak} · L10 {teamPulse.lastTen}
+                </Text>
+              </View>
+            </Pressable>
+          </Link>
         ) : hero.next ? (
-          <View style={[styles.hero, { paddingHorizontal: pagePad }]}>
-            <View style={styles.heroTop}>
-              <View style={styles.statusRow}>
-                <Animated.View style={[styles.liveDot, pulseStyle]} />
-                <Text style={styles.statusLabel}>NEXT</Text>
+          <Link href={gameHref(hero.next.gamePk || hero.next.id)} asChild>
+            <Pressable style={[styles.hero, { paddingHorizontal: pagePad }]}>
+              <View style={styles.heroTop}>
+                <View style={styles.statusRow}>
+                  <Animated.View style={[styles.liveDot, pulseStyle]} />
+                  <Text style={styles.statusLabel}>
+                    {gameDayLabel(hero.next.date, now).toUpperCase()}
+                  </Text>
+                </View>
+                <Text style={styles.heroWhen}>
+                  {hero.next.date} · {hero.next.time}
+                </Text>
               </View>
-              <Text style={styles.heroWhen}>
-                {hero.next.date} · {hero.next.time}
-              </Text>
-            </View>
 
-            <View style={styles.matchupRow}>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr="ATL" size={compact ? 56 : 64} />
-                <Text style={styles.teamAbbr}>ATL</Text>
+              <View style={styles.matchupRow}>
+                <View style={styles.teamBlock}>
+                  <TeamLogo abbr="ATL" size={compact ? 56 : 64} />
+                  <Text style={styles.teamAbbr}>ATL</Text>
+                </View>
+                <Text style={styles.vs}>{hero.next.home ? 'VS' : '@'}</Text>
+                <View style={styles.teamBlock}>
+                  <TeamLogo abbr={hero.next.opponentAbbr} size={compact ? 56 : 64} />
+                  <Text style={styles.teamAbbr}>{hero.next.opponentAbbr}</Text>
+                </View>
               </View>
-              <Text style={styles.vs}>{hero.next.home ? 'VS' : '@'}</Text>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr={hero.next.opponentAbbr} size={compact ? 56 : 64} />
-                <Text style={styles.teamAbbr}>{hero.next.opponentAbbr}</Text>
-              </View>
-            </View>
 
-            <Text style={styles.heroMeta}>
-              {hero.next.venue}
-              {hero.next.starter ? ` · ${hero.next.starter}` : ''}
-            </Text>
-            {hero.next.gameDate ? (
-              <Text style={styles.countdown}>
-                First pitch in {countdownParts(hero.next.gameDate, now)}
+              <Text style={styles.heroMeta}>
+                {hero.next.venue}
+                {hero.next.starter ? ` · ${hero.next.starter}` : ''}
               </Text>
-            ) : null}
-            <View style={styles.heroFooter}>
-              <Text style={styles.heroRank}>{teamPulse.rank}</Text>
-              <Text style={styles.heroStreak}>
-                {teamPulse.streak} · L10 {teamPulse.lastTen}
-              </Text>
-            </View>
-          </View>
+              {hero.next.gameDate ? (
+                <Text style={styles.countdown}>
+                  First pitch in {countdownParts(hero.next.gameDate, now)}
+                </Text>
+              ) : null}
+              <View style={styles.heroFooter}>
+                <Text style={styles.heroRank}>{teamPulse.rank}</Text>
+                <Text style={styles.heroStreak}>Tap for game page ›</Text>
+              </View>
+            </Pressable>
+          </Link>
         ) : null}
       </FadeIn>
 
-      {/* Secondary: next game under a still-showing result */}
       {hero.mode === 'result' && hero.next ? (
-        <FadeIn delay={100} style={styles.nextStrip}>
-          <Text style={styles.nextStripLabel}>NEXT</Text>
-          <TeamLogo abbr={hero.next.opponentAbbr} size={24} />
-          <Text style={styles.nextStripMatch}>
-            {hero.next.home ? 'vs' : '@'} {hero.next.opponentAbbr}
-          </Text>
-          <Text style={styles.nextStripWhen}>
-            {hero.next.date} · {hero.next.time}
-            {hero.next.gameDate ? ` · ${countdownParts(hero.next.gameDate, now)}` : ''}
-          </Text>
+        <FadeIn delay={100}>
+          <Link href={gameHref(hero.next.gamePk || hero.next.id)} asChild>
+            <Pressable style={styles.nextStrip}>
+              <Text style={styles.nextStripLabel}>
+                {gameDayLabel(hero.next.date, now).toUpperCase()}
+              </Text>
+              <TeamLogo abbr={hero.next.opponentAbbr} size={24} />
+              <Text style={styles.nextStripMatch}>
+                {hero.next.home ? 'vs' : '@'} {hero.next.opponentAbbr}
+              </Text>
+              <Text style={styles.nextStripWhen}>
+                {hero.next.time}
+                {hero.next.gameDate ? ` · ${countdownParts(hero.next.gameDate, now)}` : ''}
+                {' ›'}
+              </Text>
+            </Pressable>
+          </Link>
         </FadeIn>
       ) : null}
 
-      <SectionHeader title="Tonight" href="/lineup" action="Lineup →" />
-      <FadeIn delay={140} style={styles.tonightRow}>
-        <View style={styles.spBlock}>
-          <Text style={styles.spLabel}>SP</Text>
-          <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
-          {pitchingToday.starter ? (
-            <Text style={styles.spMeta}>
-              {pitchingToday.starter.era} ERA · {pitchingToday.starter.so} K
-            </Text>
-          ) : null}
-        </View>
-        <View style={styles.batters}>
-          {todayLineup.slice(0, 3).map((p, i) => {
-            const trend = trendFor(p.id, p.name);
-            return (
-              <Text key={p.name} style={styles.batterLine} numberOfLines={1}>
-                <Text style={styles.batterNum}>{i + 1} </Text>
-                {shortName(p.name)}
-                <Text style={styles.batterPos}> {p.pos}</Text>
-                {trend?.form === 'hot' ? ' 🔥' : trend?.form === 'cold' ? ' ❄️' : ''}
+      <SectionHeader title={nextLabel} href="/lineup" action="Lineup →" />
+      <FadeIn delay={140}>
+        <Link
+          href={
+            nextGame
+              ? gameHref(nextGame.gamePk || nextGame.id)
+              : '/lineup'
+          }
+          asChild
+        >
+          <Pressable style={styles.tonightRow}>
+            <View style={styles.spBlock}>
+              <Text style={styles.spLabel}>
+                {nextGame ? `${gameDayLabel(nextGame.date, now).toUpperCase()} SP` : 'SP'}
               </Text>
-            );
-          })}
-        </View>
+              <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
+              {pitchingToday.starter ? (
+                <Text style={styles.spMeta}>
+                  {pitchingToday.starter.era} ERA · {pitchingToday.starter.so} K
+                </Text>
+              ) : null}
+              {nextGame ? (
+                <Text style={styles.spWhen}>
+                  {nextGame.date} · {nextGame.time}
+                </Text>
+              ) : null}
+            </View>
+            <View style={styles.batters}>
+              {todayLineup.slice(0, 3).map((p, i) => {
+                const trend = trendFor(p.id, p.name);
+                const form = formFromWindow(trend?.windows.l15);
+                const glyph = formGlyph(form);
+                return (
+                  <Text key={p.name} style={styles.batterLine} numberOfLines={1}>
+                    <Text style={styles.batterNum}>{i + 1} </Text>
+                    {shortName(p.name)}
+                    <Text style={styles.batterPos}> {p.pos}</Text>
+                    {glyph ? ` ${glyph}` : ''}
+                  </Text>
+                );
+              })}
+            </View>
+          </Pressable>
+        </Link>
       </FadeIn>
 
       <SectionHeader title="NL East" href="/standings" action="Standings →" />
@@ -444,6 +482,12 @@ const styles = StyleSheet.create({
     color: colors.mist,
     fontSize: 12,
     marginTop: 3,
+  },
+  spWhen: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.gold,
+    fontSize: 11,
+    marginTop: 6,
   },
   batters: { flex: 1, justifyContent: 'center', gap: 4 },
   batterLine: {
