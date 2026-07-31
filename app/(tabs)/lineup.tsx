@@ -1,13 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
-import { nextGame, pitchingToday, todayLineup } from '@/data/braves';
+import { nextGame, pitchingToday, todayLineup, trendFor } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
+
+type WindowKey = 'l10' | 'l15' | 'l30';
 
 export default function LineupScreen() {
   const { screenTitle } = usePhoneLayout();
+  const [window, setWindow] = useState<WindowKey>('l15');
 
   return (
     <Screen>
@@ -17,43 +21,81 @@ export default function LineupScreen() {
             <Text style={styles.kicker}>TODAY</Text>
             <Text style={[styles.title, { fontSize: screenTitle }]}>Lineup</Text>
           </View>
-          <TeamLogo abbr={nextGame.opponentAbbr} size={44} />
+          {nextGame ? <TeamLogo abbr={nextGame.opponentAbbr} size={44} /> : null}
         </View>
         <Text style={styles.sub}>
-          {nextGame.home ? 'vs' : '@'} {nextGame.opponent} · {nextGame.date}
+          {nextGame
+            ? `${nextGame.home ? 'vs' : '@'} ${nextGame.opponent} · ${nextGame.date}`
+            : 'Projected order'}
         </Text>
       </FadeIn>
 
       <FadeIn delay={80} style={styles.spRow}>
         <View style={styles.numBubble}>
-          <Text style={styles.num}>{pitchingToday.starter.number}</Text>
+          <Text style={styles.num}>{pitchingToday.starter?.number || 'SP'}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.spLabel}>STARTING PITCHER</Text>
-          <Text style={styles.spName}>{pitchingToday.starter.name}</Text>
-          <Text style={styles.spMeta}>
-            {pitchingToday.starter.era} ERA · {pitchingToday.starter.whip} WHIP ·{' '}
-            {pitchingToday.starter.so} K
-          </Text>
+          <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
+          {pitchingToday.starter ? (
+            <Text style={styles.spMeta}>
+              {pitchingToday.starter.era} ERA · {pitchingToday.starter.whip} WHIP ·{' '}
+              {pitchingToday.starter.so} K
+            </Text>
+          ) : null}
         </View>
       </FadeIn>
 
       <Text style={styles.section}>Batting order</Text>
-      {todayLineup.map((player, i) => (
-        <FadeIn key={player.name} delay={120 + i * 40} style={styles.row}>
-          <Text style={styles.order}>{i + 1}</Text>
-          <View style={styles.numBubbleSm}>
-            <Text style={styles.numSm}>{player.number}</Text>
-          </View>
-          <View style={styles.playerInfo}>
-            <Text style={styles.playerName}>{player.name}</Text>
-            <Text style={styles.playerMeta}>
-              {player.avg} · {player.ops} OPS · {player.hr} HR
-            </Text>
-          </View>
-          <Text style={styles.pos}>{player.pos}</Text>
-        </FadeIn>
-      ))}
+      <View style={styles.segRow}>
+        {(
+          [
+            ['l10', 'L10'],
+            ['l15', 'L15'],
+            ['l30', 'L30'],
+          ] as const
+        ).map(([key, label]) => (
+          <Pressable
+            key={key}
+            onPress={() => setWindow(key)}
+            style={[styles.seg, window === key && styles.segOn]}
+          >
+            <Text style={[styles.segText, window === key && styles.segTextOn]}>{label}</Text>
+          </Pressable>
+        ))}
+      </View>
+
+      {todayLineup.map((player, i) => {
+        const trend = trendFor(player.id, player.name);
+        const w = trend?.windows[window];
+        const form = trend?.form;
+        return (
+          <FadeIn key={player.name} delay={120 + i * 35} style={styles.row}>
+            <Text style={styles.order}>{i + 1}</Text>
+            <View style={styles.numBubbleSm}>
+              <Text style={styles.numSm}>{player.number || '—'}</Text>
+            </View>
+            <View style={styles.playerInfo}>
+              <View style={styles.nameRow}>
+                <Text style={styles.playerName}>{player.name}</Text>
+                {form === 'hot' ? <Text style={styles.form}>🔥</Text> : null}
+                {form === 'cold' ? <Text style={styles.form}>❄️</Text> : null}
+              </View>
+              <Text style={styles.playerMeta}>
+                Season {player.avg} · {player.ops} OPS
+              </Text>
+              {w ? (
+                <Text style={styles.trendMeta}>
+                  {window.toUpperCase()} {w.avg} AVG · {w.ops} OPS · {w.hr} HR ({w.g} G)
+                </Text>
+              ) : (
+                <Text style={styles.trendMeta}>No recent sample</Text>
+              )}
+            </View>
+            <Text style={styles.pos}>{player.pos}</Text>
+          </FadeIn>
+        );
+      })}
 
       <Text style={styles.section}>Bullpen</Text>
       {pitchingToday.bullpen.map((p, i) => (
@@ -68,11 +110,7 @@ export default function LineupScreen() {
 }
 
 const styles = StyleSheet.create({
-  headRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
+  headRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   kicker: {
     fontFamily: 'DMSans_700Bold',
     color: colors.gold,
@@ -111,7 +149,7 @@ const styles = StyleSheet.create({
   num: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 26,
+    fontSize: 22,
   },
   spLabel: {
     fontFamily: 'DMSans_700Bold',
@@ -139,10 +177,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     letterSpacing: 1,
   },
+  segRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
+  seg: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    alignItems: 'center',
+  },
+  segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
+  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 12 },
+  segTextOn: { color: colors.white },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 11,
+    alignItems: 'flex-start',
+    paddingVertical: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
     gap: 10,
@@ -152,6 +202,7 @@ const styles = StyleSheet.create({
     fontFamily: 'BebasNeue_400Regular',
     color: colors.mistDim,
     fontSize: 18,
+    marginTop: 6,
   },
   numBubbleSm: {
     width: 34,
@@ -160,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.navyLift,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 2,
   },
   numSm: {
     fontFamily: 'BebasNeue_400Regular',
@@ -167,16 +219,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   playerInfo: { flex: 1 },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   playerName: {
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
     fontSize: 15,
   },
+  form: { fontSize: 14 },
   playerMeta: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mistDim,
     fontSize: 12,
     marginTop: 2,
+  },
+  trendMeta: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.gold,
+    fontSize: 12,
+    marginTop: 3,
   },
   pos: {
     fontFamily: 'BebasNeue_400Regular',
@@ -184,6 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     minWidth: 28,
     textAlign: 'right',
+    marginTop: 6,
   },
   bullpenRow: {
     flexDirection: 'row',

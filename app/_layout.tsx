@@ -64,6 +64,13 @@ export default function RootLayout() {
             }}
           >
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen
+              name="game/[pk]"
+              options={{
+                headerShown: true,
+                animation: 'slide_from_right',
+              }}
+            />
           </Stack>
         </PhoneShell>
       </SafeAreaProvider>

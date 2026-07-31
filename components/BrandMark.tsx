@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { bravesLogo } from '@/constants/logos';
+import { StyleSheet, Text, View } from 'react-native';
+import { TeamLogo } from '@/components/TeamLogo';
 import { colors } from '@/constants/theme';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
@@ -15,12 +15,7 @@ export function BrandMark({ size = 'sm', record }: Props) {
 
   return (
     <View style={styles.wrap}>
-      <Image
-        source={bravesLogo}
-        style={{ width: logoSize, height: logoSize }}
-        resizeMode="contain"
-        accessibilityLabel="Atlanta Braves logo"
-      />
+      <TeamLogo abbr="ATL" size={logoSize} />
       <View style={styles.textCol}>
         <Text
           style={[styles.word, large && styles.wordLg, compact && large && styles.wordCompact]}
