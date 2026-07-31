@@ -81,7 +81,13 @@ export default function HomeScreen() {
       <FadeIn delay={60} style={[styles.heroBleed, { marginHorizontal: -pagePad }]}>
         {hero.mode === 'result' && hero.result ? (
           <Link href={gameHref(hero.result.gamePk || hero.result.id)} asChild>
-            <Pressable style={[styles.hero, styles.heroResult, { paddingHorizontal: pagePad }]}>
+            <Pressable
+              style={StyleSheet.flatten([
+                styles.hero,
+                styles.heroResult,
+                { paddingHorizontal: pagePad },
+              ])}
+            >
               <View style={styles.heroTop}>
                 <View style={styles.statusRow}>
                   <View style={[styles.liveDot, { backgroundColor: colors.white }]} />
@@ -125,7 +131,9 @@ export default function HomeScreen() {
           </Link>
         ) : hero.next ? (
           <Link href={gameHref(hero.next.gamePk || hero.next.id)} asChild>
-            <Pressable style={[styles.hero, { paddingHorizontal: pagePad }]}>
+            <Pressable
+              style={StyleSheet.flatten([styles.hero, { paddingHorizontal: pagePad }])}
+            >
               <View style={styles.heroTop}>
                 <View style={styles.statusRow}>
                   <Animated.View style={[styles.liveDot, pulseStyle]} />
