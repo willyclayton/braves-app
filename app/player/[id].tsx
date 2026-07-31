@@ -229,6 +229,13 @@ export default function PlayerScreen() {
           </Text>
 
           <Text style={styles.chartTitle}>Recent games</Text>
+          <View style={styles.logHead}>
+            <Text style={styles.logHeadDate}>DATE</Text>
+            <Text style={styles.logHeadOpp}>OPP</Text>
+            <Text style={styles.logHeadStat}>H-AB</Text>
+            <Text style={styles.logHeadStat}>RBI</Text>
+            <Text style={styles.logHeadStat}>HR</Text>
+          </View>
           {[...hitLog].reverse().map((g, i) => (
             <View key={`${g.date}-${i}`} style={styles.logRow}>
               <Text style={styles.logDate}>{g.date.slice(5)}</Text>
@@ -236,8 +243,8 @@ export default function PlayerScreen() {
               <Text style={styles.logStat}>
                 {g.h}-{g.ab}
               </Text>
-              <Text style={styles.logStat}>{g.rbi} RBI</Text>
-              <Text style={styles.logStat}>{g.hr} HR</Text>
+              <Text style={styles.logStat}>{g.rbi}</Text>
+              <Text style={styles.logStat}>{g.hr}</Text>
             </View>
           ))}
         </Screen>
@@ -330,13 +337,20 @@ export default function PlayerScreen() {
         </Text>
 
         <Text style={styles.chartTitle}>Recent appearances</Text>
+        <View style={styles.logHead}>
+          <Text style={styles.logHeadDate}>DATE</Text>
+          <Text style={styles.logHeadOpp}>OPP</Text>
+          <Text style={styles.logHeadStat}>IP</Text>
+          <Text style={styles.logHeadStat}>K</Text>
+          <Text style={styles.logHeadStat}>ER</Text>
+        </View>
         {[...pitchLog].reverse().map((g, i) => (
           <View key={`${g.date}-${i}`} style={styles.logRow}>
             <Text style={styles.logDate}>{g.date.slice(5)}</Text>
             <Text style={styles.logOpp}>{g.opp || '—'}</Text>
-            <Text style={styles.logStat}>{g.ip} IP</Text>
-            <Text style={styles.logStat}>{g.so} K</Text>
-            <Text style={styles.logStat}>{g.er} ER</Text>
+            <Text style={styles.logStat}>{g.ip}</Text>
+            <Text style={styles.logStat}>{g.so}</Text>
+            <Text style={styles.logStat}>{g.er}</Text>
           </View>
         ))}
       </Screen>
@@ -454,6 +468,36 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: spacing.md,
   },
+  logHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingBottom: 6,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
+  },
+  logHeadDate: {
+    width: 44,
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 10,
+    letterSpacing: 1,
+  },
+  logHeadOpp: {
+    width: 40,
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 10,
+    letterSpacing: 1,
+  },
+  logHeadStat: {
+    flex: 1,
+    textAlign: 'right',
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 10,
+    letterSpacing: 1,
+  },
   logRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -477,8 +521,8 @@ const styles = StyleSheet.create({
   logStat: {
     flex: 1,
     textAlign: 'right',
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
-    fontSize: 12,
+    fontFamily: 'DMSans_500Medium',
+    color: colors.white,
+    fontSize: 13,
   },
 });
