@@ -3,6 +3,7 @@ import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, radii, spacing } from '@/constants/theme';
 import { schedule } from '@/data/braves';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 function resultLabel(braves?: number, opp?: number) {
   if (braves == null || opp == null) return null;
@@ -12,11 +13,13 @@ function resultLabel(braves?: number, opp?: number) {
 }
 
 export default function ScheduleScreen() {
+  const { screenTitle, compact } = usePhoneLayout();
+
   return (
     <Screen contentStyle={styles.content}>
       <FadeIn>
         <Text style={styles.kicker}>CALENDAR</Text>
-        <Text style={styles.title}>Schedule</Text>
+        <Text style={[styles.title, { fontSize: screenTitle }]}>Schedule</Text>
         <Text style={styles.sub}>Recent results and the road ahead.</Text>
       </FadeIn>
 
@@ -36,7 +39,7 @@ export default function ScheduleScreen() {
             </View>
 
             <View style={styles.mid}>
-              <Text style={styles.matchup}>
+              <Text style={[styles.matchup, compact && styles.matchupCompact]}>
                 {game.home ? 'vs' : '@'} {game.opponentAbbr}
               </Text>
               <Text style={styles.venue}>{game.venue}</Text>
@@ -132,6 +135,9 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 26,
     letterSpacing: 0.5,
+  },
+  matchupCompact: {
+    fontSize: 22,
   },
   venue: {
     fontFamily: 'DMSans_400Regular',

@@ -2,7 +2,8 @@ import { PropsWithChildren } from 'react';
 import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, spacing } from '@/constants/theme';
+import { colors } from '@/constants/theme';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 type Props = PropsWithChildren<{
   scroll?: boolean;
@@ -10,26 +11,43 @@ type Props = PropsWithChildren<{
 }>;
 
 export function Screen({ children, scroll = true, contentStyle }: Props) {
+  const { pagePad, contentBottom } = usePhoneLayout();
+
   const body = scroll ? (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[styles.content, contentStyle]}
+      bounces
+      contentContainerStyle={[
+        styles.content,
+        { paddingHorizontal: pagePad, paddingBottom: contentBottom },
+        contentStyle,
+      ]}
     >
       {children}
     </ScrollView>
   ) : (
-    <View style={[styles.content, styles.fill, contentStyle]}>{children}</View>
+    <View
+      style={[
+        styles.content,
+        styles.fill,
+        { paddingHorizontal: pagePad, paddingBottom: contentBottom },
+        contentStyle,
+      ]}
+    >
+      {children}
+    </View>
   );
 
   return (
     <View style={styles.root}>
       <LinearGradient
-        colors={['#152A48', colors.navy, '#070D18']}
-        locations={[0, 0.38, 1]}
+        colors={['#1A3358', colors.navy, '#070D18']}
+        locations={[0, 0.42, 1]}
         style={StyleSheet.absoluteFill}
       />
-      <View style={styles.glowScarlet} />
-      <View style={styles.glowGold} />
+      <View style={styles.glowScarlet} pointerEvents="none" />
+      <View style={styles.glowGold} pointerEvents="none" />
+      <View style={styles.stadiumLines} pointerEvents="none" />
       <SafeAreaView style={styles.safe} edges={['top']}>
         {body}
       </SafeAreaView>
@@ -46,28 +64,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: 120,
+    paddingTop: 8,
   },
   fill: {
     flex: 1,
   },
   glowScarlet: {
     position: 'absolute',
-    top: -80,
-    right: -40,
-    width: 220,
-    height: 220,
-    borderRadius: 220,
-    backgroundColor: 'rgba(206, 17, 65, 0.22)',
+    top: -100,
+    right: -60,
+    width: 260,
+    height: 260,
+    borderRadius: 260,
+    backgroundColor: 'rgba(206, 17, 65, 0.28)',
   },
   glowGold: {
     position: 'absolute',
-    top: 180,
-    left: -90,
-    width: 200,
-    height: 200,
-    borderRadius: 200,
-    backgroundColor: 'rgba(234, 170, 0, 0.08)',
+    top: 220,
+    left: -110,
+    width: 240,
+    height: 240,
+    borderRadius: 240,
+    backgroundColor: 'rgba(234, 170, 0, 0.1)',
+  },
+  stadiumLines: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 220,
+    opacity: 0.08,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gold,
   },
 });

@@ -18,6 +18,8 @@ import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { PhoneShell } from '@/components/ui/PhoneShell';
 import { colors } from '@/constants/theme';
 
 export { ErrorBoundary } from 'expo-router';
@@ -51,16 +53,20 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.navy }}>
-      <StatusBar style="light" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.navy },
-          animation: 'fade',
-        }}
-      >
-        <Stack.Screen name="(tabs)" />
-      </Stack>
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        <PhoneShell>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.navy },
+              animation: 'fade',
+            }}
+          >
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+        </PhoneShell>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

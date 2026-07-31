@@ -1,29 +1,27 @@
 # Braves
 
-A sleek Atlanta Braves iPhone app — key stats, lineup, NL East standings, and schedule. Nothing extra.
+A sleek Atlanta Braves iPhone app — key stats, lineup, NL East standings, and schedule.
+
+Optimized for every iPhone size (SE → Pro Max). Add to Home Screen on Safari for an app-like icon.
+
+## Live
+
+Hosted on Vercel after deploy.
 
 ## Open on your iPhone
 
-### Option A — Expo Go (best)
+1. Open the Vercel URL in Safari
+2. Share → **Add to Home Screen**
+3. Launch from your home screen
 
-1. Install **Expo Go** from the App Store
-2. On this machine:
+### Local / Expo Go
 
 ```bash
-cd braves-app
+npm install
 npm start
 ```
 
-3. Scan the QR code with your iPhone camera
-
-### Option B — Web preview
-
-```bash
-cd braves-app
-npm run web
-```
-
-Then open the local URL in Safari and use **Share → Add to Home Screen** for an app-like icon.
+Scan the QR code with Expo Go, or run `npm run web`.
 
 ## Tabs
 
@@ -32,4 +30,11 @@ Then open the local URL in Safari and use **Share → Add to Home Screen** for a
 - **Standings** — NL East race
 - **Schedule** — recent results + upcoming games
 
-Sample season data is bundled so the UI works offline; swap `data/braves.ts` for live feeds when you’re ready.
+Sample season data lives in `data/braves.ts`.
+
+## Deploy
+
+```bash
+npm run build:web
+npx vercel --prod
+```

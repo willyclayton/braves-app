@@ -1,19 +1,36 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants/theme';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 type Props = {
   size?: 'sm' | 'lg';
 };
 
 export function BrandMark({ size = 'sm' }: Props) {
+  const { compact } = usePhoneLayout();
   const large = size === 'lg';
+
   return (
     <View style={styles.wrap}>
-      <View style={[styles.badge, large && styles.badgeLg]}>
-        <Text style={[styles.a, large && styles.aLg]}>A</Text>
+      <View
+        style={[
+          styles.badge,
+          large && styles.badgeLg,
+          compact && large && styles.badgeCompact,
+        ]}
+      >
+        <Text style={[styles.a, large && styles.aLg, compact && large && styles.aCompact]}>
+          A
+        </Text>
       </View>
       <View>
-        <Text style={[styles.word, large && styles.wordLg]}>BRAVES</Text>
+        <Text
+          style={[styles.word, large && styles.wordLg, compact && large && styles.wordCompact]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+        >
+          BRAVES
+        </Text>
         <Text style={[styles.sub, large && styles.subLg]}>ATLANTA</Text>
       </View>
     </View>
@@ -41,6 +58,11 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 20,
   },
+  badgeCompact: {
+    width: 54,
+    height: 54,
+    borderRadius: 18,
+  },
   a: {
     fontFamily: 'ArchivoBlack_400Regular',
     color: colors.white,
@@ -49,6 +71,9 @@ const styles = StyleSheet.create({
   },
   aLg: {
     fontSize: 38,
+  },
+  aCompact: {
+    fontSize: 32,
   },
   word: {
     fontFamily: 'BebasNeue_400Regular',
@@ -61,6 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 56,
     lineHeight: 56,
     letterSpacing: 3,
+  },
+  wordCompact: {
+    fontSize: 46,
+    lineHeight: 46,
   },
   sub: {
     fontFamily: 'DMSans_500Medium',

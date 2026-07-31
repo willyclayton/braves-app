@@ -15,8 +15,10 @@ import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, radii, spacing } from '@/constants/theme';
 import { keyStats, leaders, nextGame, teamPulse } from '@/data/braves';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 export default function HomeScreen() {
+  const { heroTitle, matchup, compact } = usePhoneLayout();
   const pulse = useSharedValue(0.55);
 
   useEffect(() => {
@@ -39,8 +41,8 @@ export default function HomeScreen() {
       </FadeIn>
 
       <FadeIn delay={80} style={styles.heroCopy}>
-        <Text style={styles.headline}>Chop on.</Text>
-        <Text style={styles.support}>
+        <Text style={[styles.headline, { fontSize: heroTitle }]}>Chop on.</Text>
+        <Text style={[styles.support, compact && styles.supportCompact]}>
           Key stats, tonight's lineup, NL East race, and the stretch run — nothing extra.
         </Text>
       </FadeIn>
@@ -50,7 +52,7 @@ export default function HomeScreen() {
           colors={['#CE1141', '#9B0D31', '#132448']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={styles.nextGame}
+          style={[styles.nextGame, compact && styles.nextGameCompact]}
         >
           <View style={styles.nextTop}>
             <View style={styles.liveRow}>
@@ -61,7 +63,7 @@ export default function HomeScreen() {
               {nextGame.date} · {nextGame.time}
             </Text>
           </View>
-          <Text style={styles.matchup}>
+          <Text style={[styles.matchup, { fontSize: matchup }]}>
             {nextGame.home ? 'vs' : '@'} {nextGame.opponentAbbr}
           </Text>
           <Text style={styles.venue}>
@@ -151,10 +153,17 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginTop: 8,
   },
+  supportCompact: {
+    fontSize: 14,
+    lineHeight: 21,
+  },
   nextGame: {
     borderRadius: radii.lg,
     padding: spacing.lg,
     overflow: 'hidden',
+  },
+  nextGameCompact: {
+    padding: spacing.md,
   },
   nextTop: {
     flexDirection: 'row',

@@ -10,6 +10,7 @@ import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, radii, spacing } from '@/constants/theme';
 import { standings, teamPulse } from '@/data/braves';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 function StandingBar({ pct, highlight, delay }: { pct: string; highlight?: boolean; delay: number }) {
   const progress = useSharedValue(0);
@@ -37,11 +38,13 @@ function StandingBar({ pct, highlight, delay }: { pct: string; highlight?: boole
 }
 
 export default function StandingsScreen() {
+  const { screenTitle } = usePhoneLayout();
+
   return (
     <Screen contentStyle={styles.content}>
       <FadeIn>
         <Text style={styles.kicker}>NL EAST</Text>
-        <Text style={styles.title}>Standings</Text>
+        <Text style={[styles.title, { fontSize: screenTitle }]}>Standings</Text>
         <Text style={styles.sub}>
           Braves hold {teamPulse.rank.split(' · ')[0]} with a {teamPulse.record} mark.
         </Text>

@@ -3,13 +3,16 @@ import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, radii, spacing } from '@/constants/theme';
 import { nextGame, pitchingToday, todayLineup } from '@/data/braves';
+import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 export default function LineupScreen() {
+  const { screenTitle } = usePhoneLayout();
+
   return (
     <Screen contentStyle={styles.content}>
       <FadeIn>
         <Text style={styles.kicker}>TODAY</Text>
-        <Text style={styles.title}>Lineup</Text>
+        <Text style={[styles.title, { fontSize: screenTitle }]}>Lineup</Text>
         <Text style={styles.sub}>
           {nextGame.home ? 'vs' : '@'} {nextGame.opponent} · {nextGame.date}
         </Text>
