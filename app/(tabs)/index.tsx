@@ -14,7 +14,7 @@ import { StatChip } from '@/components/StatChip';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, radii, spacing } from '@/constants/theme';
-import { keyStats, leaders, nextGame, teamPulse } from '@/data/braves';
+import { dataAsOf, keyStats, leaders, nextGame, teamPulse } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 export default function HomeScreen() {
@@ -45,6 +45,7 @@ export default function HomeScreen() {
         <Text style={[styles.support, compact && styles.supportCompact]}>
           Key stats, tonight's lineup, NL East race, and the stretch run — nothing extra.
         </Text>
+        <Text style={styles.asOf}>Updated {dataAsOf} · MLB Stats API</Text>
       </FadeIn>
 
       <FadeIn delay={160}>
@@ -156,6 +157,12 @@ const styles = StyleSheet.create({
   supportCompact: {
     fontSize: 14,
     lineHeight: 21,
+  },
+  asOf: {
+    fontFamily: 'DMSans_400Regular',
+    color: colors.mistDim,
+    fontSize: 12,
+    marginTop: 10,
   },
   nextGame: {
     borderRadius: radii.lg,

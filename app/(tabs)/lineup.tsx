@@ -14,7 +14,7 @@ export default function LineupScreen() {
         <Text style={styles.kicker}>TODAY</Text>
         <Text style={[styles.title, { fontSize: screenTitle }]}>Lineup</Text>
         <Text style={styles.sub}>
-          {nextGame.home ? 'vs' : '@'} {nextGame.opponent} · {nextGame.date}
+          {nextGame.home ? 'vs' : '@'} {nextGame.opponent} · {nextGame.date} · projected
         </Text>
       </FadeIn>
 

@@ -84,7 +84,7 @@ export default function StandingsScreen() {
       <FadeIn delay={560} style={styles.note}>
         <Text style={styles.noteTitle}>Division grip</Text>
         <Text style={styles.noteBody}>
-          Four games clear of Philadelphia. Keep the bats loud and the bullpen short — that’s the race.
+          Seven games clear of Philadelphia. Walt Weiss’s club owns the NL East — protect the lead through August.
         </Text>
       </FadeIn>
     </Screen>
