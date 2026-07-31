@@ -40,6 +40,13 @@ const PITCH_METRICS: { key: PitchMetric; label: string }[] = [
   { key: 'ip', label: 'IP' },
 ];
 
+const WINDOW_GAMES: Record<WindowKey, number> = {
+  l5: 5,
+  l10: 10,
+  l20: 20,
+  l30: 30,
+};
+
 function parseIp(ip: string) {
   const [w, f] = String(ip).split('.');
   return Number(w || 0) + Number(f || 0) / 3;
@@ -49,6 +56,30 @@ export function generateStaticParams() {
   return [...hitters, ...pitchers].map((p) => ({ id: String(p.id) }));
 }
 
+function WindowSeg({
+  value,
+  onChange,
+}: {
+  value: WindowKey;
+  onChange: (v: WindowKey) => void;
+}) {
+  return (
+    <View style={styles.segRow}>
+      {WINDOW_KEYS.map((k) => (
+        <Pressable
+          key={k}
+          onPress={() => onChange(k)}
+          style={[styles.seg, value === k && styles.segOn]}
+        >
+          <Text style={[styles.segText, value === k && styles.segTextOn]}>
+            {WINDOW_LABELS[k]}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
 export default function PlayerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const hitter = hitterById(id);
@@ -56,15 +87,15 @@ export default function PlayerScreen() {
   const [window, setWindow] = useState<WindowKey>('l10');
   const [hitMetric, setHitMetric] = useState<HitMetric>('h');
   const [pitchMetric, setPitchMetric] = useState<PitchMetric>('so');
-  const [logCount, setLogCount] = useState<10 | 20 | 30>(10);
+  const games = WINDOW_GAMES[window];
 
   const hitLog = useMemo(
-    () => (hitter ? hitter.log.slice(-logCount) : []),
-    [hitter, logCount]
+    () => (hitter ? hitter.log.slice(-games) : []),
+    [hitter, games]
   );
   const pitchLog = useMemo(
-    () => (pitcher ? pitcher.log.slice(-logCount) : []),
-    [pitcher, logCount]
+    () => (pitcher ? pitcher.log.slice(-games) : []),
+    [pitcher, games]
   );
 
   const hitValues = useMemo(
@@ -102,6 +133,7 @@ export default function PlayerScreen() {
     const w = hitter.windows[window] || hitter.windows.l10 || hitter.season;
     const form = formFromHitWindow(hitter.windows[window] || hitter.windows.l10);
     const sum = hitValues.reduce((a, b) => a + b, 0);
+    const metricLabel = HIT_METRICS.find((m) => m.key === hitMetric)?.label || '';
 
     return (
       <>
@@ -137,19 +169,8 @@ export default function PlayerScreen() {
             </View>
           </FadeIn>
 
-          <View style={styles.segRow}>
-            {WINDOW_KEYS.map((k) => (
-              <Pressable
-                key={k}
-                onPress={() => setWindow(k)}
-                style={[styles.seg, window === k && styles.segOn]}
-              >
-                <Text style={[styles.segText, window === k && styles.segTextOn]}>
-                  {WINDOW_LABELS[k]}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
+          <Text style={styles.controlLabel}>Sample window</Text>
+          <WindowSeg value={window} onChange={setWindow} />
 
           <View style={styles.statGrid}>
             {[
@@ -167,7 +188,7 @@ export default function PlayerScreen() {
             ))}
           </View>
 
-          <Text style={styles.chartTitle}>Game log trend</Text>
+          <Text style={styles.chartTitle}>{WINDOW_LABELS[window]} · {metricLabel}</Text>
           <View style={styles.segRow}>
             {HIT_METRICS.map((m) => (
               <Pressable
@@ -181,27 +202,13 @@ export default function PlayerScreen() {
               </Pressable>
             ))}
           </View>
-          <View style={styles.segRow}>
-            {([10, 20, 30] as const).map((n) => (
-              <Pressable
-                key={n}
-                onPress={() => setLogCount(n)}
-                style={[styles.seg, logCount === n && styles.segOn]}
-              >
-                <Text style={[styles.segText, logCount === n && styles.segTextOn]}>
-                  Last {n}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
 
           <TrendChart
             values={hitValues}
             color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
           />
           <Text style={styles.chartSum}>
-            {sum} {HIT_METRICS.find((m) => m.key === hitMetric)?.label.toLowerCase()} in last{' '}
-            {hitLog.length} games
+            {sum} {metricLabel.toLowerCase()} across {hitLog.length} games
           </Text>
 
           <Text style={styles.chartTitle}>Recent games</Text>
@@ -225,6 +232,7 @@ export default function PlayerScreen() {
   const w = p.windows[window] || p.windows.l10 || p.season;
   const form = formFromPitchWindow(p.windows[window] || p.windows.l10);
   const sum = pitchValues.reduce((a, b) => a + b, 0);
+  const metricLabel = PITCH_METRICS.find((m) => m.key === pitchMetric)?.label || '';
 
   return (
     <>
@@ -260,19 +268,8 @@ export default function PlayerScreen() {
           </View>
         </FadeIn>
 
-        <View style={styles.segRow}>
-          {WINDOW_KEYS.map((k) => (
-            <Pressable
-              key={k}
-              onPress={() => setWindow(k)}
-              style={[styles.seg, window === k && styles.segOn]}
-            >
-              <Text style={[styles.segText, window === k && styles.segTextOn]}>
-                {WINDOW_LABELS[k]}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+        <Text style={styles.controlLabel}>Sample window</Text>
+        <WindowSeg value={window} onChange={setWindow} />
 
         <View style={styles.statGrid}>
           {[
@@ -290,7 +287,7 @@ export default function PlayerScreen() {
           ))}
         </View>
 
-        <Text style={styles.chartTitle}>Game log trend</Text>
+        <Text style={styles.chartTitle}>{WINDOW_LABELS[window]} · {metricLabel}</Text>
         <View style={styles.segRow}>
           {PITCH_METRICS.map((m) => (
             <Pressable
@@ -304,26 +301,14 @@ export default function PlayerScreen() {
             </Pressable>
           ))}
         </View>
-        <View style={styles.segRow}>
-          {([10, 20, 30] as const).map((n) => (
-            <Pressable
-              key={n}
-              onPress={() => setLogCount(n)}
-              style={[styles.seg, logCount === n && styles.segOn]}
-            >
-              <Text style={[styles.segText, logCount === n && styles.segTextOn]}>Last {n}</Text>
-            </Pressable>
-          ))}
-        </View>
 
         <TrendChart
           values={pitchValues}
           color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
         />
         <Text style={styles.chartSum}>
-          {pitchMetric === 'ip' ? sum.toFixed(1) : Math.round(sum * 10) / 10}{' '}
-          {PITCH_METRICS.find((m) => m.key === pitchMetric)?.label} in last {pitchLog.length}{' '}
-          appearances
+          {pitchMetric === 'ip' ? sum.toFixed(1) : Math.round(sum * 10) / 10} {metricLabel} across{' '}
+          {pitchLog.length} appearances
         </Text>
 
         <Text style={styles.chartTitle}>Recent appearances</Text>
@@ -383,6 +368,13 @@ const styles = StyleSheet.create({
     color: colors.mist,
     fontSize: 13,
   },
+  controlLabel: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 11,
+    letterSpacing: 1.4,
+    marginBottom: 8,
+  },
   segRow: { flexDirection: 'row', gap: 6, marginBottom: 10, flexWrap: 'wrap' },
   seg: {
     flex: 1,
@@ -441,7 +433,7 @@ const styles = StyleSheet.create({
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
     fontSize: 13,
-    marginTop: 8,
+    marginTop: 4,
     marginBottom: spacing.md,
   },
   logRow: {
