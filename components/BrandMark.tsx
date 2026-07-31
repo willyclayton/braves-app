@@ -1,29 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { bravesLogo } from '@/constants/logos';
 import { colors } from '@/constants/theme';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 type Props = {
   size?: 'sm' | 'lg';
+  record?: string;
 };
 
-export function BrandMark({ size = 'sm' }: Props) {
+export function BrandMark({ size = 'sm', record }: Props) {
   const { compact } = usePhoneLayout();
   const large = size === 'lg';
+  const logoSize = large ? (compact ? 52 : 60) : 36;
 
   return (
     <View style={styles.wrap}>
-      <View
-        style={[
-          styles.badge,
-          large && styles.badgeLg,
-          compact && large && styles.badgeCompact,
-        ]}
-      >
-        <Text style={[styles.a, large && styles.aLg, compact && large && styles.aCompact]}>
-          A
-        </Text>
-      </View>
-      <View>
+      <Image
+        source={bravesLogo}
+        style={{ width: logoSize, height: logoSize }}
+        resizeMode="contain"
+        accessibilityLabel="Atlanta Braves logo"
+      />
+      <View style={styles.textCol}>
         <Text
           style={[styles.word, large && styles.wordLg, compact && large && styles.wordCompact]}
           numberOfLines={1}
@@ -31,7 +29,15 @@ export function BrandMark({ size = 'sm' }: Props) {
         >
           BRAVES
         </Text>
-        <Text style={[styles.sub, large && styles.subLg]}>ATLANTA</Text>
+        <View style={styles.metaRow}>
+          <Text style={styles.sub}>ATLANTA</Text>
+          {record ? (
+            <>
+              <Text style={styles.dot}>·</Text>
+              <Text style={styles.record}>{record}</Text>
+            </>
+          ) : null}
+        </View>
       </View>
     </View>
   );
@@ -43,64 +49,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  badge: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: colors.scarlet,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: colors.gold,
-  },
-  badgeLg: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
-  },
-  badgeCompact: {
-    width: 54,
-    height: 54,
-    borderRadius: 18,
-  },
-  a: {
-    fontFamily: 'ArchivoBlack_400Regular',
-    color: colors.white,
-    fontSize: 26,
-    marginTop: 2,
-  },
-  aLg: {
-    fontSize: 38,
-  },
-  aCompact: {
-    fontSize: 32,
+  textCol: {
+    flexShrink: 1,
   },
   word: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
     fontSize: 34,
     letterSpacing: 2,
-    lineHeight: 36,
+    lineHeight: 34,
   },
   wordLg: {
-    fontSize: 56,
-    lineHeight: 56,
-    letterSpacing: 3,
+    fontSize: 48,
+    lineHeight: 48,
+    letterSpacing: 2.5,
   },
   wordCompact: {
-    fontSize: 46,
-    lineHeight: 46,
+    fontSize: 42,
+    lineHeight: 42,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 2,
   },
   sub: {
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'DMSans_700Bold',
     color: colors.gold,
     fontSize: 11,
-    letterSpacing: 4,
-    marginTop: -2,
+    letterSpacing: 3.5,
   },
-  subLg: {
+  dot: {
+    color: colors.mistDim,
+    fontSize: 12,
+  },
+  record: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.mist,
     fontSize: 13,
-    letterSpacing: 6,
-    marginTop: 2,
   },
 });

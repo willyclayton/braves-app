@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
-import { colors, radii, spacing } from '@/constants/theme';
+import { colors, spacing } from '@/constants/theme';
 import { schedule } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
@@ -16,11 +17,11 @@ export default function ScheduleScreen() {
   const { screenTitle, compact } = usePhoneLayout();
 
   return (
-    <Screen contentStyle={styles.content}>
+    <Screen>
       <FadeIn>
         <Text style={styles.kicker}>CALENDAR</Text>
         <Text style={[styles.title, { fontSize: screenTitle }]}>Schedule</Text>
-        <Text style={styles.sub}>Recent results and the road ahead.</Text>
+        <Text style={styles.sub}>Results and upcoming games</Text>
       </FadeIn>
 
       {schedule.map((game, i) => {
@@ -28,26 +29,22 @@ export default function ScheduleScreen() {
         const upcoming = game.status === 'upcoming';
 
         return (
-          <FadeIn
-            key={game.id}
-            delay={90 + i * 55}
-            style={[styles.card, upcoming && styles.cardUpcoming]}
-          >
+          <FadeIn key={game.id} delay={70 + i * 35} style={styles.row}>
             <View style={styles.left}>
               <Text style={styles.date}>{game.date}</Text>
               <Text style={styles.time}>{game.time}</Text>
             </View>
 
+            <TeamLogo abbr={game.opponentAbbr} size={compact ? 30 : 34} />
+
             <View style={styles.mid}>
               <Text style={[styles.matchup, compact && styles.matchupCompact]}>
                 {game.home ? 'vs' : '@'} {game.opponentAbbr}
               </Text>
-              <Text style={styles.venue}>{game.venue}</Text>
-              {game.tv || game.starter ? (
-                <Text style={styles.meta}>
-                  {[game.starter && `SP ${game.starter}`, game.tv].filter(Boolean).join(' · ')}
-                </Text>
-              ) : null}
+              <Text style={styles.venue} numberOfLines={1}>
+                {game.venue}
+                {game.starter ? ` · ${game.starter}` : ''}
+              </Text>
             </View>
 
             <View style={styles.right}>
@@ -61,9 +58,7 @@ export default function ScheduleScreen() {
                   </Text>
                 </>
               ) : (
-                <View style={styles.pill}>
-                  <Text style={styles.pillText}>UP</Text>
-                </View>
+                <Text style={styles.up}>{upcoming ? 'UP' : '—'}</Text>
               )}
             </View>
           </FadeIn>
@@ -74,82 +69,58 @@ export default function ScheduleScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.md,
-  },
   kicker: {
     fontFamily: 'DMSans_700Bold',
     color: colors.gold,
-    fontSize: 12,
-    letterSpacing: 3,
+    fontSize: 11,
+    letterSpacing: 2.5,
   },
   title: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 52,
     letterSpacing: 1,
-    marginTop: 4,
+    marginTop: 2,
   },
   sub: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 15,
+    fontSize: 14,
     marginTop: 4,
     marginBottom: spacing.xl,
   },
-  card: {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
+    paddingVertical: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
-    gap: 12,
+    gap: 10,
   },
-  cardUpcoming: {
-    backgroundColor: 'rgba(255,255,255,0.03)',
-    marginHorizontal: -10,
-    paddingHorizontal: 10,
-    borderRadius: radii.sm,
-    borderBottomColor: 'transparent',
-    marginBottom: 6,
-  },
-  left: {
-    width: 58,
-  },
+  left: { width: 54 },
   date: {
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
-    fontSize: 14,
+    fontSize: 13,
   },
   time: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mistDim,
-    fontSize: 12,
-    marginTop: 3,
+    fontSize: 11,
+    marginTop: 2,
   },
-  mid: {
-    flex: 1,
-  },
+  mid: { flex: 1 },
   matchup: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 26,
+    fontSize: 24,
     letterSpacing: 0.5,
   },
-  matchupCompact: {
-    fontSize: 22,
-  },
+  matchupCompact: { fontSize: 20 },
   venue: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 13,
-    marginTop: 1,
-  },
-  meta: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
     fontSize: 12,
-    marginTop: 3,
+    marginTop: 1,
   },
   right: {
     alignItems: 'flex-end',
@@ -157,30 +128,20 @@ const styles = StyleSheet.create({
   },
   result: {
     fontFamily: 'BebasNeue_400Regular',
-    fontSize: 28,
+    fontSize: 24,
   },
-  win: {
-    color: colors.success,
-  },
-  loss: {
-    color: colors.danger,
-  },
+  win: { color: colors.success },
+  loss: { color: colors.danger },
   score: {
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 13,
+    fontSize: 12,
     marginTop: -2,
   },
-  pill: {
-    backgroundColor: colors.scarlet,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: radii.sm,
-  },
-  pillText: {
+  up: {
     fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 11,
+    color: colors.scarletSoft,
+    fontSize: 12,
     letterSpacing: 1,
   },
 });

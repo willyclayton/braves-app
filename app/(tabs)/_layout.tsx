@@ -1,10 +1,9 @@
 import { ComponentProps } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '@/constants/theme';
-import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -14,8 +13,6 @@ function TabIcon({ name, color }: { name: IconName; color: string }) {
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { tabBottom, compact } = usePhoneLayout();
-  const bottomGap = Math.max(insets.bottom, tabBottom);
 
   return (
     <Tabs
@@ -26,15 +23,12 @@ export default function TabLayout() {
         tabBarStyle: [
           styles.tabBar,
           {
-            left: compact ? 12 : 16,
-            right: compact ? 12 : 16,
-            bottom: bottomGap,
-            height: compact ? 62 : 68,
+            height: 56 + Math.max(insets.bottom, 8),
+            paddingBottom: Math.max(insets.bottom, 8),
           },
         ],
         tabBarLabelStyle: styles.tabLabel,
         tabBarItemStyle: styles.tabItem,
-        tabBarBackground: () => <View style={styles.tabBg} />,
       }}
     >
       <Tabs.Screen
@@ -79,38 +73,20 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
-    borderRadius: 24,
-    borderTopWidth: 0,
-    backgroundColor: 'transparent',
-    elevation: 0,
-    shadowOpacity: 0,
+    backgroundColor: '#0A1220',
+    borderTopColor: colors.line,
+    borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: 6,
-    paddingBottom: 6,
     ...Platform.select({
-      web: {
-        backdropFilter: 'blur(18px)',
-      },
+      web: { backdropFilter: 'blur(16px)' },
       default: {},
     }),
-  },
-  tabBg: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(11, 20, 38, 0.94)',
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.12)',
   },
   tabLabel: {
     fontFamily: 'DMSans_500Medium',
     fontSize: 10,
-    marginTop: 1,
   },
   tabItem: {
-    minHeight: 48,
+    minHeight: 44,
   },
 });

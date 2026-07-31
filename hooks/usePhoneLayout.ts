@@ -16,7 +16,7 @@ export function usePhoneLayout() {
     heroTitle: compact ? 40 : short ? 44 : 48,
     screenTitle: compact ? 44 : 52,
     matchup: compact ? 44 : 54,
-    tabBottom: short ? 12 : 20,
-    contentBottom: short ? 108 : 126,
+    tabBottom: short ? 8 : 12,
+    contentBottom: short ? 88 : 100,
   };
 }
