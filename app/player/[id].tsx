@@ -102,6 +102,14 @@ export default function PlayerScreen() {
     () => hitLog.map((g) => Number(g[hitMetric]) || 0),
     [hitLog, hitMetric]
   );
+  const hitLabels = useMemo(
+    () =>
+      hitLog.map((g) => {
+        const d = g.date?.slice(5) || '';
+        return g.opp ? `${d} ${g.opp}` : d || 'Game';
+      }),
+    [hitLog]
+  );
   const pitchValues = useMemo(
     () =>
       pitchLog.map((g) => {
@@ -109,6 +117,14 @@ export default function PlayerScreen() {
         return Number(g[pitchMetric]) || 0;
       }),
     [pitchLog, pitchMetric]
+  );
+  const pitchLabels = useMemo(
+    () =>
+      pitchLog.map((g) => {
+        const d = g.date?.slice(5) || '';
+        return g.opp ? `${d} ${g.opp}` : d || 'Game';
+      }),
+    [pitchLog]
   );
 
   if (!hitter && !pitcher) {
@@ -205,6 +221,7 @@ export default function PlayerScreen() {
 
           <TrendChart
             values={hitValues}
+            labels={hitLabels}
             color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
           />
           <Text style={styles.chartSum}>
@@ -304,6 +321,7 @@ export default function PlayerScreen() {
 
         <TrendChart
           values={pitchValues}
+          labels={pitchLabels}
           color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
         />
         <Text style={styles.chartSum}>
