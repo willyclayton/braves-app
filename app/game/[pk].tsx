@@ -30,6 +30,7 @@ type BoxBatter = {
   bb: number;
   so: number;
   hr: number;
+  battingOrder?: string;
 };
 
 type BoxPitcher = {
@@ -49,12 +50,34 @@ type BoxPayload = {
   venue: string;
   home: { abbr: string; name: string; batters: BoxBatter[]; pitchers: BoxPitcher[] };
   away: { abbr: string; name: string; batters: BoxBatter[]; pitchers: BoxPitcher[] };
-  score: { home: number; away: number };
+  score: {
+    home: number;
+    away: number;
+    homeHits?: number;
+    awayHits?: number;
+    homeErrors?: number;
+    awayErrors?: number;
+  };
   innings: { num: number; home: number | string; away: number | string }[];
   bravesSide: 'home' | 'away';
 };
 
+function batterTotals(rows: BoxBatter[]) {
+  return rows.reduce(
+    (a, b) => ({
+      ab: a.ab + (b.ab || 0),
+      r: a.r + (b.r || 0),
+      h: a.h + (b.h || 0),
+      rbi: a.rbi + (b.rbi || 0),
+      bb: a.bb + (b.bb || 0),
+      so: a.so + (b.so || 0),
+    }),
+    { ab: 0, r: 0, h: 0, rbi: 0, bb: 0, so: 0 }
+  );
+}
+
 function BatterTable({ title, rows }: { title: string; rows: BoxBatter[] }) {
+  const totals = batterTotals(rows);
   return (
     <View style={styles.block}>
       <Text style={styles.blockTitle}>{title}</Text>
@@ -67,19 +90,32 @@ function BatterTable({ title, rows }: { title: string; rows: BoxBatter[] }) {
         <Text style={styles.th}>BB</Text>
         <Text style={styles.th}>SO</Text>
       </View>
-      {rows.map((b) => (
-        <View key={b.id} style={styles.tr}>
-          <Text style={[styles.td, styles.tdName]} numberOfLines={1}>
-            {b.name.split(' ').slice(-1)[0]} <Text style={styles.pos}>{b.pos}</Text>
-          </Text>
-          <Text style={styles.td}>{b.ab ?? 0}</Text>
-          <Text style={styles.td}>{b.r ?? 0}</Text>
-          <Text style={styles.td}>{b.h ?? 0}</Text>
-          <Text style={styles.td}>{b.rbi ?? 0}</Text>
-          <Text style={styles.td}>{b.bb ?? 0}</Text>
-          <Text style={styles.td}>{b.so ?? 0}</Text>
-        </View>
-      ))}
+      {rows.map((b) => {
+        const sub = b.battingOrder != null && Number(b.battingOrder) % 100 > 0;
+        return (
+          <View key={b.id} style={styles.tr}>
+            <Text style={[styles.td, styles.tdName]} numberOfLines={1}>
+              {sub ? '  ' : ''}
+              {b.name.split(' ').slice(-1)[0]} <Text style={styles.pos}>{b.pos}</Text>
+            </Text>
+            <Text style={styles.td}>{b.ab ?? 0}</Text>
+            <Text style={styles.td}>{b.r ?? 0}</Text>
+            <Text style={styles.td}>{b.h ?? 0}</Text>
+            <Text style={styles.td}>{b.rbi ?? 0}</Text>
+            <Text style={styles.td}>{b.bb ?? 0}</Text>
+            <Text style={styles.td}>{b.so ?? 0}</Text>
+          </View>
+        );
+      })}
+      <View style={[styles.tr, styles.totalRow]}>
+        <Text style={[styles.td, styles.tdName, styles.totalLabel]}>TOTALS</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.ab}</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.r}</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.h}</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.rbi}</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.bb}</Text>
+        <Text style={[styles.td, styles.totalVal]}>{totals.so}</Text>
+      </View>
     </View>
   );
 }
@@ -204,6 +240,8 @@ export default function GameScreen() {
                         </Text>
                       ))}
                       <Text style={styles.lineCell}>R</Text>
+                      <Text style={styles.lineCell}>H</Text>
+                      <Text style={styles.lineCell}>E</Text>
                     </View>
                     <View style={styles.lineRow}>
                       <Text style={styles.lineTeam}>{box.away.abbr}</Text>
@@ -213,6 +251,12 @@ export default function GameScreen() {
                         </Text>
                       ))}
                       <Text style={[styles.lineCell, styles.lineBold]}>{box.score.away}</Text>
+                      <Text style={[styles.lineCell, styles.lineBold]}>
+                        {box.score.awayHits ?? '—'}
+                      </Text>
+                      <Text style={[styles.lineCell, styles.lineBold]}>
+                        {box.score.awayErrors ?? '—'}
+                      </Text>
                     </View>
                     <View style={styles.lineRow}>
                       <Text style={styles.lineTeam}>{box.home.abbr}</Text>
@@ -222,6 +266,12 @@ export default function GameScreen() {
                         </Text>
                       ))}
                       <Text style={[styles.lineCell, styles.lineBold]}>{box.score.home}</Text>
+                      <Text style={[styles.lineCell, styles.lineBold]}>
+                        {box.score.homeHits ?? '—'}
+                      </Text>
+                      <Text style={[styles.lineCell, styles.lineBold]}>
+                        {box.score.homeErrors ?? '—'}
+                      </Text>
                     </View>
                   </View>
                 </ScrollView>
@@ -288,6 +338,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   lineBold: { color: colors.white, fontFamily: 'DMSans_700Bold' },
+  totalRow: {
+    borderBottomWidth: 0,
+    marginTop: 2,
+    paddingTop: 8,
+  },
+  totalLabel: { color: colors.gold, fontFamily: 'DMSans_700Bold' },
+  totalVal: { color: colors.white, fontFamily: 'DMSans_700Bold' },
   block: { marginBottom: spacing.xl },
   blockTitle: {
     fontFamily: 'BebasNeue_400Regular',

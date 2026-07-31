@@ -154,16 +154,26 @@ async function main() {
     { key: 'era', label: 'ERA', value: atlPit.era, reverse: false },
     { key: 'hr', label: 'HR', value: String(atlHit.homeRuns), reverse: true },
   ];
+  const formatStat = (label, v) => {
+    if (v == null || Number.isNaN(v)) return String(v);
+    if (label === 'HR') return String(Math.round(Number(v)));
+    if (label === 'AVG' || label === 'OPS') {
+      const s = Number(v).toFixed(3);
+      return s.replace(/^0/, '');
+    }
+    if (label === 'ERA') return Number(v).toFixed(2);
+    return String(v);
+  };
   const keyStats = kpiDefs.map((k) => {
     const r = rankMetric(rows, k.key, k.reverse);
     return {
       label: k.label,
-      value: typeof k.value === 'number' ? String(k.value) : k.value,
+      value: formatStat(k.label, k.value),
       detail: formatRank(r.rank, r.of),
       rank: r.rank,
       of: r.of,
       leaderAbbr: r.leaderAbbr,
-      leaderValue: String(r.leaderValue),
+      leaderValue: formatStat(k.label, r.leaderValue),
     };
   });
 
@@ -242,7 +252,14 @@ async function main() {
     `${BASE}/stats?stats=season&group=pitching&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=8&order=desc&sortStat=strikeOuts`
   );
   const leaders = [];
-  for (const sp of (hitLeaders.stats[0]?.splits || []).slice(0, 2)) {
+  // Require a meaningful sample so cup-of-coffee .1000 AVGs don't lead the hub
+  const hitLeaderRows = (hitLeaders.stats[0]?.splits || []).filter(
+    (sp) =>
+      (sp.stat.plateAppearances || 0) >= 100 &&
+      sp.position?.abbreviation !== 'P' &&
+      (sp.stat.atBats || 0) >= 75
+  );
+  for (const sp of hitLeaderRows.slice(0, 2)) {
     const st = sp.stat;
     leaders.push({
       name: sp.player.fullName,
@@ -250,7 +267,10 @@ async function main() {
       role: sp.position?.abbreviation || 'BAT',
     });
   }
-  for (const sp of (pitLeaders.stats[0]?.splits || []).slice(0, 2)) {
+  const pitLeaderRows = (pitLeaders.stats[0]?.splits || []).filter(
+    (sp) => (sp.stat.inningsPitched || 0) >= 20 || (sp.stat.gamesStarted || 0) >= 5
+  );
+  for (const sp of pitLeaderRows.slice(0, 2)) {
     const st = sp.stat;
     const role = st.gamesStarted > 0 ? 'SP' : st.saves > 0 ? 'CL' : 'RP';
     leaders.push({

@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-07-31T04:04:08.619Z",
+  "syncedAt": "2026-07-31T04:29:34.524Z",
   "dataAsOf": "Jul 31, 2026",
   "teamPulse": {
     "record": "64-45",
@@ -18,7 +18,7 @@
       "rank": 10,
       "of": 30,
       "leaderAbbr": "LAD",
-      "leaderValue": "0.262"
+      "leaderValue": ".261"
     },
     {
       "label": "OPS",
@@ -26,8 +26,8 @@
       "detail": "10th in MLB",
       "rank": 10,
       "of": 30,
-      "leaderAbbr": "LAD",
-      "leaderValue": "0.775"
+      "leaderAbbr": "WSH",
+      "leaderValue": ".775"
     },
     {
       "label": "ERA",
@@ -50,13 +50,13 @@
   ],
   "leaders": [
     {
-      "name": "Victor Mederos",
-      "stat": "1.000 · 0 HR · 2 RBI",
-      "role": "P"
+      "name": "Matt Olson",
+      "stat": ".261 · 28 HR · 66 RBI",
+      "role": "1B"
     },
     {
-      "name": "Jair Camargo",
-      "stat": ".500 · 0 HR · 0 RBI",
+      "name": "Drake Baldwin",
+      "stat": ".279 · 20 HR · 56 RBI",
       "role": "C"
     },
     {
@@ -302,12 +302,12 @@
           "team": "Red Sox",
           "abbr": "BOS",
           "teamId": 111,
-          "w": 56,
+          "w": 57,
           "l": 51,
-          "pct": ".523",
-          "gb": "7.5",
-          "wcgb": "+1.5",
-          "streak": "W1",
+          "pct": ".528",
+          "gb": "7.0",
+          "wcgb": "+2.0",
+          "streak": "W2",
           "rank": 3,
           "highlight": false,
           "leagueId": 103,
@@ -484,11 +484,11 @@
           "abbr": "ATH",
           "teamId": 133,
           "w": 45,
-          "l": 63,
-          "pct": ".417",
-          "gb": "9.5",
-          "wcgb": "10.0",
-          "streak": "L1",
+          "l": 64,
+          "pct": ".413",
+          "gb": "10.0",
+          "wcgb": "10.5",
+          "streak": "L2",
           "rank": 4,
           "highlight": false,
           "leagueId": 103,
@@ -785,12 +785,12 @@
           "team": "Red Sox",
           "abbr": "BOS",
           "teamId": 111,
-          "w": 56,
+          "w": 57,
           "l": 51,
-          "pct": ".523",
-          "gb": "7.5",
-          "wcgb": "+1.5",
-          "streak": "W1",
+          "pct": ".528",
+          "gb": "7.0",
+          "wcgb": "+2.0",
+          "streak": "W2",
           "rank": 3,
           "highlight": false,
           "leagueId": 103,
@@ -921,11 +921,11 @@
           "abbr": "ATH",
           "teamId": 133,
           "w": 45,
-          "l": 63,
-          "pct": ".417",
-          "gb": "9.5",
-          "wcgb": "10.0",
-          "streak": "L1",
+          "l": 64,
+          "pct": ".413",
+          "gb": "10.0",
+          "wcgb": "10.5",
+          "streak": "L2",
           "rank": 4,
           "highlight": false,
           "leagueId": 103,
