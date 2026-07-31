@@ -27,6 +27,15 @@ import {
 } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 
+function shortName(full: string) {
+  const parts = full.replace(/\./g, '').split(/\s+/).filter(Boolean);
+  const last = parts[parts.length - 1];
+  if (/^(jr|sr|ii|iii|iv)$/i.test(last) && parts.length >= 2) {
+    return parts[parts.length - 2];
+  }
+  return last;
+}
+
 export default function HomeScreen() {
   const { compact, pagePad } = usePhoneLayout();
   const pulse = useSharedValue(0.5);
@@ -123,7 +132,7 @@ export default function HomeScreen() {
           {todayLineup.slice(0, 3).map((p, i) => (
             <Text key={p.name} style={styles.batterLine} numberOfLines={1}>
               <Text style={styles.batterNum}>{i + 1} </Text>
-              {p.name.split(' ').slice(-1)[0]}
+              {shortName(p.name)}
               <Text style={styles.batterPos}> {p.pos}</Text>
             </Text>
           ))}

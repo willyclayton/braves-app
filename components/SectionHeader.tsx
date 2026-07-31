@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   action: {
     fontFamily: 'DMSans_500Medium',
-    color: colors.scarletSoft,
+    color: colors.gold,
     fontSize: 13,
   },
 });
