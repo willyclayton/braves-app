@@ -110,7 +110,11 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   tabBg: {
-    ...StyleSheet.absoluteFill,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'rgba(11, 20, 38, 0.92)',
     borderRadius: 24,
     borderWidth: 1,
