@@ -34,27 +34,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Players',
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon name={focused ? 'home' : 'home-outline'} color={String(color)} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="lineup"
-        options={{
-          title: 'Lineup',
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name={focused ? 'people' : 'people-outline'} color={String(color)} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="standings"
-        options={{
-          title: 'Standings',
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name={focused ? 'podium' : 'podium-outline'} color={String(color)} />
+            <TabIcon name={focused ? 'flash' : 'flash-outline'} color={String(color)} />
           ),
         }}
       />
@@ -65,6 +47,18 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name={focused ? 'calendar' : 'calendar-outline'} color={String(color)} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="lineup"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="standings"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

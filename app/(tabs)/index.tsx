@@ -1,36 +1,34 @@
 import { Link } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
 import { BrandMark } from '@/components/BrandMark';
-import { SectionHeader } from '@/components/SectionHeader';
 import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
 import {
   dataAsOf,
-  keyStats,
-  leaders,
-  pitchingToday,
+  hitters,
+  pitchers,
   schedule,
-  standings,
   teamPulse,
-  todayLineup,
-  trendFor,
+  WINDOW_KEYS,
+  WINDOW_LABELS,
+  type Hitter,
+  type Pitcher,
+  type WindowKey,
 } from '@/data/braves';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
+import { etDateString, formatShortDate, gameDayLabel } from '@/lib/dates';
 import {
-  countdownParts,
-  resolveHero,
-  resultLabel,
-} from '@/lib/gameWindow';
+  formFromHitWindow,
+  formFromPitchWindow,
+  formGlyph,
+  formLabel,
+} from '@/lib/form';
+import { resultLabel } from '@/lib/gameWindow';
+
+type Role = 'batters' | 'pitchers';
 
 function shortName(full: string) {
   const parts = full.replace(/\./g, '').split(/\s+/).filter(Boolean);
@@ -41,244 +39,234 @@ function shortName(full: string) {
   return last;
 }
 
+function nearbyGames(now = new Date()) {
+  const today = etDateString(now);
+  const finals = schedule.filter((g) => g.status === 'final');
+  const upcoming = schedule.filter((g) => g.status === 'upcoming' || g.status === 'live');
+  const yesterday = [...finals].reverse().find((g) => g.date < today) || finals[finals.length - 1];
+  const todayGame =
+    schedule.find((g) => g.date === today && (g.status === 'live' || g.status === 'upcoming')) ||
+    finals.find((g) => g.date === today);
+  const tomorrow =
+    upcoming.find((g) => g.date > today) ||
+    upcoming.find((g) => g !== todayGame);
+
+  const cards: { key: string; label: string; game: (typeof schedule)[0] }[] = [];
+  if (yesterday) cards.push({ key: 'y', label: 'Last', game: yesterday });
+  if (todayGame && todayGame.id !== yesterday?.id) {
+    cards.push({
+      key: 't',
+      label: todayGame.status === 'final' ? 'Today' : gameDayLabel(todayGame.date, now),
+      game: todayGame,
+    });
+  }
+  if (tomorrow && tomorrow.id !== todayGame?.id) {
+    cards.push({
+      key: 'n',
+      label: gameDayLabel(tomorrow.date, now) === 'Tonight' ? 'Tonight' : gameDayLabel(tomorrow.date, now),
+      game: tomorrow,
+    });
+  }
+  return cards.slice(0, 3);
+}
+
+function Seg<T extends string>({
+  value,
+  options,
+  onChange,
+}: {
+  value: T;
+  options: { key: T; label: string }[];
+  onChange: (v: T) => void;
+}) {
+  return (
+    <View style={styles.segRow}>
+      {options.map((o) => (
+        <Pressable
+          key={o.key}
+          onPress={() => onChange(o.key)}
+          style={[styles.seg, value === o.key && styles.segOn]}
+        >
+          <Text style={[styles.segText, value === o.key && styles.segTextOn]}>{o.label}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
+function GameCard({
+  label,
+  game,
+}: {
+  label: string;
+  game: (typeof schedule)[0];
+}) {
+  const result = resultLabel(game);
+  return (
+    <Link
+      href={{ pathname: '/game/[pk]', params: { pk: String(game.gamePk || game.id) } }}
+      asChild
+    >
+      <Pressable style={styles.gameCard}>
+        <Text style={styles.gameLabel}>{label.toUpperCase()}</Text>
+        <View style={styles.gameMatch}>
+          <TeamLogo abbr={game.opponentAbbr} size={28} />
+          <Text style={styles.gameOpp}>
+            {game.home ? 'vs' : '@'} {game.opponentAbbr}
+          </Text>
+        </View>
+        {result ? (
+          <Text style={[styles.gameScore, result.win ? styles.win : styles.loss]}>
+            {result.text} {result.score}
+          </Text>
+        ) : (
+          <Text style={styles.gameTime}>{game.time}</Text>
+        )}
+        <Text style={styles.gameDate}>{formatShortDate(game.date)}</Text>
+      </Pressable>
+    </Link>
+  );
+}
+
+function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
+  const w = player.windows[window] || player.windows.l10 || player.season;
+  const form = formFromHitWindow(player.windows[window] || player.windows.l10);
+  const glyph = formGlyph(form);
+  return (
+    <Link href={{ pathname: '/player/[id]', params: { id: String(player.id) } }} asChild>
+      <Pressable style={styles.playerRow}>
+        <View style={styles.posBubble}>
+          <Text style={styles.posText}>{player.pos}</Text>
+        </View>
+        <View style={styles.playerMain}>
+          <View style={styles.nameRow}>
+            <Text style={styles.playerName}>{shortName(player.name)}</Text>
+            {glyph ? <Text style={styles.glyph}>{glyph}</Text> : null}
+            <Text
+              style={[
+                styles.formTag,
+                form === 'hot' && styles.formHot,
+                form === 'cold' && styles.formCold,
+              ]}
+            >
+              {formLabel(form)}
+            </Text>
+          </View>
+          <Text style={styles.playerMeta}>
+            {WINDOW_LABELS[window]} {w.avg} AVG · {w.ops} OPS · {w.hr} HR · {w.rbi ?? 0} RBI
+          </Text>
+        </View>
+        <Text style={styles.chev}>›</Text>
+      </Pressable>
+    </Link>
+  );
+}
+
+function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) {
+  const w = player.windows[window] || player.windows.l10 || player.season;
+  const form = formFromPitchWindow(player.windows[window] || player.windows.l10);
+  const glyph = formGlyph(form);
+  return (
+    <Link href={{ pathname: '/player/[id]', params: { id: String(player.id) } }} asChild>
+      <Pressable style={styles.playerRow}>
+        <View style={styles.posBubble}>
+          <Text style={styles.posText}>{player.pos}</Text>
+        </View>
+        <View style={styles.playerMain}>
+          <View style={styles.nameRow}>
+            <Text style={styles.playerName}>{shortName(player.name)}</Text>
+            {glyph ? <Text style={styles.glyph}>{glyph}</Text> : null}
+            <Text
+              style={[
+                styles.formTag,
+                form === 'hot' && styles.formHot,
+                form === 'cold' && styles.formCold,
+              ]}
+            >
+              {formLabel(form)}
+            </Text>
+          </View>
+          <Text style={styles.playerMeta}>
+            {WINDOW_LABELS[window]} {w.era} ERA · {w.whip} WHIP · {w.so} K · {w.ip} IP
+          </Text>
+        </View>
+        <Text style={styles.chev}>›</Text>
+      </Pressable>
+    </Link>
+  );
+}
+
 export default function HomeScreen() {
-  const { compact, pagePad } = usePhoneLayout();
-  const [now, setNow] = useState(() => new Date());
-  const pulse = useSharedValue(0.5);
+  const { pagePad } = usePhoneLayout();
+  const [role, setRole] = useState<Role>('batters');
+  const [window, setWindow] = useState<WindowKey>('l10');
+  const games = useMemo(() => nearbyGames(), []);
 
-  useEffect(() => {
-    pulse.value = withRepeat(
-      withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-    const id = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(id);
-  }, [pulse]);
+  const batterList = useMemo(() => {
+    return [...hitters].sort((a, b) => {
+      const aw = a.windows[window];
+      const bw = b.windows[window];
+      const af = formFromHitWindow(aw);
+      const bf = formFromHitWindow(bw);
+      const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
+      if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
+      return parseFloat(bw?.ops || '0') - parseFloat(aw?.ops || '0');
+    });
+  }, [window]);
 
-  const pulseStyle = useAnimatedStyle(() => ({
-    opacity: 0.45 + pulse.value * 0.55,
-  }));
-
-  const hero = useMemo(() => resolveHero(schedule, now), [now]);
-  const east = standings.slice(0, 3);
-  const upcoming = schedule.filter((g) => g.status === 'upcoming').slice(0, 3);
+  const pitcherList = useMemo(() => {
+    return [...pitchers].sort((a, b) => {
+      const aw = a.windows[window];
+      const bw = b.windows[window];
+      const af = formFromPitchWindow(aw);
+      const bf = formFromPitchWindow(bw);
+      const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
+      if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
+      return parseFloat(aw?.era || '99') - parseFloat(bw?.era || '99');
+    });
+  }, [window]);
 
   return (
     <Screen>
       <FadeIn>
         <BrandMark size="lg" record={teamPulse.record} />
+        <Text style={styles.pulseLine}>
+          {teamPulse.rank} · {teamPulse.streak} · L10 {teamPulse.lastTen}
+        </Text>
       </FadeIn>
 
-      <FadeIn delay={60} style={[styles.heroBleed, { marginHorizontal: -pagePad }]}>
-        {hero.mode === 'result' && hero.result ? (
-          <View style={[styles.hero, styles.heroResult, { paddingHorizontal: pagePad }]}>
-            <View style={styles.heroTop}>
-              <View style={styles.statusRow}>
-                <View style={[styles.liveDot, { backgroundColor: colors.white }]} />
-                <Text style={styles.statusLabel}>FINAL</Text>
-              </View>
-              <Text style={styles.heroWhen}>{hero.result.date}</Text>
-            </View>
-
-            {(() => {
-              const r = resultLabel(hero.result)!;
-              return (
-                <>
-                  <Text style={[styles.resultWord, r.win ? styles.winText : styles.lossText]}>
-                    {r.text}
-                  </Text>
-                  <Text style={styles.resultScore}>{r.score}</Text>
-                </>
-              );
-            })()}
-
-            <View style={styles.matchupRow}>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr="ATL" size={compact ? 48 : 56} />
-                <Text style={styles.teamAbbr}>ATL</Text>
-              </View>
-              <Text style={styles.vs}>{hero.result.home ? 'VS' : '@'}</Text>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr={hero.result.opponentAbbr} size={compact ? 48 : 56} />
-                <Text style={styles.teamAbbr}>{hero.result.opponentAbbr}</Text>
-              </View>
-            </View>
-
-            <Text style={styles.heroMeta}>{hero.result.venue}</Text>
-            <View style={styles.heroFooter}>
-              <Text style={styles.heroRank}>{teamPulse.rank}</Text>
-              <Text style={styles.heroStreak}>
-                {teamPulse.streak} · L10 {teamPulse.lastTen}
-              </Text>
-            </View>
-          </View>
-        ) : hero.next ? (
-          <View style={[styles.hero, { paddingHorizontal: pagePad }]}>
-            <View style={styles.heroTop}>
-              <View style={styles.statusRow}>
-                <Animated.View style={[styles.liveDot, pulseStyle]} />
-                <Text style={styles.statusLabel}>NEXT</Text>
-              </View>
-              <Text style={styles.heroWhen}>
-                {hero.next.date} · {hero.next.time}
-              </Text>
-            </View>
-
-            <View style={styles.matchupRow}>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr="ATL" size={compact ? 56 : 64} />
-                <Text style={styles.teamAbbr}>ATL</Text>
-              </View>
-              <Text style={styles.vs}>{hero.next.home ? 'VS' : '@'}</Text>
-              <View style={styles.teamBlock}>
-                <TeamLogo abbr={hero.next.opponentAbbr} size={compact ? 56 : 64} />
-                <Text style={styles.teamAbbr}>{hero.next.opponentAbbr}</Text>
-              </View>
-            </View>
-
-            <Text style={styles.heroMeta}>
-              {hero.next.venue}
-              {hero.next.starter ? ` · ${hero.next.starter}` : ''}
-            </Text>
-            {hero.next.gameDate ? (
-              <Text style={styles.countdown}>
-                First pitch in {countdownParts(hero.next.gameDate, now)}
-              </Text>
-            ) : null}
-            <View style={styles.heroFooter}>
-              <Text style={styles.heroRank}>{teamPulse.rank}</Text>
-              <Text style={styles.heroStreak}>
-                {teamPulse.streak} · L10 {teamPulse.lastTen}
-              </Text>
-            </View>
-          </View>
-        ) : null}
-      </FadeIn>
-
-      {/* Secondary: next game under a still-showing result */}
-      {hero.mode === 'result' && hero.next ? (
-        <FadeIn delay={100} style={styles.nextStrip}>
-          <Text style={styles.nextStripLabel}>NEXT</Text>
-          <TeamLogo abbr={hero.next.opponentAbbr} size={24} />
-          <Text style={styles.nextStripMatch}>
-            {hero.next.home ? 'vs' : '@'} {hero.next.opponentAbbr}
-          </Text>
-          <Text style={styles.nextStripWhen}>
-            {hero.next.date} · {hero.next.time}
-            {hero.next.gameDate ? ` · ${countdownParts(hero.next.gameDate, now)}` : ''}
-          </Text>
-        </FadeIn>
-      ) : null}
-
-      <SectionHeader title="Tonight" href="/lineup" action="Lineup →" />
-      <FadeIn delay={140} style={styles.tonightRow}>
-        <View style={styles.spBlock}>
-          <Text style={styles.spLabel}>SP</Text>
-          <Text style={styles.spName}>{pitchingToday.starter?.name || 'TBD'}</Text>
-          {pitchingToday.starter ? (
-            <Text style={styles.spMeta}>
-              {pitchingToday.starter.era} ERA · {pitchingToday.starter.so} K
-            </Text>
-          ) : null}
-        </View>
-        <View style={styles.batters}>
-          {todayLineup.slice(0, 3).map((p, i) => {
-            const trend = trendFor(p.id, p.name);
-            return (
-              <Text key={p.name} style={styles.batterLine} numberOfLines={1}>
-                <Text style={styles.batterNum}>{i + 1} </Text>
-                {shortName(p.name)}
-                <Text style={styles.batterPos}> {p.pos}</Text>
-                {trend?.form === 'hot' ? ' 🔥' : trend?.form === 'cold' ? ' ❄️' : ''}
-              </Text>
-            );
-          })}
+      <FadeIn delay={40} style={[styles.gamesBleed, { marginHorizontal: -pagePad }]}>
+        <View style={[styles.gamesRow, { paddingHorizontal: pagePad }]}>
+          {games.map((g) => (
+            <GameCard key={g.key} label={g.label} game={g.game} />
+          ))}
         </View>
       </FadeIn>
 
-      <SectionHeader title="NL East" href="/standings" action="Standings →" />
-      <FadeIn delay={180}>
-        {east.map((row, i) => (
-          <View key={row.abbr} style={[styles.eastRow, row.highlight && styles.eastHot]}>
-            <Text style={[styles.eastRank, row.highlight && styles.eastRankHot]}>{i + 1}</Text>
-            <TeamLogo abbr={row.abbr} size={28} />
-            <Text style={[styles.eastAbbr, row.highlight && styles.eastAbbrHot]}>{row.abbr}</Text>
-            <Text style={styles.eastRecord}>
-              {row.w}-{row.l}
-            </Text>
-            <Text style={styles.eastGb}>{row.gb === '—' ? '—' : `${row.gb} GB`}</Text>
-          </View>
-        ))}
+      <FadeIn delay={80}>
+        <Text style={styles.sectionTitle}>Players</Text>
+        <Text style={styles.sectionSub}>Tap anyone for game-by-game trends</Text>
+
+        <Seg
+          value={role}
+          onChange={setRole}
+          options={[
+            { key: 'batters', label: 'Batters' },
+            { key: 'pitchers', label: 'Pitchers' },
+          ]}
+        />
+        <Seg
+          value={window}
+          onChange={setWindow}
+          options={WINDOW_KEYS.map((k) => ({ key: k, label: WINDOW_LABELS[k] }))}
+        />
       </FadeIn>
 
-      <SectionHeader title="Upcoming" href="/schedule" action="Schedule →" />
-      <FadeIn delay={220}>
-        {upcoming.map((game) => (
-          <Link
-            key={game.id}
-            href={{ pathname: '/game/[pk]', params: { pk: String(game.gamePk || game.id) } }}
-            asChild
-          >
-            <Pressable style={styles.gameRow}>
-              <Text style={styles.gameDate}>{game.date}</Text>
-              <TeamLogo abbr={game.opponentAbbr} size={26} />
-              <Text style={styles.gameMatch}>
-                {game.home ? 'vs' : '@'} {game.opponentAbbr}
-              </Text>
-              <Text style={styles.gameTime}>{game.time}</Text>
-            </Pressable>
-          </Link>
-        ))}
+      <FadeIn delay={120}>
+        {role === 'batters'
+          ? batterList.map((p) => <HitterRow key={p.id} player={p} window={window} />)
+          : pitcherList.map((p) => <PitcherRow key={p.id} player={p} window={window} />)}
       </FadeIn>
-
-      <SectionHeader title="Leaders" />
-      <FadeIn delay={240}>
-        {leaders.map((leader) => (
-          <View key={leader.name} style={styles.leaderRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.leaderName}>{leader.name}</Text>
-              <Text style={styles.leaderStat}>{leader.stat}</Text>
-            </View>
-            <Text style={styles.leaderRole}>{leader.role}</Text>
-          </View>
-        ))}
-      </FadeIn>
-
-      {/* Team KPIs with league context — bottom of hub */}
-      <SectionHeader title="Team marks" />
-      <FadeIn delay={260}>
-        {keyStats.map((stat) => (
-          <View key={stat.label} style={styles.kpiRow}>
-            <Text style={styles.kpiLabel}>{stat.label}</Text>
-            <Text style={styles.kpiValue}>{stat.value}</Text>
-            <View style={styles.kpiMeta}>
-              <Text style={styles.kpiRank}>{stat.detail}</Text>
-              {stat.leaderAbbr ? (
-                <Text style={styles.kpiLeader}>
-                  Best {stat.leaderAbbr} {stat.leaderValue}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-        ))}
-      </FadeIn>
-
-      <View style={styles.quickLinks}>
-        {(
-          [
-            ['Lineup', '/lineup'],
-            ['Standings', '/standings'],
-            ['Schedule', '/schedule'],
-          ] as const
-        ).map(([label, href]) => (
-          <Link key={href} href={href} asChild>
-            <Pressable style={styles.quickBtn}>
-              <Text style={styles.quickText}>{label}</Text>
-            </Pressable>
-          </Link>
-        ))}
-      </View>
 
       <Text style={styles.asOf}>Updated {dataAsOf}</Text>
     </Screen>
@@ -286,326 +274,134 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  heroBleed: { marginTop: spacing.lg },
-  hero: {
-    backgroundColor: colors.scarlet,
-    paddingTop: 18,
-    paddingBottom: 20,
-  },
-  heroResult: {
-    backgroundColor: colors.navyLift,
-    borderBottomWidth: 3,
-    borderBottomColor: colors.scarlet,
-  },
-  heroTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statusRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  liveDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 7,
-    backgroundColor: colors.gold,
-  },
-  statusLabel: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.cream,
-    fontSize: 11,
-    letterSpacing: 2,
-  },
-  heroWhen: {
-    fontFamily: 'DMSans_500Medium',
-    color: 'rgba(255,255,255,0.85)',
-    fontSize: 13,
-  },
-  resultWord: {
-    fontFamily: 'BebasNeue_400Regular',
-    fontSize: 42,
-    letterSpacing: 2,
-    textAlign: 'center',
-    marginTop: 10,
-  },
-  winText: { color: colors.success },
-  lossText: { color: colors.danger },
-  resultScore: {
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.white,
-    fontSize: 56,
-    textAlign: 'center',
-    lineHeight: 58,
-  },
-  matchupRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 14,
-    paddingHorizontal: 8,
-  },
-  teamBlock: { alignItems: 'center', gap: 6, minWidth: 72 },
-  teamAbbr: {
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.white,
-    fontSize: 20,
-    letterSpacing: 1,
-  },
-  vs: {
-    fontFamily: 'BebasNeue_400Regular',
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 26,
-  },
-  heroMeta: {
-    fontFamily: 'DMSans_400Regular',
-    color: 'rgba(255,255,255,0.82)',
-    fontSize: 13,
-    textAlign: 'center',
-    marginTop: 12,
-  },
-  countdown: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.gold,
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  heroFooter: {
-    marginTop: 14,
-    paddingTop: 12,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(255,255,255,0.25)',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  heroRank: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.gold,
-    fontSize: 14,
-  },
-  heroStreak: {
-    fontFamily: 'DMSans_500Medium',
-    color: 'rgba(255,255,255,0.85)',
-    fontSize: 13,
-  },
-  nextStrip: {
-    marginTop: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
-  nextStripLabel: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.gold,
-    fontSize: 11,
-    letterSpacing: 1.2,
-  },
-  nextStripMatch: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 14,
-  },
-  nextStripWhen: {
-    flex: 1,
-    textAlign: 'right',
+  pulseLine: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
+    marginTop: 4,
+    marginBottom: spacing.md,
   },
-  tonightRow: {
+  gamesBleed: { marginBottom: spacing.lg },
+  gamesRow: { flexDirection: 'row', gap: 10 },
+  gameCard: {
+    flex: 1,
+    backgroundColor: colors.navyLift,
+    borderRadius: 14,
+    padding: 12,
+    minHeight: 112,
+  },
+  gameLabel: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 10,
+    letterSpacing: 1.4,
+  },
+  gameMatch: {
     flexDirection: 'row',
-    gap: 16,
-    paddingBottom: 4,
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+  },
+  gameOpp: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.white,
+    fontSize: 13,
+  },
+  gameScore: {
+    fontFamily: 'BebasNeue_400Regular',
+    fontSize: 22,
+    marginTop: 8,
+  },
+  win: { color: colors.success },
+  loss: { color: colors.danger },
+  gameTime: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.cream,
+    fontSize: 15,
+    marginTop: 8,
+  },
+  gameDate: {
+    fontFamily: 'DMSans_400Regular',
+    color: colors.mistDim,
+    fontSize: 11,
+    marginTop: 4,
+  },
+  sectionTitle: {
+    fontFamily: 'BebasNeue_400Regular',
+    color: colors.white,
+    fontSize: 32,
+    letterSpacing: 1,
+  },
+  sectionSub: {
+    fontFamily: 'DMSans_400Regular',
+    color: colors.mist,
+    fontSize: 13,
+    marginBottom: 12,
+  },
+  segRow: { flexDirection: 'row', gap: 8, marginBottom: 10 },
+  seg: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    alignItems: 'center',
+    minHeight: 42,
+    justifyContent: 'center',
+  },
+  segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
+  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
+  segTextOn: { color: colors.white },
+  playerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
   },
-  spBlock: {
-    flex: 1.1,
-    paddingRight: 12,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderRightColor: colors.line,
+  posBubble: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: colors.navyLift,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  spLabel: {
-    fontFamily: 'DMSans_700Bold',
+  posText: {
+    fontFamily: 'BebasNeue_400Regular',
     color: colors.gold,
-    fontSize: 11,
-    letterSpacing: 1.5,
+    fontSize: 16,
   },
-  spName: {
+  playerMain: { flex: 1 },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+  playerName: {
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
-    fontSize: 17,
-    marginTop: 4,
+    fontSize: 16,
   },
-  spMeta: {
+  glyph: { fontSize: 13 },
+  formTag: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 10,
+    letterSpacing: 1,
+    color: colors.mistDim,
+  },
+  formHot: { color: '#FF8A4C' },
+  formCold: { color: '#7EC8FF' },
+  playerMeta: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
     fontSize: 12,
     marginTop: 3,
   },
-  batters: { flex: 1, justifyContent: 'center', gap: 4 },
-  batterLine: {
-    fontFamily: 'DMSans_500Medium',
-    color: colors.white,
-    fontSize: 14,
-  },
-  batterNum: {
-    color: colors.mistDim,
-    fontFamily: 'BebasNeue_400Regular',
-    fontSize: 16,
-  },
-  batterPos: {
-    color: colors.gold,
-    fontFamily: 'DMSans_500Medium',
-  },
-  eastRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingVertical: 11,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
-  eastHot: {
-    backgroundColor: 'rgba(206, 17, 65, 0.12)',
-    marginHorizontal: -10,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    borderBottomColor: 'transparent',
-  },
-  eastRank: {
-    width: 16,
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.mistDim,
-    fontSize: 18,
-  },
-  eastRankHot: { color: colors.gold },
-  eastAbbr: {
-    flex: 1,
-    fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 15,
-  },
-  eastAbbrHot: { color: colors.cream },
-  eastRecord: {
-    fontFamily: 'DMSans_500Medium',
-    color: colors.mist,
-    fontSize: 14,
-    width: 56,
-    textAlign: 'right',
-  },
-  eastGb: {
+  chev: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mistDim,
-    fontSize: 12,
-    width: 58,
-    textAlign: 'right',
-  },
-  gameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
-  gameDate: {
-    width: 48,
-    fontFamily: 'DMSans_500Medium',
-    color: colors.mist,
-    fontSize: 13,
-  },
-  gameMatch: {
-    flex: 1,
-    fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 15,
-  },
-  gameTime: {
-    fontFamily: 'DMSans_500Medium',
-    color: colors.gold,
-    fontSize: 13,
-  },
-  leaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
-  leaderName: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 15,
-  },
-  leaderStat: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
-    fontSize: 12,
-    marginTop: 2,
-  },
-  leaderRole: {
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.gold,
-    fontSize: 18,
-  },
-  kpiRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
-  kpiLabel: {
-    width: 36,
-    fontFamily: 'DMSans_700Bold',
-    color: colors.mistDim,
-    fontSize: 12,
-    letterSpacing: 1,
-  },
-  kpiValue: {
-    width: 64,
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.white,
-    fontSize: 26,
-  },
-  kpiMeta: { flex: 1 },
-  kpiRank: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.gold,
-    fontSize: 13,
-  },
-  kpiLeader: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 11,
-    marginTop: 2,
-  },
-  quickLinks: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: 28,
-  },
-  quickBtn: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 14,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.line,
-    borderRadius: 12,
-    minHeight: 48,
-    justifyContent: 'center',
-  },
-  quickText: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.white,
-    fontSize: 13,
+    fontSize: 22,
   },
   asOf: {
-    marginTop: 20,
+    marginTop: 24,
     marginBottom: 8,
     textAlign: 'center',
     fontFamily: 'DMSans_400Regular',
