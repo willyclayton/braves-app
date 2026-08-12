@@ -141,7 +141,13 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
   );
   const glyph = formGlyph(form);
   return (
-    <Link href={{ pathname: '/player/[id]', params: { id: String(player.id) } }} asChild>
+    <Link
+      href={{
+        pathname: '/player/[id]',
+        params: { id: String(player.id), window },
+      }}
+      asChild
+    >
       <Pressable style={styles.playerRow}>
         <View style={styles.posBubble}>
           <Text style={styles.posText}>{player.pos}</Text>
@@ -161,7 +167,7 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
             </Text>
           </View>
           <Text style={styles.playerMeta}>
-            {WINDOW_LABELS[window]} {w.h}-{w.ab} · {w.avg} AVG · {w.ops} OPS · {w.hr} HR
+            {w.h}-{w.ab} · {w.avg} AVG · {w.ops} OPS · {w.hr} HR
           </Text>
         </View>
         <Text style={styles.chev}>›</Text>
@@ -171,11 +177,25 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
 }
 
 function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) {
-  const w = player.windows[window] || player.windows.l10 || player.season;
-  const form = formFromPitchWindow(player.windows[window] || player.windows.l10);
+  const w =
+    player.windows[window] ||
+    player.windows.l5 ||
+    player.windows.l10 ||
+    player.windows.l20 ||
+    player.windows.l30 ||
+    player.season;
+  const form = formFromPitchWindow(
+    player.windows[window] || player.windows.l10 || player.windows.l5
+  );
   const glyph = formGlyph(form);
   return (
-    <Link href={{ pathname: '/player/[id]', params: { id: String(player.id) } }} asChild>
+    <Link
+      href={{
+        pathname: '/player/[id]',
+        params: { id: String(player.id), window },
+      }}
+      asChild
+    >
       <Pressable style={styles.playerRow}>
         <View style={styles.posBubble}>
           <Text style={styles.posText}>{player.pos}</Text>
@@ -195,7 +215,7 @@ function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) 
             </Text>
           </View>
           <Text style={styles.playerMeta}>
-            {WINDOW_LABELS[window]} {w.era} ERA · {w.whip} WHIP · {w.so} K · {w.ip} IP
+            {w.era} ERA · {w.whip} WHIP · {w.so} K · {w.ip} IP
           </Text>
         </View>
         <Text style={styles.chev}>›</Text>
