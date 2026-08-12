@@ -50,13 +50,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="lineup"
+        name="standings"
         options={{
-          href: null,
+          title: 'Standings',
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name={focused ? 'podium' : 'podium-outline'} color={String(color)} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="standings"
+        name="lineup"
         options={{
           href: null,
         }}

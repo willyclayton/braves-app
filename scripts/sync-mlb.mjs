@@ -59,11 +59,26 @@ function formHit(w) {
   if (!w) return 'neutral';
   const ab = Number(w.ab) || 0;
   const g = Number(w.g) || 0;
-  if (ab < 6 && g < 3) return 'neutral';
+  const h = Number(w.h) || 0;
+  const hr = Number(w.hr) || 0;
+  const rbi = Number(w.rbi) || 0;
   const ops = parseFloat(w.ops);
   const avg = parseFloat(w.avg);
-  if ((!Number.isNaN(ops) && ops >= 0.9) || (!Number.isNaN(avg) && avg >= 0.32)) return 'hot';
-  if ((!Number.isNaN(ops) && ops <= 0.65) || (!Number.isNaN(avg) && avg <= 0.2)) return 'cold';
+  const slg = parseFloat(w.slg);
+  if (ab < 8 && g < 3) return 'neutral';
+  const hasOps = !Number.isNaN(ops);
+  const iso = !Number.isNaN(slg) && !Number.isNaN(avg) ? slg - avg : null;
+  const powerSurge = hr >= 3 || (hr >= 2 && ab <= 25) || (iso != null && iso >= 0.25);
+  const emptyBat = hr === 0 && rbi <= 1 && h <= Math.max(1, Math.floor(ab * 0.12));
+  if (hasOps && ops >= 0.85) return 'hot';
+  if (hasOps && ops >= 0.78 && (powerSurge || (!Number.isNaN(avg) && avg >= 0.28))) return 'hot';
+  if (powerSurge && hasOps && ops >= 0.75) return 'hot';
+  if (!hasOps && !Number.isNaN(avg) && avg >= 0.33 && ab >= 12) return 'hot';
+  if (hasOps && ops <= 0.5 && emptyBat) return 'cold';
+  if (hasOps && ops <= 0.55 && emptyBat && ab >= 12) return 'cold';
+  if (hasOps && ops <= 0.6 && emptyBat && !Number.isNaN(avg) && avg <= 0.15 && ab >= 15) {
+    return 'cold';
+  }
   return 'neutral';
 }
 
@@ -74,8 +89,18 @@ function formPitch(w) {
   if (ip < 3 && g < 2) return 'neutral';
   const era = parseFloat(w.era);
   const whip = parseFloat(w.whip);
-  if ((!Number.isNaN(era) && era <= 2.5) || (!Number.isNaN(whip) && whip <= 1.0)) return 'hot';
-  if ((!Number.isNaN(era) && era >= 5.0) || (!Number.isNaN(whip) && whip >= 1.55)) return 'cold';
+  const so = Number(w.so) || 0;
+  const bb = Number(w.bb) || 0;
+  const er = Number(w.er) || 0;
+  const hasEra = !Number.isNaN(era);
+  const hasWhip = !Number.isNaN(whip);
+  const kPerIp = ip > 0 ? so / ip : 0;
+  if ((hasEra && era <= 2.25) || (hasWhip && whip <= 0.95)) return 'hot';
+  if (hasEra && era <= 3.0 && hasWhip && whip <= 1.15) return 'hot';
+  if (hasEra && era <= 3.25 && kPerIp >= 1.2 && er <= Math.max(2, ip * 0.4)) return 'hot';
+  if ((hasEra && era >= 6.5) || (hasWhip && whip >= 1.7)) return 'cold';
+  if (hasEra && era >= 5.5 && hasWhip && whip >= 1.5) return 'cold';
+  if (hasEra && era >= 5.0 && bb >= so && ip >= 4) return 'cold';
   return 'neutral';
 }
 
@@ -136,7 +161,15 @@ async function loadWindows(group) {
   return byId;
 }
 
-async function gameLog(id, group) {
+function splitOppAbbr(g, teamAbbrById) {
+  const vsBraves = g.team?.id === BRAVES_ID;
+  const opp = vsBraves ? g.opponent : g.team || g.opponent;
+  if (opp?.id != null && teamAbbrById[opp.id]) return teamAbbrById[opp.id];
+  if (opp?.abbreviation) return opp.abbreviation;
+  return opp?.name || '';
+}
+
+async function gameLog(id, group, teamAbbrById = {}) {
   try {
     const res = await get(
       `${BASE}/people/${id}/stats?stats=gameLog&group=${group}&season=${SEASON}&sportId=1`
@@ -147,7 +180,7 @@ async function gameLog(id, group) {
       return recent.map((g) => ({
         date: g.date,
         gamePk: g.game?.gamePk,
-        opp: g.team?.id === BRAVES_ID ? g.opponent?.abbreviation || g.opponent?.name : g.team?.abbreviation,
+        opp: splitOppAbbr(g, teamAbbrById),
         ab: g.stat.atBats || 0,
         r: g.stat.runs || 0,
         h: g.stat.hits || 0,
@@ -162,7 +195,7 @@ async function gameLog(id, group) {
     return recent.map((g) => ({
       date: g.date,
       gamePk: g.game?.gamePk,
-      opp: g.opponent?.abbreviation || g.opponent?.name,
+      opp: splitOppAbbr(g, teamAbbrById),
       ip: g.stat.inningsPitched || '0.0',
       h: g.stat.hits || 0,
       r: g.stat.runs || 0,
@@ -417,7 +450,7 @@ async function main() {
     async function worker() {
       while (i < list.length) {
         const idx = i++;
-        list[idx].log = await gameLog(list[idx].id, group);
+        list[idx].log = await gameLog(list[idx].id, group, byId);
       }
     }
     await Promise.all(Array.from({ length: concurrency }, () => worker()));
