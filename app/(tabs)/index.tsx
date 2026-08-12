@@ -30,6 +30,7 @@ import {
 } from '@/lib/form';
 import { resultLabel } from '@/lib/gameWindow';
 import { shortName } from '@/lib/names';
+import { resolveHitWindow, resolvePitchWindow } from '@/lib/windows';
 
 type Role = 'batters' | 'pitchers';
 
@@ -150,16 +151,8 @@ function GameCard({
 }
 
 function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
-  const w =
-    player.windows[window] ||
-    player.windows.l5 ||
-    player.windows.l10 ||
-    player.windows.l20 ||
-    player.windows.l30 ||
-    player.season;
-  const form = formFromHitWindow(
-    player.windows[window] || player.windows.l10 || player.windows.l5
-  );
+  const w = resolveHitWindow(player, window);
+  const form = formFromHitWindow(w);
   return (
     <Link
       href={{
@@ -202,16 +195,8 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
 }
 
 function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) {
-  const w =
-    player.windows[window] ||
-    player.windows.l5 ||
-    player.windows.l10 ||
-    player.windows.l20 ||
-    player.windows.l30 ||
-    player.season;
-  const form = formFromPitchWindow(
-    player.windows[window] || player.windows.l10 || player.windows.l5
-  );
+  const w = resolvePitchWindow(player, window);
+  const form = formFromPitchWindow(w);
   return (
     <Link
       href={{
@@ -265,8 +250,8 @@ export default function HomeScreen() {
     return [...hitters]
       .filter((p) => matchesQuery(p, query))
       .sort((a, b) => {
-        const aw = a.windows[window];
-        const bw = b.windows[window];
+        const aw = resolveHitWindow(a, window);
+        const bw = resolveHitWindow(b, window);
         const af = formFromHitWindow(aw);
         const bf = formFromHitWindow(bw);
         const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
@@ -279,8 +264,8 @@ export default function HomeScreen() {
     return [...pitchers]
       .filter((p) => matchesQuery(p, query))
       .sort((a, b) => {
-        const aw = a.windows[window] || a.season;
-        const bw = b.windows[window] || b.season;
+        const aw = resolvePitchWindow(a, window);
+        const bw = resolvePitchWindow(b, window);
         const byIp = parseInnings(bw?.ip) - parseInnings(aw?.ip);
         if (byIp !== 0) return byIp;
         return parseFloat(aw?.era || '99') - parseFloat(bw?.era || '99');

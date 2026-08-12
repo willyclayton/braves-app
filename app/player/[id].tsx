@@ -28,6 +28,7 @@ import {
   pitcherGameStamp,
 } from '@/lib/form';
 import { opponentAbbr } from '@/lib/teams';
+import { resolveHitWindow, resolvePitchWindow, WINDOW_SIZE } from '@/lib/windows';
 
 type HitMetric = 'h' | 'rbi' | 'hr' | 'r' | 'so';
 type PitchMetric = 'so' | 'er' | 'h' | 'bb' | 'ip';
@@ -48,12 +49,7 @@ const PITCH_METRICS: { key: PitchMetric; label: string }[] = [
   { key: 'ip', label: 'IP' },
 ];
 
-const WINDOW_GAMES: Record<WindowKey, number> = {
-  l5: 5,
-  l10: 10,
-  l20: 20,
-  l30: 30,
-};
+const WINDOW_GAMES = WINDOW_SIZE;
 
 function parseWindowParam(raw?: string | string[]): WindowKey {
   const v = Array.isArray(raw) ? raw[0] : raw;
@@ -183,10 +179,8 @@ export default function PlayerScreen() {
   }
 
   if (hitter) {
-    const w = hitter.windows[window] || hitter.windows.l5 || hitter.windows.l10 || hitter.season;
-    const form = formFromHitWindow(
-      hitter.windows[window] || hitter.windows.l10 || hitter.windows.l5
-    );
+    const w = resolveHitWindow(hitter, window);
+    const form = formFromHitWindow(w);
     const sum = hitValues.reduce((a, b) => a + b, 0);
     const metricLabel = HIT_METRICS.find((m) => m.key === hitMetric)?.label || '';
 
@@ -326,8 +320,8 @@ export default function PlayerScreen() {
   }
 
   const p = pitcher!;
-  const w = p.windows[window] || p.windows.l5 || p.windows.l10 || p.season;
-  const form = formFromPitchWindow(p.windows[window] || p.windows.l10 || p.windows.l5);
+  const w = resolvePitchWindow(p, window);
+  const form = formFromPitchWindow(w);
   const sum = pitchValues.reduce((a, b) => a + b, 0);
   const metricLabel = PITCH_METRICS.find((m) => m.key === pitchMetric)?.label || '';
 

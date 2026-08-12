@@ -147,6 +147,12 @@ export function parseInnings(ip?: string | number) {
   return parseIp(ip);
 }
 
+/** Format a real innings total back to baseball notation (6.1 = 6⅓). */
+export function formatInnings(innings: number) {
+  const outs = Math.max(0, Math.round(innings * 3));
+  return `${Math.floor(outs / 3)}.${outs % 3}`;
+}
+
 /** Single-game pitcher stamp for logs and box scores. */
 export function pitcherGameStamp(p: {
   ip?: string | number;
