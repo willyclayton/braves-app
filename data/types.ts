@@ -73,6 +73,8 @@ export type HitWindow = {
   bb?: number;
   so?: number;
   sb?: number;
+  doubles?: number;
+  triples?: number;
 };
 
 export type PitchWindow = {
@@ -88,6 +90,17 @@ export type PitchWindow = {
   w?: number;
   l?: number;
   sv?: number;
+  holds?: number;
+};
+
+export type StatRanking = {
+  key: string;
+  label: string;
+  value: string;
+  mlb: number | null;
+  nl: number | null;
+  mlbOf?: number;
+  nlOf?: number;
 };
 
 /** @deprecated use HitWindow */
@@ -136,6 +149,7 @@ export type Hitter = {
     l30?: HitWindow;
   };
   form?: 'hot' | 'cold' | 'neutral';
+  rankings?: StatRanking[];
   log: HitGameLog[];
 };
 
@@ -152,6 +166,7 @@ export type Pitcher = {
     l30?: PitchWindow;
   };
   form?: 'hot' | 'cold' | 'neutral';
+  rankings?: StatRanking[];
   log: PitchGameLog[];
 };
 

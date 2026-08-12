@@ -14,6 +14,7 @@ export type {
   Pitcher,
   HitWindow,
   PitchWindow,
+  StatRanking,
   WindowKey,
 } from './types';
 
