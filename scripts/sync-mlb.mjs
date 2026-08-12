@@ -119,7 +119,198 @@ function hitWindow(st) {
     bb: st.baseOnBalls || 0,
     so: st.strikeOuts || 0,
     sb: st.stolenBases || 0,
+    doubles: st.doubles || 0,
+    triples: st.triples || 0,
   };
+}
+
+function parseIpOuts(ip) {
+  const [w, f] = String(ip || '0').split('.');
+  return Number(w || 0) * 3 + Number(f || 0);
+}
+
+function numStat(v) {
+  if (v == null || v === '' || v === '—') return NaN;
+  if (typeof v === 'number') return v;
+  const n = parseFloat(String(v).replace(/^–/, '-'));
+  return Number.isFinite(n) ? n : NaN;
+}
+
+/** Competition ranking (ties share the best place: 1,1,3). */
+function buildRankMap(rows, getValue, { higherBetter = true } = {}) {
+  const scored = [];
+  for (const row of rows) {
+    const value = getValue(row);
+    if (!Number.isFinite(value)) continue;
+    scored.push({ id: row.player.id, value });
+  }
+  scored.sort((a, b) => (higherBetter ? b.value - a.value : a.value - b.value));
+  const ranks = new Map();
+  let i = 0;
+  while (i < scored.length) {
+    let j = i + 1;
+    while (j < scored.length && scored[j].value === scored[i].value) j++;
+    const rank = i + 1;
+    for (let k = i; k < j; k++) ranks.set(scored[k].id, rank);
+    i = j;
+  }
+  return ranks;
+}
+
+const HIT_RANK_DEFS = [
+  { key: 'hr', label: 'HR', format: 'int', get: (s) => Number(s.homeRuns) || 0, higherBetter: true },
+  { key: 'doubles', label: '2B', format: 'int', get: (s) => Number(s.doubles) || 0, higherBetter: true },
+  { key: 'rbi', label: 'RBI', format: 'int', get: (s) => Number(s.rbi) || 0, higherBetter: true },
+  { key: 'r', label: 'Runs', format: 'int', get: (s) => Number(s.runs) || 0, higherBetter: true },
+  { key: 'h', label: 'Hits', format: 'int', get: (s) => Number(s.hits) || 0, higherBetter: true },
+  { key: 'sb', label: 'SB', format: 'int', get: (s) => Number(s.stolenBases) || 0, higherBetter: true },
+  { key: 'bb', label: 'BB', format: 'int', get: (s) => Number(s.baseOnBalls) || 0, higherBetter: true },
+  {
+    key: 'avg',
+    label: 'AVG',
+    format: 'avg',
+    get: (s) => numStat(s.avg),
+    higherBetter: true,
+    rate: true,
+  },
+  {
+    key: 'ops',
+    label: 'OPS',
+    format: 'ops',
+    get: (s) => numStat(s.ops),
+    higherBetter: true,
+    rate: true,
+  },
+  {
+    key: 'obp',
+    label: 'OBP',
+    format: 'avg',
+    get: (s) => numStat(s.obp),
+    higherBetter: true,
+    rate: true,
+  },
+  {
+    key: 'slg',
+    label: 'SLG',
+    format: 'avg',
+    get: (s) => numStat(s.slg),
+    higherBetter: true,
+    rate: true,
+  },
+];
+
+const PITCH_RANK_DEFS = [
+  {
+    key: 'era',
+    label: 'ERA',
+    format: 'era',
+    get: (s) => numStat(s.era),
+    higherBetter: false,
+    rate: true,
+  },
+  {
+    key: 'whip',
+    label: 'WHIP',
+    format: 'whip',
+    get: (s) => numStat(s.whip),
+    higherBetter: false,
+    rate: true,
+  },
+  { key: 'so', label: 'K', format: 'int', get: (s) => Number(s.strikeOuts) || 0, higherBetter: true },
+  { key: 'w', label: 'W', format: 'int', get: (s) => Number(s.wins) || 0, higherBetter: true },
+  { key: 'sv', label: 'SV', format: 'int', get: (s) => Number(s.saves) || 0, higherBetter: true },
+  { key: 'holds', label: 'HLD', format: 'int', get: (s) => Number(s.holds) || 0, higherBetter: true },
+  {
+    key: 'ip',
+    label: 'IP',
+    format: 'ip',
+    get: (s) => parseIpOuts(s.inningsPitched) / 3,
+    higherBetter: true,
+  },
+];
+
+function formatRankValue(format, raw, stat, key) {
+  if (format === 'int') return String(Math.round(raw));
+  if (format === 'avg') {
+    if (key === 'obp') return stat.obp || String(raw);
+    if (key === 'slg') return stat.slg || String(raw);
+    return stat.avg || String(raw);
+  }
+  if (format === 'ops') return stat.ops || String(raw);
+  if (format === 'era') return stat.era || String(raw);
+  if (format === 'whip') return stat.whip || String(raw);
+  if (format === 'ip') return stat.inningsPitched || String(raw);
+  return String(raw);
+}
+
+function rankingsForPlayer(playerId, defs, mlbRows, nlRows, teamGames) {
+  const minPa = Math.max(1, Math.floor(3.1 * teamGames));
+  const minIpOuts = Math.max(3, teamGames * 3);
+  const primary = new Set([
+    'hr',
+    'doubles',
+    'rbi',
+    'r',
+    'h',
+    'avg',
+    'ops',
+    'obp',
+    'slg',
+    'era',
+    'whip',
+    'so',
+    'w',
+    'sv',
+    'ip',
+  ]);
+  const out = [];
+  for (const def of defs) {
+    const qualify =
+      def.qualify ||
+      (def.rate
+        ? def.key === 'era' || def.key === 'whip'
+          ? (s) => parseIpOuts(s.inningsPitched) >= minIpOuts
+          : (s) => (Number(s.plateAppearances) || 0) >= minPa
+        : null);
+    const mlbPool = qualify ? mlbRows.filter((r) => qualify(r.stat)) : mlbRows;
+    const nlPool = qualify ? nlRows.filter((r) => qualify(r.stat)) : nlRows;
+    const mlbRanks = buildRankMap(mlbPool, (r) => def.get(r.stat), {
+      higherBetter: def.higherBetter,
+    });
+    const nlRanks = buildRankMap(nlPool, (r) => def.get(r.stat), {
+      higherBetter: def.higherBetter,
+    });
+    const mlb = mlbRanks.get(playerId);
+    const nl = nlRanks.get(playerId);
+    if (mlb == null && nl == null) continue;
+    const row = mlbRows.find((r) => r.player.id === playerId);
+    if (!row) continue;
+    const raw = def.get(row.stat);
+    if (!Number.isFinite(raw)) continue;
+    // Skip counting stats that are zero — not meaningful for ranking UI
+    if (def.format === 'int' && raw === 0) continue;
+    // Secondary counting stats (SB, BB, HLD) only when near the leaderboard
+    if (!primary.has(def.key) && (mlb == null || mlb > 40) && (nl == null || nl > 25)) {
+      continue;
+    }
+    out.push({
+      key: def.key,
+      label: def.label,
+      value: formatRankValue(def.format, raw, row.stat, def.key),
+      mlb: mlb ?? null,
+      nl: nl ?? null,
+      mlbOf: mlbPool.length,
+      nlOf: nlPool.length,
+    });
+  }
+  return out;
+}
+
+async function loadSeasonSplits(group) {
+  const res = await get(
+    `${BASE}/stats?stats=season&group=${group}&season=${SEASON}&sportIds=1&limit=1000&playerPool=all`
+  );
+  return res.stats?.[0]?.splits || [];
 }
 
 function pitWindow(st) {
@@ -441,6 +632,24 @@ async function main() {
       form: formPitch(windows.l10 || windows.l5),
       log: [],
     });
+  }
+
+  console.log('Computing MLB / NL season rankings…');
+  const teamGames = Math.max(
+    1,
+    schedule.filter((g) => g.status === 'final').length
+  );
+  const [mlbHitSplits, mlbPitSplits] = await Promise.all([
+    loadSeasonSplits('hitting'),
+    loadSeasonSplits('pitching'),
+  ]);
+  const nlHitSplits = mlbHitSplits.filter((s) => s.league?.id === 104);
+  const nlPitSplits = mlbPitSplits.filter((s) => s.league?.id === 104);
+  for (const h of hitters) {
+    h.rankings = rankingsForPlayer(h.id, HIT_RANK_DEFS, mlbHitSplits, nlHitSplits, teamGames);
+  }
+  for (const p of pitchers) {
+    p.rankings = rankingsForPlayer(p.id, PITCH_RANK_DEFS, mlbPitSplits, nlPitSplits, teamGames);
   }
 
   console.log(`Loading game logs for ${hitters.length} hitters + ${pitchers.length} pitchers…`);

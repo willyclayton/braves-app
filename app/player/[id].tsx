@@ -1,6 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { LeagueRankings } from '@/components/LeagueRankings';
 import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -238,6 +239,8 @@ export default function PlayerScreen() {
             ]}
           />
 
+          <LeagueRankings rankings={hitter.rankings} playerName={hitter.name} />
+
           <Text style={styles.chartTitle}>
             {WINDOW_LABELS[window]} · {metricLabel}
           </Text>
@@ -347,6 +350,8 @@ export default function PlayerScreen() {
             { label: 'G', value: String(w.g) },
           ]}
         />
+
+        <LeagueRankings rankings={p.rankings} playerName={p.name} />
 
         <Text style={styles.chartTitle}>
           {WINDOW_LABELS[window]} · {metricLabel}
