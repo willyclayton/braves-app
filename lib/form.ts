@@ -142,6 +142,11 @@ function parseIp(ip?: string | number) {
   return Number(w || 0) + Number(f || 0) / 3;
 }
 
+/** Baseball innings (6.1 = 6⅓) as a real number, for sorting and stamps. */
+export function parseInnings(ip?: string | number) {
+  return parseIp(ip);
+}
+
 /** Single-game pitcher stamp for logs and box scores. */
 export function pitcherGameStamp(p: {
   ip?: string | number;
