@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GameStamp } from '@/components/GameStamp';
+import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { TeamLogo } from '@/components/TeamLogo';
 import { colors, spacing } from '@/constants/theme';
 import { playerById, schedule } from '@/data/braves';
@@ -117,6 +118,7 @@ function BatterTable({ rows }: { rows: BoxBatter[] }) {
         const href = playerHref(b.id);
         const nameCell = (
           <View style={[styles.td, styles.tdName]}>
+            <PlayerHeadshot id={b.id} name={b.name} pos={b.pos} size={22} />
             <Text style={[styles.nameLine, href && styles.nameLink]} numberOfLines={1}>
               {sub ? '  ' : ''}
               {shortName(b.name)} <Text style={styles.pos}>{b.pos}</Text>
@@ -182,6 +184,7 @@ function PitcherTable({ rows }: { rows: BoxPitcher[] }) {
         const stamp = pitcherGameStamp(p);
         const nameCell = (
           <View style={[styles.td, styles.tdName]}>
+            <PlayerHeadshot id={p.id} name={p.name} size={22} />
             <Text style={[styles.nameLine, href && styles.nameLink]} numberOfLines={1}>
               {shortName(p.name)}
             </Text>

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GameStamp } from '@/components/GameStamp';
 import { LeagueRankings } from '@/components/LeagueRankings';
+import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -23,6 +24,7 @@ import {
   formFromPitchWindow,
   formGlyph,
   formLabel,
+  parseInnings,
   pitcherGameStamp,
 } from '@/lib/form';
 import { opponentAbbr } from '@/lib/teams';
@@ -52,11 +54,6 @@ const WINDOW_GAMES: Record<WindowKey, number> = {
   l20: 20,
   l30: 30,
 };
-
-function parseIp(ip: string) {
-  const [w, f] = String(ip).split('.');
-  return Number(w || 0) + Number(f || 0) / 3;
-}
 
 function parseWindowParam(raw?: string | string[]): WindowKey {
   const v = Array.isArray(raw) ? raw[0] : raw;
@@ -152,7 +149,7 @@ export default function PlayerScreen() {
   const pitchValues = useMemo(
     () =>
       pitchLog.map((g) => {
-        if (pitchMetric === 'ip') return parseIp(g.ip);
+        if (pitchMetric === 'ip') return parseInnings(g.ip);
         return Number(g[pitchMetric]) || 0;
       }),
     [pitchLog, pitchMetric]
@@ -207,33 +204,36 @@ export default function PlayerScreen() {
         <Screen>
           <FadeIn>
             <View style={styles.head}>
-              <Text style={styles.pos}>{hitter.pos}</Text>
-              <Text style={styles.name}>{hitter.name}</Text>
-              <View style={styles.formRow}>
-                <Text style={styles.glyph}>{formGlyph(form)}</Text>
-                <Text
-                  style={[
-                    styles.formTag,
-                    form === 'hot' && styles.formHot,
-                    form === 'cold' && styles.formCold,
-                  ]}
-                >
-                  {formLabel(form)}
-                </Text>
+              <PlayerHeadshot id={hitter.id} name={hitter.name} pos={hitter.pos} size={72} />
+              <View style={styles.headText}>
+                <Text style={styles.pos}>{hitter.pos}</Text>
+                <Text style={styles.name}>{hitter.name}</Text>
+                <View style={styles.formRow}>
+                  <Text style={styles.glyph}>{formGlyph(form)}</Text>
+                  <Text
+                    style={[
+                      styles.formTag,
+                      form === 'hot' && styles.formHot,
+                      form === 'cold' && styles.formCold,
+                    ]}
+                  >
+                    {formLabel(form)}
+                  </Text>
+                </View>
+                {hitter.log.length && hitter.log[hitter.log.length - 1].gamePk ? (
+                  <Link
+                    href={{
+                      pathname: '/game/[pk]',
+                      params: { pk: String(hitter.log[hitter.log.length - 1].gamePk) },
+                    }}
+                    asChild
+                  >
+                    <Pressable style={styles.lastGame}>
+                      <Text style={styles.lastGameText}>Last game ›</Text>
+                    </Pressable>
+                  </Link>
+                ) : null}
               </View>
-              {hitter.log.length && hitter.log[hitter.log.length - 1].gamePk ? (
-                <Link
-                  href={{
-                    pathname: '/game/[pk]',
-                    params: { pk: String(hitter.log[hitter.log.length - 1].gamePk) },
-                  }}
-                  asChild
-                >
-                  <Pressable style={styles.lastGame}>
-                    <Text style={styles.lastGameText}>Last game ›</Text>
-                  </Pressable>
-                </Link>
-              ) : null}
             </View>
           </FadeIn>
 
@@ -345,33 +345,36 @@ export default function PlayerScreen() {
       <Screen>
         <FadeIn>
           <View style={styles.head}>
-            <Text style={styles.pos}>{p.pos}</Text>
-            <Text style={styles.name}>{p.name}</Text>
-            <View style={styles.formRow}>
-              <Text style={styles.glyph}>{formGlyph(form)}</Text>
-              <Text
-                style={[
-                  styles.formTag,
-                  form === 'hot' && styles.formHot,
-                  form === 'cold' && styles.formCold,
-                ]}
-              >
-                {formLabel(form)}
-              </Text>
+            <PlayerHeadshot id={p.id} name={p.name} pos={p.pos} size={72} />
+            <View style={styles.headText}>
+              <Text style={styles.pos}>{p.pos}</Text>
+              <Text style={styles.name}>{p.name}</Text>
+              <View style={styles.formRow}>
+                <Text style={styles.glyph}>{formGlyph(form)}</Text>
+                <Text
+                  style={[
+                    styles.formTag,
+                    form === 'hot' && styles.formHot,
+                    form === 'cold' && styles.formCold,
+                  ]}
+                >
+                  {formLabel(form)}
+                </Text>
+              </View>
+              {p.log.length && p.log[p.log.length - 1].gamePk ? (
+                <Link
+                  href={{
+                    pathname: '/game/[pk]',
+                    params: { pk: String(p.log[p.log.length - 1].gamePk) },
+                  }}
+                  asChild
+                >
+                  <Pressable style={styles.lastGame}>
+                    <Text style={styles.lastGameText}>Last game ›</Text>
+                  </Pressable>
+                </Link>
+              ) : null}
             </View>
-            {p.log.length && p.log[p.log.length - 1].gamePk ? (
-              <Link
-                href={{
-                  pathname: '/game/[pk]',
-                  params: { pk: String(p.log[p.log.length - 1].gamePk) },
-                }}
-                asChild
-              >
-                <Pressable style={styles.lastGame}>
-                  <Text style={styles.lastGameText}>Last game ›</Text>
-                </Pressable>
-              </Link>
-            ) : null}
           </View>
         </FadeIn>
 
@@ -380,10 +383,10 @@ export default function PlayerScreen() {
 
         <StatStrip
           items={[
+            { label: 'IP', value: w.ip, accent: true },
             { label: 'ERA', value: w.era, accent: true },
             { label: 'WHIP', value: w.whip },
-            { label: 'K', value: String(w.so), accent: true },
-            { label: 'IP', value: w.ip },
+            { label: 'K', value: String(w.so) },
             { label: 'BB', value: String(w.bb ?? 0) },
             { label: 'G', value: String(w.g) },
           ]}
@@ -469,7 +472,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 40,
   },
-  head: { marginBottom: spacing.md },
+  head: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    marginBottom: spacing.md,
+  },
+  headText: { flex: 1, minWidth: 0 },
   pos: {
     fontFamily: 'DMSans_700Bold',
     color: colors.gold,
@@ -479,7 +488,7 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 36,
+    fontSize: 28,
     letterSpacing: 1,
     marginTop: 2,
   },
