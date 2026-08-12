@@ -3,6 +3,7 @@ import { Link } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BrandMark } from '@/components/BrandMark';
+import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
@@ -25,6 +26,7 @@ import {
   formFromHitWindow,
   formFromPitchWindow,
   formLabel,
+  parseInnings,
 } from '@/lib/form';
 import { resultLabel } from '@/lib/gameWindow';
 import { shortName } from '@/lib/names';
@@ -167,12 +169,11 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
       asChild
     >
       <Pressable style={styles.playerRow}>
-        <View style={styles.posBubble}>
-          <Text style={styles.posText}>{player.pos}</Text>
-        </View>
+        <PlayerHeadshot id={player.id} name={player.name} pos={player.pos} size={44} />
         <View style={styles.playerMain}>
           <View style={styles.nameRow}>
             <Text style={styles.playerName}>{shortName(player.name)}</Text>
+            <Text style={styles.posText}>{player.pos}</Text>
             {form !== 'neutral' ? (
               <Text
                 style={[
@@ -220,12 +221,11 @@ function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) 
       asChild
     >
       <Pressable style={styles.playerRow}>
-        <View style={styles.posBubble}>
-          <Text style={styles.posText}>{player.pos}</Text>
-        </View>
+        <PlayerHeadshot id={player.id} name={player.name} pos={player.pos} size={44} />
         <View style={styles.playerMain}>
           <View style={styles.nameRow}>
             <Text style={styles.playerName}>{shortName(player.name)}</Text>
+            <Text style={styles.posText}>{player.pos}</Text>
             {form !== 'neutral' ? (
               <Text
                 style={[
@@ -240,10 +240,10 @@ function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) 
           </View>
           <MiniStats
             items={[
+              { label: 'IP', value: w.ip },
               { label: 'ERA', value: w.era },
               { label: 'WHIP', value: w.whip },
               { label: 'K', value: String(w.so) },
-              { label: 'IP', value: w.ip },
             ]}
           />
         </View>
@@ -279,12 +279,10 @@ export default function HomeScreen() {
     return [...pitchers]
       .filter((p) => matchesQuery(p, query))
       .sort((a, b) => {
-        const aw = a.windows[window];
-        const bw = b.windows[window];
-        const af = formFromPitchWindow(aw);
-        const bf = formFromPitchWindow(bw);
-        const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
-        if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
+        const aw = a.windows[window] || a.season;
+        const bw = b.windows[window] || b.season;
+        const byIp = parseInnings(bw?.ip) - parseInnings(aw?.ip);
+        if (byIp !== 0) return byIp;
         return parseFloat(aw?.era || '99') - parseFloat(bw?.era || '99');
       });
   }, [window, query]);
@@ -503,18 +501,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
   },
-  posBubble: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: colors.navyLift,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   posText: {
-    fontFamily: 'BebasNeue_400Regular',
+    fontFamily: 'DMSans_700Bold',
     color: colors.gold,
-    fontSize: 16,
+    fontSize: 12,
+    letterSpacing: 0.4,
   },
   playerMain: { flex: 1, minWidth: 0 },
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
