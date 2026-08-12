@@ -127,9 +127,10 @@ export function LeagueRankings({ rankings = [], playerName }: Props) {
       <View style={styles.header}>
         <View style={styles.headerText}>
           <Text style={styles.title}>Percentile rankings</Text>
+          <View style={styles.titleRule} />
           <Text style={styles.subtitle} numberOfLines={2}>
             {avgPct != null
-              ? `${playerName} · MLB avg ${avgPct}th${elite ? ` · ${elite} elite` : ''}`
+              ? `${playerName} · MLB avg ${ordinal(avgPct)}${elite ? ` · ${elite} elite` : ''}`
               : `Season vs MLB · ${playerName}`}
           </Text>
         </View>
@@ -195,11 +196,18 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
+  titleRule: {
+    width: 36,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: '#2EC4B6',
+    marginTop: 6,
+    marginBottom: 6,
+  },
   subtitle: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
     fontSize: 12,
-    marginTop: 3,
   },
   legend: {
     flexDirection: 'row',
