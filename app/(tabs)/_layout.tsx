@@ -19,7 +19,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.gold,
-        tabBarInactiveTintColor: colors.mistDim,
+        tabBarInactiveTintColor: colors.tabInactive,
         tabBarStyle: [
           styles.tabBar,
           {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontFamily: 'DMSans_500Medium',
-    fontSize: 10,
+    fontSize: 11,
   },
   tabItem: {
     minHeight: 44,

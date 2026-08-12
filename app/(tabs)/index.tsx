@@ -1,6 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BrandMark } from '@/components/BrandMark';
 import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -23,20 +24,25 @@ import { etDateString, formatShortDate, gameDayLabel } from '@/lib/dates';
 import {
   formFromHitWindow,
   formFromPitchWindow,
-  formGlyph,
   formLabel,
 } from '@/lib/form';
 import { resultLabel } from '@/lib/gameWindow';
+import { shortName } from '@/lib/names';
 
 type Role = 'batters' | 'pitchers';
 
-function shortName(full: string) {
-  const parts = full.replace(/\./g, '').split(/\s+/).filter(Boolean);
-  const last = parts[parts.length - 1];
-  if (/^(jr|sr|ii|iii|iv)$/i.test(last) && parts.length >= 2) {
-    return parts[parts.length - 2];
-  }
-  return last;
+function matchesQuery(
+  player: { name: string; pos: string; number?: number },
+  q: string
+) {
+  const n = q.trim().toLowerCase();
+  if (!n) return true;
+  return (
+    player.name.toLowerCase().includes(n) ||
+    shortName(player.name).toLowerCase().includes(n) ||
+    player.pos.toLowerCase().includes(n) ||
+    String(player.number ?? '').includes(n)
+  );
 }
 
 function nearbyGames(now = new Date()) {
@@ -94,6 +100,19 @@ function Seg<T extends string>({
   );
 }
 
+function MiniStats({ items }: { items: { label: string; value: string }[] }) {
+  return (
+    <View style={styles.miniStats}>
+      {items.map((it) => (
+        <View key={it.label} style={styles.miniStat}>
+          <Text style={styles.miniLabel}>{it.label}</Text>
+          <Text style={styles.miniValue}>{it.value}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 function GameCard({
   label,
   game,
@@ -139,7 +158,6 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
   const form = formFromHitWindow(
     player.windows[window] || player.windows.l10 || player.windows.l5
   );
-  const glyph = formGlyph(form);
   return (
     <Link
       href={{
@@ -155,20 +173,26 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
         <View style={styles.playerMain}>
           <View style={styles.nameRow}>
             <Text style={styles.playerName}>{shortName(player.name)}</Text>
-            {glyph ? <Text style={styles.glyph}>{glyph}</Text> : null}
-            <Text
-              style={[
-                styles.formTag,
-                form === 'hot' && styles.formHot,
-                form === 'cold' && styles.formCold,
-              ]}
-            >
-              {formLabel(form)}
-            </Text>
+            {form !== 'neutral' ? (
+              <Text
+                style={[
+                  styles.formTag,
+                  form === 'hot' && styles.formHot,
+                  form === 'cold' && styles.formCold,
+                ]}
+              >
+                {formLabel(form)}
+              </Text>
+            ) : null}
           </View>
-          <Text style={styles.playerMeta}>
-            {w.h}-{w.ab} · {w.avg} AVG · {w.ops} OPS · {w.hr} HR
-          </Text>
+          <MiniStats
+            items={[
+              { label: 'H-AB', value: `${w.h}-${w.ab}` },
+              { label: 'AVG', value: w.avg },
+              { label: 'OPS', value: w.ops },
+              { label: 'HR', value: String(w.hr) },
+            ]}
+          />
         </View>
         <Text style={styles.chev}>›</Text>
       </Pressable>
@@ -187,7 +211,6 @@ function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) 
   const form = formFromPitchWindow(
     player.windows[window] || player.windows.l10 || player.windows.l5
   );
-  const glyph = formGlyph(form);
   return (
     <Link
       href={{
@@ -203,20 +226,26 @@ function PitcherRow({ player, window }: { player: Pitcher; window: WindowKey }) 
         <View style={styles.playerMain}>
           <View style={styles.nameRow}>
             <Text style={styles.playerName}>{shortName(player.name)}</Text>
-            {glyph ? <Text style={styles.glyph}>{glyph}</Text> : null}
-            <Text
-              style={[
-                styles.formTag,
-                form === 'hot' && styles.formHot,
-                form === 'cold' && styles.formCold,
-              ]}
-            >
-              {formLabel(form)}
-            </Text>
+            {form !== 'neutral' ? (
+              <Text
+                style={[
+                  styles.formTag,
+                  form === 'hot' && styles.formHot,
+                  form === 'cold' && styles.formCold,
+                ]}
+              >
+                {formLabel(form)}
+              </Text>
+            ) : null}
           </View>
-          <Text style={styles.playerMeta}>
-            {w.era} ERA · {w.whip} WHIP · {w.so} K · {w.ip} IP
-          </Text>
+          <MiniStats
+            items={[
+              { label: 'ERA', value: w.era },
+              { label: 'WHIP', value: w.whip },
+              { label: 'K', value: String(w.so) },
+              { label: 'IP', value: w.ip },
+            ]}
+          />
         </View>
         <Text style={styles.chev}>›</Text>
       </Pressable>
@@ -228,31 +257,41 @@ export default function HomeScreen() {
   const { pagePad } = usePhoneLayout();
   const [role, setRole] = useState<Role>('batters');
   const [window, setWindow] = useState<WindowKey>('l10');
+  const [query, setQuery] = useState('');
   const games = useMemo(() => nearbyGames(), []);
+  const searching = query.trim().length > 0;
 
   const batterList = useMemo(() => {
-    return [...hitters].sort((a, b) => {
-      const aw = a.windows[window];
-      const bw = b.windows[window];
-      const af = formFromHitWindow(aw);
-      const bf = formFromHitWindow(bw);
-      const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
-      if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
-      return parseFloat(bw?.ops || '0') - parseFloat(aw?.ops || '0');
-    });
-  }, [window]);
+    return [...hitters]
+      .filter((p) => matchesQuery(p, query))
+      .sort((a, b) => {
+        const aw = a.windows[window];
+        const bw = b.windows[window];
+        const af = formFromHitWindow(aw);
+        const bf = formFromHitWindow(bw);
+        const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
+        if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
+        return parseFloat(bw?.ops || '0') - parseFloat(aw?.ops || '0');
+      });
+  }, [window, query]);
 
   const pitcherList = useMemo(() => {
-    return [...pitchers].sort((a, b) => {
-      const aw = a.windows[window];
-      const bw = b.windows[window];
-      const af = formFromPitchWindow(aw);
-      const bf = formFromPitchWindow(bw);
-      const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
-      if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
-      return parseFloat(aw?.era || '99') - parseFloat(bw?.era || '99');
-    });
-  }, [window]);
+    return [...pitchers]
+      .filter((p) => matchesQuery(p, query))
+      .sort((a, b) => {
+        const aw = a.windows[window];
+        const bw = b.windows[window];
+        const af = formFromPitchWindow(aw);
+        const bf = formFromPitchWindow(bw);
+        const rank = (f: string) => (f === 'hot' ? 0 : f === 'neutral' ? 1 : 2);
+        if (rank(af) !== rank(bf)) return rank(af) - rank(bf);
+        return parseFloat(aw?.era || '99') - parseFloat(bw?.era || '99');
+      });
+  }, [window, query]);
+
+  const showBatters = searching || role === 'batters';
+  const showPitchers = searching || role === 'pitchers';
+  const noHits = searching && batterList.length === 0 && pitcherList.length === 0;
 
   return (
     <Screen>
@@ -263,26 +302,50 @@ export default function HomeScreen() {
         </Text>
       </FadeIn>
 
-      <FadeIn delay={40} style={[styles.gamesBleed, { marginHorizontal: -pagePad }]}>
-        <View style={[styles.gamesRow, { paddingHorizontal: pagePad }]}>
-          {games.map((g) => (
-            <GameCard key={g.key} label={g.label} game={g.game} />
-          ))}
-        </View>
-      </FadeIn>
+      {!searching ? (
+        <FadeIn delay={40} style={[styles.gamesBleed, { marginHorizontal: -pagePad }]}>
+          <View style={[styles.gamesRow, { paddingHorizontal: pagePad }]}>
+            {games.map((g) => (
+              <GameCard key={g.key} label={g.label} game={g.game} />
+            ))}
+          </View>
+        </FadeIn>
+      ) : null}
 
       <FadeIn delay={80}>
         <Text style={styles.sectionTitle}>Players</Text>
         <Text style={styles.sectionSub}>Tap anyone for game-by-game trends</Text>
 
-        <Seg
-          value={role}
-          onChange={setRole}
-          options={[
-            { key: 'batters', label: 'Batters' },
-            { key: 'pitchers', label: 'Pitchers' },
-          ]}
-        />
+        <View style={styles.searchWrap}>
+          <Ionicons name="search" size={16} color={colors.mist} />
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search players"
+            placeholderTextColor={colors.textFaint}
+            autoCorrect={false}
+            autoCapitalize="none"
+            clearButtonMode="never"
+            style={styles.searchInput}
+            accessibilityLabel="Search players"
+          />
+          {query ? (
+            <Pressable onPress={() => setQuery('')} hitSlop={10} accessibilityLabel="Clear search">
+              <Ionicons name="close-circle" size={18} color={colors.mist} />
+            </Pressable>
+          ) : null}
+        </View>
+
+        {!searching ? (
+          <Seg
+            value={role}
+            onChange={setRole}
+            options={[
+              { key: 'batters', label: 'Batters' },
+              { key: 'pitchers', label: 'Pitchers' },
+            ]}
+          />
+        ) : null}
         <Seg
           value={window}
           onChange={setWindow}
@@ -291,9 +354,33 @@ export default function HomeScreen() {
       </FadeIn>
 
       <FadeIn delay={120}>
-        {role === 'batters'
-          ? batterList.map((p) => <HitterRow key={p.id} player={p} window={window} />)
-          : pitcherList.map((p) => <PitcherRow key={p.id} player={p} window={window} />)}
+        {noHits ? (
+          <View style={styles.empty}>
+            <Text style={styles.emptyTitle}>No players match “{query.trim()}”</Text>
+            <Pressable onPress={() => setQuery('')}>
+              <Text style={styles.emptyAction}>Clear search</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <>
+            {showBatters && batterList.length > 0 ? (
+              <>
+                {searching ? <Text style={styles.groupLabel}>Batters</Text> : null}
+                {batterList.map((p) => (
+                  <HitterRow key={p.id} player={p} window={window} />
+                ))}
+              </>
+            ) : null}
+            {showPitchers && pitcherList.length > 0 ? (
+              <>
+                {searching ? <Text style={styles.groupLabel}>Pitchers</Text> : null}
+                {pitcherList.map((p) => (
+                  <PitcherRow key={p.id} player={p} window={window} />
+                ))}
+              </>
+            ) : null}
+          </>
+        )}
       </FadeIn>
 
       <Text style={styles.asOf}>Updated {dataAsOf}</Text>
@@ -304,8 +391,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   pulseLine: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
-    fontSize: 13,
+    color: colors.cream,
+    fontSize: 14,
     marginTop: 4,
     marginBottom: spacing.md,
   },
@@ -321,8 +408,8 @@ const styles = StyleSheet.create({
   gameLabel: {
     fontFamily: 'DMSans_700Bold',
     color: colors.gold,
-    fontSize: 10,
-    letterSpacing: 1.4,
+    fontSize: 11,
+    letterSpacing: 1.2,
   },
   gameMatch: {
     flexDirection: 'row',
@@ -350,8 +437,8 @@ const styles = StyleSheet.create({
   },
   gameDate: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 11,
+    color: colors.mist,
+    fontSize: 12,
     marginTop: 4,
   },
   sectionTitle: {
@@ -363,8 +450,27 @@ const styles = StyleSheet.create({
   sectionSub: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 13,
+    fontSize: 14,
     marginBottom: 12,
+  },
+  searchWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: colors.navyLift,
+    borderRadius: 12,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    paddingHorizontal: 12,
+    minHeight: 46,
+    marginBottom: 12,
+  },
+  searchInput: {
+    flex: 1,
+    fontFamily: 'DMSans_500Medium',
+    color: colors.cream,
+    fontSize: 15,
+    paddingVertical: 10,
   },
   segRow: { flexDirection: 'row', gap: 8, marginBottom: 10 },
   seg: {
@@ -380,11 +486,20 @@ const styles = StyleSheet.create({
   segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
   segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
   segTextOn: { color: colors.white },
+  groupLabel: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 11,
+    letterSpacing: 1.2,
+    marginTop: 8,
+    marginBottom: 4,
+  },
   playerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingVertical: 14,
+    paddingVertical: 12,
+    minHeight: 56,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.line,
   },
@@ -401,32 +516,62 @@ const styles = StyleSheet.create({
     color: colors.gold,
     fontSize: 16,
   },
-  playerMain: { flex: 1 },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+  playerMain: { flex: 1, minWidth: 0 },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
   playerName: {
     fontFamily: 'DMSans_700Bold',
-    color: colors.white,
+    color: colors.cream,
     fontSize: 16,
   },
-  glyph: { fontSize: 13 },
   formTag: {
     fontFamily: 'DMSans_700Bold',
-    fontSize: 10,
-    letterSpacing: 1,
-    color: colors.mistDim,
+    fontSize: 11,
+    letterSpacing: 0.6,
+    color: colors.mist,
   },
   formHot: { color: '#FF8A4C' },
   formCold: { color: '#7EC8FF' },
-  playerMeta: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
-    fontSize: 12,
-    marginTop: 3,
+  miniStats: {
+    flexDirection: 'row',
+    marginTop: 6,
+    gap: 12,
+  },
+  miniStat: {
+    flex: 1,
+  },
+  miniLabel: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 11,
+    letterSpacing: 0.6,
+  },
+  miniValue: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.cream,
+    fontSize: 14,
+    marginTop: 1,
+    fontVariant: ['tabular-nums'],
   },
   chev: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
+    color: colors.textFaint,
     fontSize: 22,
+  },
+  empty: {
+    paddingVertical: 28,
+    alignItems: 'center',
+    gap: 10,
+  },
+  emptyTitle: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.cream,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  emptyAction: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 14,
   },
   asOf: {
     marginTop: 24,
@@ -434,6 +579,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'DMSans_400Regular',
     color: colors.mistDim,
-    fontSize: 11,
+    fontSize: 12,
   },
 });

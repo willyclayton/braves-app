@@ -58,5 +58,6 @@ body {
 }
 input, textarea, button {
   font-size: 16px;
+  outline: none;
 }
 `;

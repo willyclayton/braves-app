@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
   },
   legend: {
     flexDirection: 'row',
@@ -334,14 +334,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginLeft: 56,
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 11,
+    color: colors.mist,
+    fontSize: 12,
   },
   footnote: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 11,
-    lineHeight: 15,
+    color: colors.mist,
+    fontSize: 12,
+    lineHeight: 16,
     paddingHorizontal: 14,
     paddingTop: 10,
   },

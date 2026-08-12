@@ -1,6 +1,7 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { GameStamp } from '@/components/GameStamp';
 import { LeagueRankings } from '@/components/LeagueRankings';
 import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
@@ -17,10 +18,12 @@ import {
   type WindowKey,
 } from '@/data/braves';
 import {
+  batterGameStamp,
   formFromHitWindow,
   formFromPitchWindow,
   formGlyph,
   formLabel,
+  pitcherGameStamp,
 } from '@/lib/form';
 import { opponentAbbr } from '@/lib/teams';
 
@@ -217,11 +220,20 @@ export default function PlayerScreen() {
                 >
                   {formLabel(form)}
                 </Text>
-                <Text style={styles.seasonLine}>
-                  Season {hitter.season.h}-{hitter.season.ab} · {hitter.season.avg} ·{' '}
-                  {hitter.season.ops} OPS · {hitter.season.hr} HR
-                </Text>
               </View>
+              {hitter.log.length && hitter.log[hitter.log.length - 1].gamePk ? (
+                <Link
+                  href={{
+                    pathname: '/game/[pk]',
+                    params: { pk: String(hitter.log[hitter.log.length - 1].gamePk) },
+                  }}
+                  asChild
+                >
+                  <Pressable style={styles.lastGame}>
+                    <Text style={styles.lastGameText}>Last game ›</Text>
+                  </Pressable>
+                </Link>
+              ) : null}
             </View>
           </FadeIn>
 
@@ -271,18 +283,23 @@ export default function PlayerScreen() {
           <View style={styles.logHead}>
             <Text style={styles.logHeadDate}>DATE</Text>
             <Text style={styles.logHeadOpp}>OPP</Text>
+            <Text style={styles.logHeadBadge} />
             <Text style={styles.logHeadStat}>H-AB</Text>
             <Text style={styles.logHeadStat}>RBI</Text>
             <Text style={styles.logHeadStat}>HR</Text>
           </View>
           {[...hitLog].reverse().map((g, i) => {
             const abbr = opponentAbbr(g.opp);
-            return (
-              <View key={`${g.date}-${i}`} style={styles.logRow}>
+            const stamp = batterGameStamp(g);
+            const row = (
+              <View style={styles.logRow}>
                 <Text style={styles.logDate}>{g.date.slice(5)}</Text>
                 <View style={styles.logOppCell}>
                   <TeamLogo abbr={abbr} size={20} />
                   <Text style={styles.logOpp}>{abbr}</Text>
+                </View>
+                <View style={styles.logBadge}>
+                  {stamp ? <GameStamp kind={stamp} /> : null}
                 </View>
                 <Text style={styles.logStat}>
                   {g.h}-{g.ab}
@@ -290,6 +307,17 @@ export default function PlayerScreen() {
                 <Text style={styles.logStat}>{g.rbi}</Text>
                 <Text style={styles.logStat}>{g.hr}</Text>
               </View>
+            );
+            return g.gamePk ? (
+              <Link
+                key={`${g.date}-${i}`}
+                href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
+                asChild
+              >
+                <Pressable>{row}</Pressable>
+              </Link>
+            ) : (
+              <View key={`${g.date}-${i}`}>{row}</View>
             );
           })}
         </Screen>
@@ -330,10 +358,20 @@ export default function PlayerScreen() {
               >
                 {formLabel(form)}
               </Text>
-              <Text style={styles.seasonLine}>
-                Season {p.season.era} ERA · {p.season.whip} WHIP · {p.season.so} K
-              </Text>
             </View>
+            {p.log.length && p.log[p.log.length - 1].gamePk ? (
+              <Link
+                href={{
+                  pathname: '/game/[pk]',
+                  params: { pk: String(p.log[p.log.length - 1].gamePk) },
+                }}
+                asChild
+              >
+                <Pressable style={styles.lastGame}>
+                  <Text style={styles.lastGameText}>Last game ›</Text>
+                </Pressable>
+              </Link>
+            ) : null}
           </View>
         </FadeIn>
 
@@ -384,23 +422,39 @@ export default function PlayerScreen() {
         <View style={styles.logHead}>
           <Text style={styles.logHeadDate}>DATE</Text>
           <Text style={styles.logHeadOpp}>OPP</Text>
+          <Text style={styles.logHeadBadge} />
           <Text style={styles.logHeadStat}>IP</Text>
           <Text style={styles.logHeadStat}>K</Text>
           <Text style={styles.logHeadStat}>ER</Text>
         </View>
         {[...pitchLog].reverse().map((g, i) => {
           const abbr = opponentAbbr(g.opp);
-          return (
-            <View key={`${g.date}-${i}`} style={styles.logRow}>
+          const stamp = pitcherGameStamp(g);
+          const row = (
+            <View style={styles.logRow}>
               <Text style={styles.logDate}>{g.date.slice(5)}</Text>
               <View style={styles.logOppCell}>
                 <TeamLogo abbr={abbr} size={20} />
                 <Text style={styles.logOpp}>{abbr}</Text>
               </View>
+              <View style={styles.logBadge}>
+                {stamp ? <GameStamp kind={stamp} /> : null}
+              </View>
               <Text style={styles.logStat}>{g.ip}</Text>
               <Text style={styles.logStat}>{g.so}</Text>
               <Text style={styles.logStat}>{g.er}</Text>
             </View>
+          );
+          return g.gamePk ? (
+            <Link
+              key={`${g.date}-${i}`}
+              href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
+              asChild
+            >
+              <Pressable>{row}</Pressable>
+            </Link>
+          ) : (
+            <View key={`${g.date}-${i}`}>{row}</View>
           );
         })}
       </Screen>
@@ -445,14 +499,18 @@ const styles = StyleSheet.create({
   },
   formHot: { color: '#FF8A4C' },
   formCold: { color: '#7EC8FF' },
-  seasonLine: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
+  lastGame: {
+    marginTop: 8,
+    alignSelf: 'flex-start',
+  },
+  lastGameText: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
     fontSize: 13,
   },
   controlLabel: {
     fontFamily: 'DMSans_700Bold',
-    color: colors.mistDim,
+    color: colors.mist,
     fontSize: 11,
     letterSpacing: 1.4,
     marginBottom: 8,
@@ -476,7 +534,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
-  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 12 },
+  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
   segTextOn: { color: colors.white },
   statStrip: {
     flexDirection: 'row',
@@ -520,7 +578,7 @@ const styles = StyleSheet.create({
   chartSum: {
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 13,
+    fontSize: 14,
     marginTop: 4,
     marginBottom: spacing.md,
   },
@@ -536,23 +594,26 @@ const styles = StyleSheet.create({
     width: 44,
     fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
-    fontSize: 10,
-    letterSpacing: 1,
+    fontSize: 11,
+    letterSpacing: 0.8,
   },
   logHeadOpp: {
     width: 72,
     fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
-    fontSize: 10,
-    letterSpacing: 1,
+    fontSize: 11,
+    letterSpacing: 0.8,
+  },
+  logHeadBadge: {
+    width: 44,
   },
   logHeadStat: {
     flex: 1,
     textAlign: 'right',
     fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
-    fontSize: 10,
-    letterSpacing: 1,
+    fontSize: 11,
+    letterSpacing: 0.8,
   },
   logRow: {
     flexDirection: 'row',
@@ -566,13 +627,18 @@ const styles = StyleSheet.create({
     width: 44,
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
   },
   logOppCell: {
     width: 72,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+  },
+  logBadge: {
+    width: 44,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   logOpp: {
     fontFamily: 'DMSans_700Bold',
@@ -583,7 +649,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     fontFamily: 'DMSans_500Medium',
-    color: colors.white,
-    fontSize: 13,
+    color: colors.cream,
+    fontSize: 14,
   },
 });

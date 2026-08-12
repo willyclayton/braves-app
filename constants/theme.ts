@@ -7,8 +7,15 @@ export const colors = {
   gold: '#EAAA00',
   cream: '#F5F0E8',
   white: '#FFFFFF',
-  mist: 'rgba(245, 240, 232, 0.72)',
-  mistDim: 'rgba(245, 240, 232, 0.42)',
+  /** Primary body copy on navy — cream at full strength. */
+  text: '#F5F0E8',
+  /** Secondary copy (stats, captions). High-contrast cream. */
+  mist: 'rgba(245, 240, 232, 0.92)',
+  /** Headers, timestamps — still readable, never body copy. */
+  mistDim: 'rgba(245, 240, 232, 0.72)',
+  /** Chevrons / disabled only. */
+  textFaint: 'rgba(245, 240, 232, 0.45)',
+  tabInactive: '#C9C3B8',
   line: 'rgba(255, 255, 255, 0.08)',
   success: '#3DDC84',
   danger: '#FF5A6A',
