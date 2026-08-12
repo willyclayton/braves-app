@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { LayoutAnimation, Platform, Pressable, StyleSheet, Text, UIManager, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, LayoutAnimation, Platform, StyleSheet, Text, UIManager, View } from 'react-native';
 import { colors, spacing } from '@/constants/theme';
 import type { StatRanking } from '@/data/types';
 
@@ -13,11 +13,33 @@ function ordinal(n: number) {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-function rankTone(rank: number | null) {
-  if (rank == null) return styles.rankMuted;
-  if (rank <= 3) return styles.rankGold;
-  if (rank <= 10) return styles.rankBright;
-  return styles.rankDefault;
+/** Rank 1 → 100th percentile; last place → 0th. */
+export function percentileFromRank(rank: number | null | undefined, of: number | null | undefined) {
+  if (rank == null || of == null || of < 1) return null;
+  if (of === 1) return 100;
+  return Math.round(((of - rank) / (of - 1)) * 100);
+}
+
+/** Savant-style cool→warm scale (poor blue → great red). */
+export function percentileColor(pct: number) {
+  if (pct >= 90) return '#C41E3A';
+  if (pct >= 75) return '#E04A5A';
+  if (pct >= 60) return '#E88A8A';
+  if (pct >= 45) return '#A8B0BC';
+  if (pct >= 30) return '#7BA3C9';
+  if (pct >= 15) return '#3D6FA8';
+  return '#1E4A7A';
+}
+
+function rankLine(row: StatRanking) {
+  const bits: string[] = [];
+  if (row.mlb != null) {
+    bits.push(`MLB ${ordinal(row.mlb)}${row.mlbOf ? `/${row.mlbOf}` : ''}`);
+  }
+  if (row.nl != null) {
+    bits.push(`NL ${ordinal(row.nl)}${row.nlOf ? `/${row.nlOf}` : ''}`);
+  }
+  return bits.join(' · ');
 }
 
 type Props = {
@@ -25,71 +47,124 @@ type Props = {
   playerName: string;
 };
 
+function PercentileRow({
+  row,
+  delay,
+}: {
+  row: StatRanking;
+  delay: number;
+}) {
+  const pct = percentileFromRank(row.mlb, row.mlbOf ?? null);
+  const width = useRef(new Animated.Value(0)).current;
+  const [trackW, setTrackW] = useState(0);
+  const color = pct == null ? colors.mistDim : percentileColor(pct);
+  const fillPct = pct == null ? 0 : Math.max(2, Math.min(100, pct));
+
+  useEffect(() => {
+    if (!trackW) return;
+    width.setValue(0);
+    Animated.timing(width, {
+      toValue: (fillPct / 100) * trackW,
+      duration: 520,
+      delay,
+      useNativeDriver: false,
+    }).start();
+  }, [trackW, fillPct, delay, width]);
+
+  return (
+    <View style={styles.row}>
+      <View style={styles.rowTop}>
+        <Text style={styles.statLabel}>{row.label}</Text>
+        <View style={styles.barCol}>
+          <View
+            style={styles.track}
+            onLayout={(e) => setTrackW(e.nativeEvent.layout.width)}
+          >
+            <View style={[styles.guide, styles.guide25]} />
+            <View style={[styles.guide, styles.guide50]} />
+            <View style={[styles.guide, styles.guide75]} />
+            {pct == null ? (
+              <View style={styles.nqBar}>
+                <Text style={styles.nqText}>NOT QUALIFIED</Text>
+              </View>
+            ) : (
+              <Animated.View style={[styles.fill, { width, backgroundColor: color }]}>
+                <View style={[styles.bubble, { borderColor: color, backgroundColor: color }]}>
+                  <Text style={styles.bubbleText}>{pct}</Text>
+                </View>
+              </Animated.View>
+            )}
+          </View>
+        </View>
+        <Text style={styles.statValue}>{row.value}</Text>
+      </View>
+      <Text style={styles.rankMeta}>{rankLine(row) || '—'}</Text>
+    </View>
+  );
+}
+
 export function LeagueRankings({ rankings = [], playerName }: Props) {
-  const [open, setOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setReady(true);
+  }, []);
 
   if (!rankings.length) return null;
 
-  const topBits = rankings
-    .filter((r) => (r.mlb != null && r.mlb <= 5) || (r.nl != null && r.nl <= 5))
-    .slice(0, 3)
-    .map((r) => {
-      const place = r.mlb != null && r.mlb <= 5 ? r.mlb : r.nl;
-      return `${r.label} ${ordinal(place!)}`;
-    });
-
-  const toggle = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setOpen((v) => !v);
-  };
+  const scored = rankings
+    .map((r) => ({ r, pct: percentileFromRank(r.mlb, r.mlbOf ?? null) }))
+    .filter((x) => x.pct != null) as { r: StatRanking; pct: number }[];
+  const avgPct =
+    scored.length > 0
+      ? Math.round(scored.reduce((a, x) => a + x.pct, 0) / scored.length)
+      : null;
+  const elite = scored.filter((x) => x.pct >= 90).length;
 
   return (
     <View style={styles.wrap}>
-      <Pressable
-        onPress={toggle}
-        accessibilityRole="button"
-        accessibilityState={{ expanded: open }}
-        style={({ pressed }) => [styles.header, pressed && styles.headerPressed]}
-      >
+      <View style={styles.header}>
         <View style={styles.headerText}>
-          <Text style={styles.title}>League rankings</Text>
-          <Text style={styles.subtitle} numberOfLines={1}>
-            {open
-              ? `Season ranks · ${playerName}`
-              : topBits.length
-                ? topBits.join(' · ')
-                : 'MLB & National League'}
+          <Text style={styles.title}>Percentile rankings</Text>
+          <Text style={styles.subtitle} numberOfLines={2}>
+            {avgPct != null
+              ? `${playerName} · MLB avg ${avgPct}th${elite ? ` · ${elite} elite` : ''}`
+              : `Season vs MLB · ${playerName}`}
           </Text>
         </View>
-        <Text style={styles.chevron}>{open ? '▾' : '▸'}</Text>
-      </Pressable>
+      </View>
 
-      {open ? (
-        <View style={styles.body}>
-          <View style={styles.colHead}>
-            <Text style={[styles.colLabel, styles.colStat]}>STAT</Text>
-            <Text style={[styles.colLabel, styles.colVal]}>VALUE</Text>
-            <Text style={[styles.colLabel, styles.colRank]}>MLB</Text>
-            <Text style={[styles.colLabel, styles.colRank]}>NL</Text>
-          </View>
-          {rankings.map((row) => (
-            <View key={row.key} style={styles.row}>
-              <Text style={[styles.statLabel, styles.colStat]}>{row.label}</Text>
-              <Text style={[styles.statValue, styles.colVal]}>{row.value}</Text>
-              <Text style={[styles.rank, styles.colRank, rankTone(row.mlb)]}>
-                {row.mlb != null ? ordinal(row.mlb) : '—'}
-              </Text>
-              <Text style={[styles.rank, styles.colRank, rankTone(row.nl)]}>
-                {row.nl != null ? ordinal(row.nl) : '—'}
-              </Text>
-            </View>
+      <View style={styles.legend}>
+        <Text style={[styles.legendLabel, { color: '#3D6FA8' }]}>POOR</Text>
+        <View style={styles.legendBar}>
+          {[0, 20, 40, 55, 70, 85, 95].map((p) => (
+            <View key={p} style={[styles.legendSeg, { backgroundColor: percentileColor(p) }]} />
           ))}
-          <Text style={styles.footnote}>
-            Season totals vs MLB and the National League. Rate stats use batting-title / ERA-title
-            pace (3.1 PA or 1 IP per team game).
-          </Text>
         </View>
-      ) : null}
+        <Text style={[styles.legendLabel, { color: '#C41E3A' }]}>GREAT</Text>
+      </View>
+
+      <View style={styles.scaleRow}>
+        <Text style={styles.scaleTick}>0</Text>
+        <Text style={styles.scaleTick}>25</Text>
+        <Text style={[styles.scaleTick, styles.scaleAvg]}>AVG</Text>
+        <Text style={styles.scaleTick}>75</Text>
+        <Text style={styles.scaleTick}>100</Text>
+      </View>
+
+      <View style={styles.body}>
+        {ready
+          ? rankings.map((row, i) => (
+              <PercentileRow key={row.key} row={row} delay={40 + i * 45} />
+            ))
+          : null}
+      </View>
+
+      <Text style={styles.footnote}>
+        MLB percentile from season rank among qualified players. Rate stats use batting-title /
+        ERA-title pace (3.1 PA or 1 IP per team game). NL rank shown under each bar.
+      </Text>
     </View>
   );
 }
@@ -100,18 +175,17 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.line,
-    backgroundColor: 'rgba(26, 47, 85, 0.45)',
+    backgroundColor: 'rgba(26, 47, 85, 0.55)',
     overflow: 'hidden',
+    paddingBottom: 12,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingTop: 14,
     paddingHorizontal: 14,
+    paddingBottom: 8,
     gap: 10,
-  },
-  headerPressed: {
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
   },
   headerText: { flex: 1, minWidth: 0 },
   title: {
@@ -127,61 +201,134 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 3,
   },
-  chevron: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.gold,
-    fontSize: 16,
-    width: 18,
-    textAlign: 'center',
+  legend: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 14,
+    marginBottom: 4,
   },
+  legendLabel: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 9,
+    letterSpacing: 1.1,
+  },
+  legendBar: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 6,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  legendSeg: { flex: 1 },
+  scaleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 70,
+    paddingRight: 74,
+    marginBottom: 6,
+  },
+  scaleTick: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.mistDim,
+    fontSize: 9,
+    letterSpacing: 0.4,
+  },
+  scaleAvg: { color: colors.mist },
   body: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.line,
-    paddingBottom: 12,
   },
-  colHead: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  row: {
     paddingHorizontal: 14,
     paddingTop: 10,
-    paddingBottom: 6,
+    paddingBottom: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
   },
-  colLabel: {
-    fontFamily: 'DMSans_700Bold',
-    color: colors.mistDim,
-    fontSize: 10,
-    letterSpacing: 1.1,
-  },
-  colStat: { width: 56 },
-  colVal: { flex: 1, textAlign: 'right', paddingRight: 12 },
-  colRank: { width: 52, textAlign: 'right' },
-  row: {
+  rowTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
+    gap: 8,
   },
   statLabel: {
+    width: 48,
     fontFamily: 'DMSans_700Bold',
     color: colors.mist,
-    fontSize: 13,
+    fontSize: 12,
+  },
+  barCol: { flex: 1, minWidth: 0 },
+  track: {
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    justifyContent: 'center',
+    overflow: 'visible',
+    position: 'relative',
+  },
+  guide: {
+    position: 'absolute',
+    top: 2,
+    bottom: 2,
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+  },
+  guide25: { left: '25%' },
+  guide50: { left: '50%', backgroundColor: 'rgba(255,255,255,0.28)' },
+  guide75: { left: '75%' },
+  fill: {
+    height: 22,
+    borderRadius: 11,
+    minWidth: 22,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  bubble: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: -1,
+  },
+  bubbleText: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.white,
+    fontSize: 9,
+    letterSpacing: -0.2,
+  },
+  nqBar: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 11,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nqText: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 9,
+    letterSpacing: 1,
   },
   statValue: {
+    width: 52,
+    textAlign: 'right',
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 22,
-    letterSpacing: 0.4,
+    fontSize: 20,
+    letterSpacing: 0.3,
   },
-  rank: {
-    fontFamily: 'DMSans_700Bold',
-    fontSize: 13,
+  rankMeta: {
+    marginTop: 4,
+    marginLeft: 56,
+    fontFamily: 'DMSans_400Regular',
+    color: colors.mistDim,
+    fontSize: 11,
   },
-  rankGold: { color: colors.gold },
-  rankBright: { color: colors.cream },
-  rankDefault: { color: colors.white },
-  rankMuted: { color: colors.mistDim },
   footnote: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mistDim,
