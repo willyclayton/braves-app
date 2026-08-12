@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2,
   },
   nqBar: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     borderRadius: 11,
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderWidth: StyleSheet.hairlineWidth,
