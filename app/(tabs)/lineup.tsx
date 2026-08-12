@@ -124,7 +124,7 @@ export default function LineupScreen() {
                     form === 'cold' && styles.trendCold,
                   ]}
                 >
-                  {window.toUpperCase()} {w.avg} AVG · {w.ops} OPS · {w.hr} HR ({w.g} G)
+                  {window.toUpperCase()} {w.h}-{w.ab} · {w.avg} AVG · {w.ops} OPS · {w.hr} HR ({w.g} G)
                 </Text>
               ) : (
                 <Text style={styles.trendMeta}>No recent sample</Text>

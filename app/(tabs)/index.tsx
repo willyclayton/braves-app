@@ -129,8 +129,16 @@ function GameCard({
 }
 
 function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
-  const w = player.windows[window] || player.windows.l10 || player.season;
-  const form = formFromHitWindow(player.windows[window] || player.windows.l10);
+  const w =
+    player.windows[window] ||
+    player.windows.l5 ||
+    player.windows.l10 ||
+    player.windows.l20 ||
+    player.windows.l30 ||
+    player.season;
+  const form = formFromHitWindow(
+    player.windows[window] || player.windows.l10 || player.windows.l5
+  );
   const glyph = formGlyph(form);
   return (
     <Link href={{ pathname: '/player/[id]', params: { id: String(player.id) } }} asChild>
@@ -153,7 +161,7 @@ function HitterRow({ player, window }: { player: Hitter; window: WindowKey }) {
             </Text>
           </View>
           <Text style={styles.playerMeta}>
-            {WINDOW_LABELS[window]} {w.avg} AVG · {w.ops} OPS · {w.hr} HR · {w.rbi ?? 0} RBI
+            {WINDOW_LABELS[window]} {w.h}-{w.ab} · {w.avg} AVG · {w.ops} OPS · {w.hr} HR
           </Text>
         </View>
         <Text style={styles.chev}>›</Text>

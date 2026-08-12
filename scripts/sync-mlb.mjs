@@ -25,10 +25,24 @@ const DIVISION_NAMES = {
   205: 'Central',
 };
 
-async function get(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.json();
+async function get(url, { retries = 4, baseDelayMs = 800 } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return res.json();
+      const retriable = res.status === 429 || res.status >= 500;
+      lastErr = new Error(`${res.status} ${url}`);
+      if (!retriable || attempt === retries) throw lastErr;
+    } catch (err) {
+      lastErr = err;
+      if (attempt === retries) throw lastErr;
+    }
+    const delay = baseDelayMs * 2 ** attempt + Math.floor(Math.random() * 250);
+    console.warn(`Retry ${attempt + 1}/${retries} after ${delay}ms — ${lastErr.message}`);
+    await new Promise((r) => setTimeout(r, delay));
+  }
+  throw lastErr;
 }
 
 function abbrMap(teams) {
@@ -289,7 +303,23 @@ async function main() {
     ...pulseExtra,
   };
 
-  // Season stats
+  // Active 26-man roster — drop anyone no longer with the club
+  const rosterRes = await get(
+    `${BASE}/teams/${BRAVES_ID}/roster?rosterType=active&season=${SEASON}`
+  );
+  const rosterById = new Map();
+  for (const entry of rosterRes.roster || []) {
+    const id = entry.person?.id;
+    if (id == null) continue;
+    rosterById.set(id, {
+      name: entry.person.fullName,
+      pos: entry.position?.abbreviation || 'DH',
+      number: Number(entry.jerseyNumber) || 0,
+    });
+  }
+  console.log(`Active roster: ${rosterById.size}`);
+
+  // Season stats (playerPool=all so recent acquisitions still appear; filter to roster below)
   const [hitSeason, pitSeason] = await Promise.all([
     get(
       `${BASE}/stats?stats=season&group=hitting&season=${SEASON}&teamIds=${BRAVES_ID}&sportId=1&playerPool=all&limit=50&order=desc&sortStat=plateAppearances`
@@ -306,40 +336,76 @@ async function main() {
   ]);
 
   const hitters = [];
+  const seenHitters = new Set();
   for (const sp of hitSeason.stats?.[0]?.splits || []) {
-    if ((sp.stat.plateAppearances || 0) < 75) continue;
-    if (sp.position?.abbreviation === 'P') continue;
     const id = sp.player.id;
+    if (!rosterById.has(id)) continue;
+    if (sp.position?.abbreviation === 'P' || rosterById.get(id).pos === 'P') continue;
+    seenHitters.add(id);
+    const roster = rosterById.get(id);
     const windows = hitWindows[id]?.windows || {};
     const form = formHit(windows.l10 || windows.l5);
     hitters.push({
       id,
-      name: sp.player.fullName,
-      pos: sp.position?.abbreviation || hitWindows[id]?.pos || 'DH',
-      number: 0,
+      name: sp.player.fullName || roster.name,
+      pos: sp.position?.abbreviation || hitWindows[id]?.pos || roster.pos || 'DH',
+      number: roster.number,
       season: hitWindow(sp.stat),
       windows,
       form,
       log: [],
     });
   }
+  // Roster position players with no season split yet (very new call-ups)
+  for (const [id, roster] of rosterById) {
+    if (roster.pos === 'P' || seenHitters.has(id)) continue;
+    const windows = hitWindows[id]?.windows || {};
+    hitters.push({
+      id,
+      name: roster.name,
+      pos: roster.pos,
+      number: roster.number,
+      season: hitWindow({}),
+      windows,
+      form: formHit(windows.l10 || windows.l5),
+      log: [],
+    });
+  }
 
   const pitchers = [];
+  const seenPitchers = new Set();
   for (const sp of pitSeason.stats?.[0]?.splits || []) {
-    const ip = parseFloat(sp.stat.inningsPitched) || 0;
-    if (ip < 10) continue;
     const id = sp.player.id;
+    if (!rosterById.has(id)) continue;
+    // Skip position players who show up in pitching leaderboards
+    if (rosterById.get(id).pos !== 'P') continue;
+    seenPitchers.add(id);
+    const roster = rosterById.get(id);
     const windows = pitWindows[id]?.windows || {};
     const form = formPitch(windows.l10 || windows.l5);
     const gs = sp.stat.gamesStarted || 0;
     pitchers.push({
       id,
-      name: sp.player.fullName,
+      name: sp.player.fullName || roster.name,
       pos: gs >= 5 ? 'SP' : (sp.stat.saves || 0) > 0 ? 'CL' : 'RP',
-      number: 0,
+      number: roster.number,
       season: pitWindow(sp.stat),
       windows,
       form,
+      log: [],
+    });
+  }
+  for (const [id, roster] of rosterById) {
+    if (roster.pos !== 'P' || seenPitchers.has(id)) continue;
+    const windows = pitWindows[id]?.windows || {};
+    pitchers.push({
+      id,
+      name: roster.name,
+      pos: 'RP',
+      number: roster.number,
+      season: pitWindow({}),
+      windows,
+      form: formPitch(windows.l10 || windows.l5),
       log: [],
     });
   }
@@ -374,7 +440,7 @@ async function main() {
   // Legacy fields for older screens
   const todayLineup = hitters.slice(0, 9).map((h) => ({
     id: h.id,
-    number: 0,
+    number: h.number || 0,
     name: h.name,
     pos: h.pos,
     avg: h.season.avg,
@@ -386,7 +452,7 @@ async function main() {
     starter: pitchers.find((p) => p.pos === 'SP')
       ? {
           id: pitchers.find((p) => p.pos === 'SP').id,
-          number: 0,
+          number: pitchers.find((p) => p.pos === 'SP').number || 0,
           name: pitchers.find((p) => p.pos === 'SP').name,
           pos: 'SP',
           era: pitchers.find((p) => p.pos === 'SP').season.era,
@@ -399,7 +465,7 @@ async function main() {
       .slice(0, 3)
       .map((p) => ({
         id: p.id,
-        number: 0,
+        number: p.number || 0,
         name: p.name,
         pos: p.pos,
         era: p.season.era,
