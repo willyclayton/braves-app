@@ -22,8 +22,31 @@ export default function ScheduleScreen() {
   const [filter, setFilter] = useState<Filter>('all');
 
   const games = useMemo(() => {
-    if (filter === 'all') return schedule;
-    return schedule.filter((g) => g.status === filter || (filter === 'upcoming' && g.status === 'live'));
+    if (filter === 'upcoming') {
+      return schedule.filter((g) => g.status === 'upcoming' || g.status === 'live');
+    }
+    if (filter === 'final') {
+      // Newest results first (yesterday → March)
+      return schedule
+        .filter((g) => g.status === 'final')
+        .slice()
+        .sort((a, b) => {
+          const byDate = b.date.localeCompare(a.date);
+          if (byDate !== 0) return byDate;
+          return String(b.gameDate || '').localeCompare(String(a.gameDate || ''));
+        });
+    }
+    // All: upcoming/live first chronologically, then results newest→oldest
+    const upcoming = schedule.filter((g) => g.status === 'upcoming' || g.status === 'live');
+    const finals = schedule
+      .filter((g) => g.status === 'final')
+      .slice()
+      .sort((a, b) => {
+        const byDate = b.date.localeCompare(a.date);
+        if (byDate !== 0) return byDate;
+        return String(b.gameDate || '').localeCompare(String(a.gameDate || ''));
+      });
+    return [...upcoming, ...finals];
   }, [filter]);
 
   return (

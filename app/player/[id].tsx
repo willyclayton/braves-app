@@ -1,6 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
@@ -20,6 +21,7 @@ import {
   formGlyph,
   formLabel,
 } from '@/lib/form';
+import { opponentAbbr } from '@/lib/teams';
 
 type HitMetric = 'h' | 'rbi' | 'hr' | 'r' | 'so';
 type PitchMetric = 'so' | 'er' | 'h' | 'bb' | 'ip';
@@ -52,6 +54,12 @@ function parseIp(ip: string) {
   return Number(w || 0) + Number(f || 0) / 3;
 }
 
+function parseWindowParam(raw?: string | string[]): WindowKey {
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  if (v && (WINDOW_KEYS as string[]).includes(v)) return v as WindowKey;
+  return 'l10';
+}
+
 export function generateStaticParams() {
   return [...hitters, ...pitchers].map((p) => ({ id: String(p.id) }));
 }
@@ -80,14 +88,40 @@ function WindowSeg({
   );
 }
 
+function StatStrip({
+  items,
+}: {
+  items: { label: string; value: string; accent?: boolean }[];
+}) {
+  return (
+    <View style={styles.statStrip}>
+      {items.map((item) => (
+        <View key={item.label} style={styles.statItem}>
+          <Text style={styles.statLabel}>{item.label}</Text>
+          <Text style={[styles.statVal, item.accent && styles.statValAccent]}>
+            {item.value}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 export default function PlayerScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, window: windowParam } = useLocalSearchParams<{
+    id: string;
+    window?: string;
+  }>();
   const hitter = hitterById(id);
   const pitcher = !hitter ? pitcherById(id) : undefined;
-  const [window, setWindow] = useState<WindowKey>('l10');
+  const [window, setWindow] = useState<WindowKey>(() => parseWindowParam(windowParam));
   const [hitMetric, setHitMetric] = useState<HitMetric>('h');
   const [pitchMetric, setPitchMetric] = useState<PitchMetric>('so');
   const games = WINDOW_GAMES[window];
+
+  useEffect(() => {
+    setWindow(parseWindowParam(windowParam));
+  }, [windowParam]);
 
   const hitLog = useMemo(
     () => (hitter ? hitter.log.slice(-games) : []),
@@ -106,7 +140,8 @@ export default function PlayerScreen() {
     () =>
       hitLog.map((g) => {
         const d = g.date?.slice(5) || '';
-        return g.opp ? `${d} ${g.opp}` : d || 'Game';
+        const abbr = opponentAbbr(g.opp);
+        return d ? `${d} ${abbr}` : abbr || 'Game';
       }),
     [hitLog]
   );
@@ -122,7 +157,8 @@ export default function PlayerScreen() {
     () =>
       pitchLog.map((g) => {
         const d = g.date?.slice(5) || '';
-        return g.opp ? `${d} ${g.opp}` : d || 'Game';
+        const abbr = opponentAbbr(g.opp);
+        return d ? `${d} ${abbr}` : abbr || 'Game';
       }),
     [pitchLog]
   );
@@ -191,23 +227,20 @@ export default function PlayerScreen() {
           <Text style={styles.controlLabel}>Sample window</Text>
           <WindowSeg value={window} onChange={setWindow} />
 
-          <View style={styles.statGrid}>
-            {[
-              ['H-AB', `${w.h}-${w.ab}`],
-              ['AVG', w.avg],
-              ['OPS', w.ops],
-              ['HR', String(w.hr)],
-              ['RBI', String(w.rbi ?? 0)],
-              ['G', String(w.g)],
-            ].map(([label, val]) => (
-              <View key={label} style={styles.statCell}>
-                <Text style={styles.statLabel}>{label}</Text>
-                <Text style={styles.statVal}>{val}</Text>
-              </View>
-            ))}
-          </View>
+          <StatStrip
+            items={[
+              { label: 'H-AB', value: `${w.h}-${w.ab}`, accent: true },
+              { label: 'AVG', value: w.avg },
+              { label: 'OPS', value: w.ops, accent: true },
+              { label: 'HR', value: String(w.hr) },
+              { label: 'RBI', value: String(w.rbi ?? 0) },
+              { label: 'G', value: String(w.g) },
+            ]}
+          />
 
-          <Text style={styles.chartTitle}>{WINDOW_LABELS[window]} · {metricLabel}</Text>
+          <Text style={styles.chartTitle}>
+            {WINDOW_LABELS[window]} · {metricLabel}
+          </Text>
           <View style={styles.segRow}>
             {HIT_METRICS.map((m) => (
               <Pressable
@@ -231,7 +264,7 @@ export default function PlayerScreen() {
             {sum} {metricLabel.toLowerCase()} across {hitLog.length} games
           </Text>
 
-          <Text style={styles.chartTitle}>Recent games</Text>
+          <Text style={styles.chartTitle}>Recent games · {WINDOW_LABELS[window]}</Text>
           <View style={styles.logHead}>
             <Text style={styles.logHeadDate}>DATE</Text>
             <Text style={styles.logHeadOpp}>OPP</Text>
@@ -239,25 +272,31 @@ export default function PlayerScreen() {
             <Text style={styles.logHeadStat}>RBI</Text>
             <Text style={styles.logHeadStat}>HR</Text>
           </View>
-          {[...hitLog].reverse().map((g, i) => (
-            <View key={`${g.date}-${i}`} style={styles.logRow}>
-              <Text style={styles.logDate}>{g.date.slice(5)}</Text>
-              <Text style={styles.logOpp}>{g.opp || '—'}</Text>
-              <Text style={styles.logStat}>
-                {g.h}-{g.ab}
-              </Text>
-              <Text style={styles.logStat}>{g.rbi}</Text>
-              <Text style={styles.logStat}>{g.hr}</Text>
-            </View>
-          ))}
+          {[...hitLog].reverse().map((g, i) => {
+            const abbr = opponentAbbr(g.opp);
+            return (
+              <View key={`${g.date}-${i}`} style={styles.logRow}>
+                <Text style={styles.logDate}>{g.date.slice(5)}</Text>
+                <View style={styles.logOppCell}>
+                  <TeamLogo abbr={abbr} size={20} />
+                  <Text style={styles.logOpp}>{abbr}</Text>
+                </View>
+                <Text style={styles.logStat}>
+                  {g.h}-{g.ab}
+                </Text>
+                <Text style={styles.logStat}>{g.rbi}</Text>
+                <Text style={styles.logStat}>{g.hr}</Text>
+              </View>
+            );
+          })}
         </Screen>
       </>
     );
   }
 
   const p = pitcher!;
-  const w = p.windows[window] || p.windows.l10 || p.season;
-  const form = formFromPitchWindow(p.windows[window] || p.windows.l10);
+  const w = p.windows[window] || p.windows.l5 || p.windows.l10 || p.season;
+  const form = formFromPitchWindow(p.windows[window] || p.windows.l10 || p.windows.l5);
   const sum = pitchValues.reduce((a, b) => a + b, 0);
   const metricLabel = PITCH_METRICS.find((m) => m.key === pitchMetric)?.label || '';
 
@@ -298,23 +337,20 @@ export default function PlayerScreen() {
         <Text style={styles.controlLabel}>Sample window</Text>
         <WindowSeg value={window} onChange={setWindow} />
 
-        <View style={styles.statGrid}>
-          {[
-            ['ERA', w.era],
-            ['WHIP', w.whip],
-            ['K', String(w.so)],
-            ['IP', w.ip],
-            ['BB', String(w.bb ?? 0)],
-            ['G', String(w.g)],
-          ].map(([label, val]) => (
-            <View key={label} style={styles.statCell}>
-              <Text style={styles.statLabel}>{label}</Text>
-              <Text style={styles.statVal}>{val}</Text>
-            </View>
-          ))}
-        </View>
+        <StatStrip
+          items={[
+            { label: 'ERA', value: w.era, accent: true },
+            { label: 'WHIP', value: w.whip },
+            { label: 'K', value: String(w.so), accent: true },
+            { label: 'IP', value: w.ip },
+            { label: 'BB', value: String(w.bb ?? 0) },
+            { label: 'G', value: String(w.g) },
+          ]}
+        />
 
-        <Text style={styles.chartTitle}>{WINDOW_LABELS[window]} · {metricLabel}</Text>
+        <Text style={styles.chartTitle}>
+          {WINDOW_LABELS[window]} · {metricLabel}
+        </Text>
         <View style={styles.segRow}>
           {PITCH_METRICS.map((m) => (
             <Pressable
@@ -339,7 +375,7 @@ export default function PlayerScreen() {
           {pitchLog.length} appearances
         </Text>
 
-        <Text style={styles.chartTitle}>Recent appearances</Text>
+        <Text style={styles.chartTitle}>Recent appearances · {WINDOW_LABELS[window]}</Text>
         <View style={styles.logHead}>
           <Text style={styles.logHeadDate}>DATE</Text>
           <Text style={styles.logHeadOpp}>OPP</Text>
@@ -347,15 +383,21 @@ export default function PlayerScreen() {
           <Text style={styles.logHeadStat}>K</Text>
           <Text style={styles.logHeadStat}>ER</Text>
         </View>
-        {[...pitchLog].reverse().map((g, i) => (
-          <View key={`${g.date}-${i}`} style={styles.logRow}>
-            <Text style={styles.logDate}>{g.date.slice(5)}</Text>
-            <Text style={styles.logOpp}>{g.opp || '—'}</Text>
-            <Text style={styles.logStat}>{g.ip}</Text>
-            <Text style={styles.logStat}>{g.so}</Text>
-            <Text style={styles.logStat}>{g.er}</Text>
-          </View>
-        ))}
+        {[...pitchLog].reverse().map((g, i) => {
+          const abbr = opponentAbbr(g.opp);
+          return (
+            <View key={`${g.date}-${i}`} style={styles.logRow}>
+              <Text style={styles.logDate}>{g.date.slice(5)}</Text>
+              <View style={styles.logOppCell}>
+                <TeamLogo abbr={abbr} size={20} />
+                <Text style={styles.logOpp}>{abbr}</Text>
+              </View>
+              <Text style={styles.logStat}>{g.ip}</Text>
+              <Text style={styles.logStat}>{g.so}</Text>
+              <Text style={styles.logStat}>{g.er}</Text>
+            </View>
+          );
+        })}
       </Screen>
     </>
   );
@@ -431,32 +473,38 @@ const styles = StyleSheet.create({
   segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
   segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 12 },
   segTextOn: { color: colors.white },
-  statGrid: {
+  statStrip: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    backgroundColor: 'rgba(26, 47, 85, 0.55)',
     marginBottom: spacing.lg,
+    overflow: 'hidden',
   },
-  statCell: {
-    width: '31%',
-    flexGrow: 1,
-    backgroundColor: colors.navyLift,
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+  statItem: {
+    width: '33.333%',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
   },
   statLabel: {
     fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
     fontSize: 10,
-    letterSpacing: 1,
+    letterSpacing: 1.2,
   },
   statVal: {
     fontFamily: 'BebasNeue_400Regular',
-    color: colors.white,
-    fontSize: 26,
-    marginTop: 2,
+    color: colors.cream,
+    fontSize: 28,
+    marginTop: 4,
+    letterSpacing: 0.5,
   },
+  statValAccent: { color: colors.gold },
   chartTitle: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
@@ -487,7 +535,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   logHeadOpp: {
-    width: 40,
+    width: 72,
     fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
     fontSize: 10,
@@ -515,8 +563,13 @@ const styles = StyleSheet.create({
     color: colors.mist,
     fontSize: 12,
   },
+  logOppCell: {
+    width: 72,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   logOpp: {
-    width: 40,
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
     fontSize: 13,

@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-08-12T16:15:17.542Z",
+  "syncedAt": "2026-08-12T16:35:50.753Z",
   "dataAsOf": "Aug 12, 2026",
   "teamPulse": {
     "record": "72-48",
@@ -3640,7 +3640,7 @@
     {
       "id": 660670,
       "name": "Ronald Acuña Jr.",
-      "form": "neutral",
+      "form": "hot",
       "windows": {
         "l10": {
           "g": 10,
@@ -3692,7 +3692,7 @@
     {
       "id": 671739,
       "name": "Michael Harris II",
-      "form": "neutral",
+      "form": "hot",
       "windows": {
         "l10": {
           "g": 10,
@@ -3744,7 +3744,7 @@
     {
       "id": 642086,
       "name": "Dominic Smith",
-      "form": "neutral",
+      "form": "hot",
       "windows": {
         "l10": {
           "g": 10,
@@ -3796,7 +3796,7 @@
     {
       "id": 645277,
       "name": "Ozzie Albies",
-      "form": "cold",
+      "form": "neutral",
       "windows": {
         "l10": {
           "g": 10,
@@ -3848,7 +3848,7 @@
     {
       "id": 643289,
       "name": "Mauricio Dubón",
-      "form": "hot",
+      "form": "neutral",
       "windows": {
         "l10": {
           "g": 10,
@@ -3900,7 +3900,7 @@
     {
       "id": 686948,
       "name": "Drake Baldwin",
-      "form": "cold",
+      "form": "neutral",
       "windows": {
         "l10": {
           "g": 10,
@@ -3952,13 +3952,13 @@
     {
       "id": 657041,
       "name": "Lane Thomas",
-      "form": "cold",
+      "form": "neutral",
       "windows": {}
     },
     {
       "id": 805347,
       "name": "Jim Jarvis",
-      "form": "cold",
+      "form": "neutral",
       "windows": {
         "l10": {
           "g": 10,
@@ -4139,7 +4139,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -4153,7 +4153,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -4167,7 +4167,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -4181,7 +4181,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -4195,7 +4195,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 5,
           "r": 0,
           "h": 1,
@@ -4209,7 +4209,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 3,
           "r": 2,
           "h": 2,
@@ -4223,7 +4223,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -4237,7 +4237,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -4251,7 +4251,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -4265,7 +4265,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -4279,7 +4279,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 2,
@@ -4293,7 +4293,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -4307,7 +4307,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 2,
@@ -4321,7 +4321,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -4335,7 +4335,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -4349,7 +4349,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -4363,7 +4363,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -4377,7 +4377,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -4391,7 +4391,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -4405,7 +4405,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -4419,7 +4419,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -4433,7 +4433,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -4447,7 +4447,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 0,
           "h": 2,
@@ -4461,7 +4461,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -4475,7 +4475,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 3,
           "h": 2,
@@ -4489,7 +4489,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -4503,7 +4503,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -4517,7 +4517,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -4531,7 +4531,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -4545,7 +4545,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -4645,7 +4645,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -4659,7 +4659,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -4673,7 +4673,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -4687,7 +4687,7 @@
         {
           "date": "2026-07-02",
           "gamePk": 824906,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -4701,7 +4701,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -4715,7 +4715,7 @@
         {
           "date": "2026-07-04",
           "gamePk": 824903,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 2,
           "h": 2,
@@ -4729,7 +4729,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -4743,7 +4743,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -4757,7 +4757,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823361,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -4771,7 +4771,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -4785,7 +4785,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -4799,7 +4799,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -4813,7 +4813,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -4827,7 +4827,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -4841,7 +4841,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -4855,7 +4855,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -4869,7 +4869,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -4883,7 +4883,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -4897,7 +4897,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -4911,7 +4911,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -4925,7 +4925,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 2,
           "r": 1,
           "h": 1,
@@ -4939,7 +4939,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -4953,7 +4953,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 2,
           "r": 1,
           "h": 1,
@@ -4967,7 +4967,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -4981,7 +4981,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -4995,7 +4995,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -5009,7 +5009,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -5023,7 +5023,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -5037,7 +5037,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -5051,7 +5051,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -5151,7 +5151,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823361,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -5165,7 +5165,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5179,7 +5179,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -5193,7 +5193,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -5207,7 +5207,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5221,7 +5221,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -5235,7 +5235,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 2,
           "h": 2,
@@ -5249,7 +5249,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5263,7 +5263,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 2,
           "h": 3,
@@ -5277,7 +5277,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -5291,7 +5291,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5305,7 +5305,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 5,
           "r": 0,
           "h": 2,
@@ -5319,7 +5319,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5333,7 +5333,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -5347,7 +5347,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5361,7 +5361,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5375,7 +5375,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5389,7 +5389,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5403,7 +5403,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5417,7 +5417,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -5431,7 +5431,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -5445,7 +5445,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5459,7 +5459,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 1,
           "h": 2,
@@ -5473,7 +5473,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -5487,7 +5487,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5501,7 +5501,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5515,7 +5515,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5529,7 +5529,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5543,7 +5543,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5557,7 +5557,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5652,12 +5652,12 @@
           "sb": 8
         }
       },
-      "form": "neutral",
+      "form": "hot",
       "log": [
         {
           "date": "2026-05-23",
           "gamePk": 824920,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5671,7 +5671,7 @@
         {
           "date": "2026-05-24",
           "gamePk": 824921,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5685,7 +5685,7 @@
         {
           "date": "2026-05-26",
           "gamePk": 824758,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 5,
           "r": 0,
           "h": 1,
@@ -5699,7 +5699,7 @@
         {
           "date": "2026-05-27",
           "gamePk": 824756,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5713,7 +5713,7 @@
         {
           "date": "2026-05-28",
           "gamePk": 824757,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5727,7 +5727,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 824515,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -5741,7 +5741,7 @@
         {
           "date": "2026-05-30",
           "gamePk": 824513,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -5755,7 +5755,7 @@
         {
           "date": "2026-05-31",
           "gamePk": 824512,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ab": 3,
           "r": 1,
           "h": 2,
@@ -5769,7 +5769,7 @@
         {
           "date": "2026-06-02",
           "gamePk": 824918,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -5783,7 +5783,7 @@
         {
           "date": "2026-06-03",
           "gamePk": 824917,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5797,7 +5797,7 @@
         {
           "date": "2026-06-04",
           "gamePk": 824919,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -5811,7 +5811,7 @@
         {
           "date": "2026-06-05",
           "gamePk": 824914,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -5825,7 +5825,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -5839,7 +5839,7 @@
         {
           "date": "2026-06-07",
           "gamePk": 824916,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5853,7 +5853,7 @@
         {
           "date": "2026-06-09",
           "gamePk": 824591,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -5867,7 +5867,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -5881,7 +5881,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -5895,7 +5895,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5909,7 +5909,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -5923,7 +5923,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -5937,7 +5937,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 2,
           "h": 1,
@@ -5951,7 +5951,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5965,7 +5965,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -5979,7 +5979,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -5993,7 +5993,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 5,
           "r": 2,
           "h": 2,
@@ -6007,7 +6007,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 5,
           "r": 0,
           "h": 2,
@@ -6021,7 +6021,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -6035,7 +6035,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6049,7 +6049,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6063,7 +6063,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6158,12 +6158,12 @@
           "sb": 1
         }
       },
-      "form": "neutral",
+      "form": "hot",
       "log": [
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -6177,7 +6177,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 6,
           "r": 1,
           "h": 1,
@@ -6191,7 +6191,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6205,7 +6205,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6219,7 +6219,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6233,7 +6233,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 6,
           "r": 1,
           "h": 2,
@@ -6247,7 +6247,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 2,
           "h": 2,
@@ -6261,7 +6261,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -6275,7 +6275,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -6289,7 +6289,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6303,7 +6303,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -6317,7 +6317,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -6331,7 +6331,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 2,
@@ -6345,7 +6345,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6359,7 +6359,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -6373,7 +6373,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -6387,7 +6387,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6401,7 +6401,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6415,7 +6415,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6429,7 +6429,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -6443,7 +6443,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6457,7 +6457,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6471,7 +6471,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -6485,7 +6485,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -6499,7 +6499,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 5,
           "r": 3,
           "h": 3,
@@ -6513,7 +6513,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -6527,7 +6527,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6541,7 +6541,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6555,7 +6555,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 5,
           "r": 1,
           "h": 2,
@@ -6569,7 +6569,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -6664,12 +6664,12 @@
           "sb": 0
         }
       },
-      "form": "neutral",
+      "form": "hot",
       "log": [
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -6683,7 +6683,7 @@
         {
           "date": "2026-06-27",
           "gamePk": 823207,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6697,7 +6697,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 1,
           "r": 0,
           "h": 1,
@@ -6711,7 +6711,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -6725,7 +6725,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -6739,7 +6739,7 @@
         {
           "date": "2026-07-02",
           "gamePk": 824906,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -6753,7 +6753,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -6767,7 +6767,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -6781,7 +6781,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 1,
           "h": 1,
@@ -6795,7 +6795,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823361,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 1,
           "h": 0,
@@ -6809,7 +6809,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -6823,7 +6823,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6837,7 +6837,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -6851,7 +6851,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 1,
           "r": 1,
           "h": 0,
@@ -6865,7 +6865,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -6879,7 +6879,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -6893,7 +6893,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6907,7 +6907,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 1,
           "r": 0,
           "h": 1,
@@ -6921,7 +6921,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -6935,7 +6935,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -6949,7 +6949,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -6963,7 +6963,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 0,
           "h": 3,
@@ -6977,7 +6977,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -6991,7 +6991,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -7005,7 +7005,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -7019,7 +7019,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -7033,7 +7033,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -7047,7 +7047,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 1,
           "r": 0,
           "h": 1,
@@ -7061,7 +7061,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7075,7 +7075,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -7170,12 +7170,12 @@
           "sb": 1
         }
       },
-      "form": "cold",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7189,7 +7189,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 2,
           "h": 1,
@@ -7203,7 +7203,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7217,7 +7217,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -7231,7 +7231,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -7245,7 +7245,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7259,7 +7259,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7273,7 +7273,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -7287,7 +7287,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7301,7 +7301,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -7315,7 +7315,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -7329,7 +7329,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7343,7 +7343,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -7357,7 +7357,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -7371,7 +7371,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 6,
           "r": 0,
           "h": 0,
@@ -7385,7 +7385,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7399,7 +7399,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7413,7 +7413,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -7427,7 +7427,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -7441,7 +7441,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7455,7 +7455,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7469,7 +7469,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -7483,7 +7483,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -7497,7 +7497,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -7511,7 +7511,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -7525,7 +7525,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -7539,7 +7539,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7553,7 +7553,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7567,7 +7567,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -7581,7 +7581,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -7676,12 +7676,12 @@
           "sb": 4
         }
       },
-      "form": "hot",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 6,
           "r": 0,
           "h": 1,
@@ -7695,7 +7695,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823361,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 0,
           "h": 2,
@@ -7709,7 +7709,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7723,7 +7723,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7737,7 +7737,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7751,7 +7751,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -7765,7 +7765,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -7779,7 +7779,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 0,
           "h": 2,
@@ -7793,7 +7793,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -7807,7 +7807,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 1,
           "h": 0,
@@ -7821,7 +7821,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 2,
           "r": 1,
           "h": 0,
@@ -7835,7 +7835,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -7849,7 +7849,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 5,
           "r": 1,
           "h": 2,
@@ -7863,7 +7863,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -7877,7 +7877,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7891,7 +7891,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7905,7 +7905,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -7919,7 +7919,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -7933,7 +7933,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7947,7 +7947,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -7961,7 +7961,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -7975,7 +7975,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -7989,7 +7989,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -8003,7 +8003,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -8017,7 +8017,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -8031,7 +8031,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 4,
@@ -8045,7 +8045,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8059,7 +8059,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8073,7 +8073,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 5,
           "r": 0,
           "h": 1,
@@ -8087,7 +8087,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -8182,12 +8182,12 @@
           "sb": 1
         }
       },
-      "form": "cold",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8201,7 +8201,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -8215,7 +8215,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8229,7 +8229,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -8243,7 +8243,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -8257,7 +8257,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 2,
           "h": 3,
@@ -8271,7 +8271,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 0,
           "h": 2,
@@ -8285,7 +8285,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 3,
           "h": 5,
@@ -8299,7 +8299,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8313,7 +8313,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -8327,7 +8327,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 2,
           "h": 2,
@@ -8341,7 +8341,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8355,7 +8355,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -8369,7 +8369,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8383,7 +8383,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 3,
           "r": 0,
           "h": 2,
@@ -8397,7 +8397,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8411,7 +8411,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -8425,7 +8425,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -8439,7 +8439,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -8453,7 +8453,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -8467,7 +8467,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8481,7 +8481,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -8495,7 +8495,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8509,7 +8509,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -8523,7 +8523,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -8537,7 +8537,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -8551,7 +8551,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 5,
           "r": 0,
           "h": 1,
@@ -8565,7 +8565,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8579,7 +8579,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 5,
           "r": 1,
           "h": 2,
@@ -8593,7 +8593,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -8643,11 +8643,12 @@
           "sb": 0
         }
       },
-      "form": "cold",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-07-04",
           "gamePk": 824092,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8661,6 +8662,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824091,
+          "opp": "KC",
           "ab": 3,
           "r": 2,
           "h": 1,
@@ -8674,6 +8676,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824089,
+          "opp": "KC",
           "ab": 3,
           "r": 1,
           "h": 2,
@@ -8687,6 +8690,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823607,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 3,
@@ -8700,6 +8704,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823605,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8713,6 +8718,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823606,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8726,6 +8732,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 824817,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8739,6 +8746,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 824813,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8752,6 +8760,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 824814,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 3,
@@ -8765,6 +8774,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824090,
+          "opp": "KC",
           "ab": 4,
           "r": 2,
           "h": 2,
@@ -8778,6 +8788,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824088,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -8791,6 +8802,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824086,
+          "opp": "KC",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -8804,6 +8816,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824087,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 2,
@@ -8817,6 +8830,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824085,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8830,6 +8844,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824083,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -8843,6 +8858,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824247,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8856,6 +8872,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824248,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8869,6 +8886,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824244,
+          "opp": "KC",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -8882,6 +8900,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824246,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8895,6 +8914,7 @@
         {
           "date": "2026-07-28",
           "gamePk": 823676,
+          "opp": "KC",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -8908,6 +8928,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823677,
+          "opp": "KC",
           "ab": 5,
           "r": 0,
           "h": 1,
@@ -8921,6 +8942,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 823674,
+          "opp": "KC",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -8934,6 +8956,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824325,
+          "opp": "KC",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -8947,6 +8970,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824326,
+          "opp": "KC",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -8960,7 +8984,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 1,
           "h": 0,
@@ -8974,7 +8998,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -8988,7 +9012,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -9002,7 +9026,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9016,7 +9040,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -9030,7 +9054,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -9125,12 +9149,12 @@
           "sb": 0
         }
       },
-      "form": "cold",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9144,7 +9168,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -9158,7 +9182,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 823361,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -9172,7 +9196,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 5,
           "r": 1,
           "h": 3,
@@ -9186,7 +9210,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 2,
           "r": 0,
           "h": 1,
@@ -9200,7 +9224,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823030,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -9214,7 +9238,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -9228,7 +9252,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 5,
           "r": 2,
           "h": 2,
@@ -9242,7 +9266,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -9256,7 +9280,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9270,7 +9294,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9284,7 +9308,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 1,
           "h": 2,
@@ -9298,7 +9322,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 4,
           "r": 1,
           "h": 2,
@@ -9312,7 +9336,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9326,7 +9350,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 1,
           "r": 1,
           "h": 0,
@@ -9340,7 +9364,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9354,7 +9378,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9368,7 +9392,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9382,7 +9406,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -9396,7 +9420,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9410,7 +9434,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 3,
@@ -9424,7 +9448,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -9438,7 +9462,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9452,7 +9476,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9466,7 +9490,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9480,7 +9504,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 1,
           "r": 0,
           "h": 0,
@@ -9494,7 +9518,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -9508,7 +9532,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9522,7 +9546,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 1,
           "h": 0,
@@ -9536,7 +9560,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9591,7 +9615,7 @@
         {
           "date": "2026-05-04",
           "gamePk": 823143,
-          "opp": "Seattle Mariners",
+          "opp": "SEA",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9605,7 +9629,7 @@
         {
           "date": "2026-05-06",
           "gamePk": 823141,
-          "opp": "Seattle Mariners",
+          "opp": "SEA",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -9619,7 +9643,7 @@
         {
           "date": "2026-05-09",
           "gamePk": 823955,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAD",
           "ab": 5,
           "r": 0,
           "h": 0,
@@ -9633,7 +9657,7 @@
         {
           "date": "2026-05-10",
           "gamePk": 823954,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAD",
           "ab": 3,
           "r": 1,
           "h": 0,
@@ -9647,7 +9671,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -9661,7 +9685,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9675,7 +9699,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -9760,7 +9784,7 @@
         {
           "date": "2026-05-12",
           "gamePk": 824927,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9774,7 +9798,7 @@
         {
           "date": "2026-05-13",
           "gamePk": 824928,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ab": 3,
           "r": 0,
           "h": 1,
@@ -9788,7 +9812,7 @@
         {
           "date": "2026-05-14",
           "gamePk": 824926,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9802,7 +9826,7 @@
         {
           "date": "2026-05-15",
           "gamePk": 824925,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 4,
           "r": 1,
           "h": 0,
@@ -9816,7 +9840,7 @@
         {
           "date": "2026-05-16",
           "gamePk": 824924,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9830,7 +9854,7 @@
         {
           "date": "2026-05-18",
           "gamePk": 823867,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9844,7 +9868,7 @@
         {
           "date": "2026-05-19",
           "gamePk": 823865,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 4,
           "r": 1,
           "h": 1,
@@ -9858,7 +9882,7 @@
         {
           "date": "2026-05-21",
           "gamePk": 823864,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ab": 3,
           "r": 1,
           "h": 1,
@@ -9872,7 +9896,7 @@
         {
           "date": "2026-05-22",
           "gamePk": 824922,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 5,
           "r": 1,
           "h": 1,
@@ -9886,7 +9910,7 @@
         {
           "date": "2026-05-24",
           "gamePk": 824921,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9900,7 +9924,7 @@
         {
           "date": "2026-05-26",
           "gamePk": 824758,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9914,7 +9938,7 @@
         {
           "date": "2026-05-27",
           "gamePk": 824756,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -9928,7 +9952,7 @@
         {
           "date": "2026-05-31",
           "gamePk": 824512,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9942,7 +9966,7 @@
         {
           "date": "2026-06-03",
           "gamePk": 824917,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ab": 4,
           "r": 0,
           "h": 1,
@@ -9956,7 +9980,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -9970,7 +9994,7 @@
         {
           "date": "2026-06-12",
           "gamePk": 823617,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9984,7 +10008,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 823616,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -9998,7 +10022,7 @@
         {
           "date": "2026-06-16",
           "gamePk": 824912,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -10012,7 +10036,7 @@
         {
           "date": "2026-06-17",
           "gamePk": 824913,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -10026,7 +10050,7 @@
         {
           "date": "2026-06-20",
           "gamePk": 824909,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -10040,7 +10064,7 @@
         {
           "date": "2026-06-21",
           "gamePk": 824908,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -10054,7 +10078,7 @@
         {
           "date": "2026-06-23",
           "gamePk": 823286,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -10068,7 +10092,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823284,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ab": 3,
           "r": 0,
           "h": 0,
@@ -10082,7 +10106,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 4,
           "r": 0,
           "h": 0,
@@ -10096,7 +10120,7 @@
         {
           "date": "2026-06-27",
           "gamePk": 823207,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -10110,7 +10134,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -10124,7 +10148,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ab": 0,
           "r": 0,
           "h": 0,
@@ -10138,7 +10162,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 2,
           "r": 0,
           "h": 0,
@@ -10152,7 +10176,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ab": 0,
           "r": 1,
           "h": 0,
@@ -10192,7 +10216,7 @@
         {
           "date": "2026-03-28",
           "gamePk": 823241,
-          "opp": "New York Yankees",
+          "opp": "SF",
           "ip": "4.0",
           "h": 5,
           "r": 2,
@@ -10206,7 +10230,7 @@
         {
           "date": "2026-04-03",
           "gamePk": 823240,
-          "opp": "New York Mets",
+          "opp": "SF",
           "ip": "5.0",
           "h": 8,
           "r": 5,
@@ -10220,7 +10244,7 @@
         {
           "date": "2026-04-08",
           "gamePk": 823234,
-          "opp": "Philadelphia Phillies",
+          "opp": "SF",
           "ip": "5.2",
           "h": 3,
           "r": 0,
@@ -10234,7 +10258,7 @@
         {
           "date": "2026-04-15",
           "gamePk": 824532,
-          "opp": "Cincinnati Reds",
+          "opp": "SF",
           "ip": "4.0",
           "h": 8,
           "r": 8,
@@ -10248,7 +10272,7 @@
         {
           "date": "2026-04-22",
           "gamePk": 823231,
-          "opp": "Los Angeles Dodgers",
+          "opp": "SF",
           "ip": "7.0",
           "h": 3,
           "r": 0,
@@ -10262,7 +10286,7 @@
         {
           "date": "2026-04-28",
           "gamePk": 823473,
-          "opp": "Philadelphia Phillies",
+          "opp": "SF",
           "ip": "5.0",
           "h": 6,
           "r": 5,
@@ -10276,7 +10300,7 @@
         {
           "date": "2026-05-03",
           "gamePk": 822987,
-          "opp": "Tampa Bay Rays",
+          "opp": "SF",
           "ip": "5.1",
           "h": 4,
           "r": 0,
@@ -10290,7 +10314,7 @@
         {
           "date": "2026-05-10",
           "gamePk": 823221,
-          "opp": "Pittsburgh Pirates",
+          "opp": "SF",
           "ip": "5.2",
           "h": 5,
           "r": 4,
@@ -10304,7 +10328,7 @@
         {
           "date": "2026-05-15",
           "gamePk": 825009,
-          "opp": "Athletics",
+          "opp": "SF",
           "ip": "5.0",
           "h": 10,
           "r": 5,
@@ -10318,7 +10342,7 @@
         {
           "date": "2026-05-20",
           "gamePk": 825084,
-          "opp": "Arizona Diamondbacks",
+          "opp": "SF",
           "ip": "5.0",
           "h": 8,
           "r": 6,
@@ -10332,7 +10356,7 @@
         {
           "date": "2026-05-26",
           "gamePk": 823216,
-          "opp": "Arizona Diamondbacks",
+          "opp": "SF",
           "ip": "5.0",
           "h": 3,
           "r": 3,
@@ -10346,7 +10370,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823208,
-          "opp": "Athletics",
+          "opp": "SF",
           "ip": "5.2",
           "h": 2,
           "r": 0,
@@ -10360,7 +10384,7 @@
         {
           "date": "2026-06-29",
           "gamePk": 825065,
-          "opp": "Arizona Diamondbacks",
+          "opp": "SF",
           "ip": "4.1",
           "h": 4,
           "r": 4,
@@ -10374,7 +10398,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824333,
-          "opp": "Colorado Rockies",
+          "opp": "SF",
           "ip": "4.1",
           "h": 8,
           "r": 4,
@@ -10388,7 +10412,7 @@
         {
           "date": "2026-07-11",
           "gamePk": 823198,
-          "opp": "Colorado Rockies",
+          "opp": "SF",
           "ip": "7.0",
           "h": 5,
           "r": 1,
@@ -10402,7 +10426,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824085,
-          "opp": "Kansas City Royals",
+          "opp": "SF",
           "ip": "5.0",
           "h": 5,
           "r": 3,
@@ -10416,7 +10440,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823195,
-          "opp": "Milwaukee Brewers",
+          "opp": "SF",
           "ip": "6.0",
           "h": 3,
           "r": 0,
@@ -10430,7 +10454,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 823269,
-          "opp": "San Diego Padres",
+          "opp": "SF",
           "ip": "5.2",
           "h": 5,
           "r": 5,
@@ -10444,7 +10468,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "6.0",
           "h": 3,
           "r": 0,
@@ -10482,7 +10506,7 @@
         {
           "date": "2026-05-06",
           "gamePk": 824036,
-          "opp": "Chicago White Sox",
+          "opp": "LAA",
           "ip": "0.2",
           "h": 1,
           "r": 1,
@@ -10496,7 +10520,7 @@
         {
           "date": "2026-05-08",
           "gamePk": 822822,
-          "opp": "Toronto Blue Jays",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -10510,7 +10534,7 @@
         {
           "date": "2026-05-11",
           "gamePk": 824441,
-          "opp": "Cleveland Guardians",
+          "opp": "LAA",
           "ip": "1.2",
           "h": 2,
           "r": 2,
@@ -10524,7 +10548,7 @@
         {
           "date": "2026-05-15",
           "gamePk": 824037,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -10538,7 +10562,7 @@
         {
           "date": "2026-05-19",
           "gamePk": 824033,
-          "opp": "Athletics",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -10552,7 +10576,7 @@
         {
           "date": "2026-05-22",
           "gamePk": 824029,
-          "opp": "Texas Rangers",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -10566,7 +10590,7 @@
         {
           "date": "2026-05-27",
           "gamePk": 824270,
-          "opp": "Detroit Tigers",
+          "opp": "LAA",
           "ip": "3.0",
           "h": 3,
           "r": 1,
@@ -10580,7 +10604,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 822978,
-          "opp": "Tampa Bay Rays",
+          "opp": "LAA",
           "ip": "1.2",
           "h": 3,
           "r": 3,
@@ -10594,7 +10618,7 @@
         {
           "date": "2026-05-31",
           "gamePk": 822976,
-          "opp": "Tampa Bay Rays",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -10608,7 +10632,7 @@
         {
           "date": "2026-06-01",
           "gamePk": 824027,
-          "opp": "Colorado Rockies",
+          "opp": "LAA",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -10622,7 +10646,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 823942,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAA",
           "ip": "2.2",
           "h": 2,
           "r": 2,
@@ -10636,7 +10660,7 @@
         {
           "date": "2026-06-09",
           "gamePk": 824023,
-          "opp": "Houston Astros",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 2,
           "r": 1,
@@ -10650,7 +10674,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 824019,
-          "opp": "Tampa Bay Rays",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 2,
           "r": 0,
@@ -10664,7 +10688,7 @@
         {
           "date": "2026-06-14",
           "gamePk": 824021,
-          "opp": "Tampa Bay Rays",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 1,
           "r": 0,
@@ -10678,7 +10702,7 @@
         {
           "date": "2026-06-18",
           "gamePk": 824989,
-          "opp": "Athletics",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -10692,7 +10716,7 @@
         {
           "date": "2026-06-21",
           "gamePk": 824987,
-          "opp": "Athletics",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 1,
           "r": 2,
@@ -10706,7 +10730,7 @@
         {
           "date": "2026-06-22",
           "gamePk": 824016,
-          "opp": "Baltimore Orioles",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 3,
           "r": 1,
@@ -10720,7 +10744,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 824014,
-          "opp": "Athletics",
+          "opp": "LAA",
           "ip": "2.1",
           "h": 4,
           "r": 2,
@@ -10734,7 +10758,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 823122,
-          "opp": "Seattle Mariners",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 4,
           "r": 3,
@@ -10748,7 +10772,7 @@
         {
           "date": "2026-07-04",
           "gamePk": 824012,
-          "opp": "Boston Red Sox",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 3,
           "r": 1,
@@ -10762,7 +10786,7 @@
         {
           "date": "2026-07-07",
           "gamePk": 822881,
-          "opp": "Texas Rangers",
+          "opp": "LAA",
           "ip": "0.1",
           "h": 1,
           "r": 0,
@@ -10776,7 +10800,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 822877,
-          "opp": "Texas Rangers",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -10790,7 +10814,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824008,
-          "opp": "Detroit Tigers",
+          "opp": "LAA",
           "ip": "3.0",
           "h": 2,
           "r": 1,
@@ -10804,7 +10828,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 823196,
-          "opp": "San Francisco Giants",
+          "opp": "LAA",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -10818,7 +10842,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 823197,
-          "opp": "San Francisco Giants",
+          "opp": "LAA",
           "ip": "2.2",
           "h": 2,
           "r": 1,
@@ -10832,7 +10856,7 @@
         {
           "date": "2026-07-28",
           "gamePk": 824003,
-          "opp": "Houston Astros",
+          "opp": "LAA",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -10846,7 +10870,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 824002,
-          "opp": "Houston Astros",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 2,
           "r": 1,
@@ -10860,7 +10884,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824000,
-          "opp": "Milwaukee Brewers",
+          "opp": "LAA",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -10874,7 +10898,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "2.0",
           "h": 4,
           "r": 1,
@@ -10888,7 +10912,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "3.0",
           "h": 1,
           "r": 0,
@@ -10941,7 +10965,7 @@
         {
           "date": "2026-05-23",
           "gamePk": 824920,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "3.0",
           "h": 1,
           "r": 0,
@@ -10955,7 +10979,7 @@
         {
           "date": "2026-05-27",
           "gamePk": 824756,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -10969,7 +10993,7 @@
         {
           "date": "2026-05-28",
           "gamePk": 824757,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -10983,7 +11007,7 @@
         {
           "date": "2026-05-31",
           "gamePk": 824512,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -10997,7 +11021,7 @@
         {
           "date": "2026-06-04",
           "gamePk": 824919,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11011,7 +11035,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11025,7 +11049,7 @@
         {
           "date": "2026-06-09",
           "gamePk": 824591,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "1.2",
           "h": 0,
           "r": 0,
@@ -11039,7 +11063,7 @@
         {
           "date": "2026-06-14",
           "gamePk": 823615,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11053,7 +11077,7 @@
         {
           "date": "2026-06-16",
           "gamePk": 824912,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "2.0",
           "h": 2,
           "r": 2,
@@ -11067,7 +11091,7 @@
         {
           "date": "2026-06-22",
           "gamePk": 823288,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.1",
           "h": 1,
           "r": 0,
@@ -11081,7 +11105,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823284,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.1",
           "h": 1,
           "r": 2,
@@ -11095,7 +11119,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11109,7 +11133,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11123,7 +11147,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11137,7 +11161,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -11151,7 +11175,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11165,7 +11189,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11179,7 +11203,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11193,7 +11217,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.1",
           "h": 1,
           "r": 1,
@@ -11207,7 +11231,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -11221,7 +11245,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "0.2",
           "h": 2,
           "r": 0,
@@ -11235,7 +11259,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11249,7 +11273,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11263,7 +11287,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -11277,7 +11301,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -11291,7 +11315,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11305,7 +11329,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11319,7 +11343,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "0.2",
           "h": 2,
           "r": 0,
@@ -11333,7 +11357,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -11347,7 +11371,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -11385,7 +11409,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 824515,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11399,7 +11423,7 @@
         {
           "date": "2026-05-30",
           "gamePk": 824513,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -11413,7 +11437,7 @@
         {
           "date": "2026-06-03",
           "gamePk": 824917,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11427,7 +11451,7 @@
         {
           "date": "2026-06-05",
           "gamePk": 824914,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11441,7 +11465,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11455,7 +11479,7 @@
         {
           "date": "2026-06-10",
           "gamePk": 824590,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -11469,7 +11493,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 823616,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -11483,7 +11507,7 @@
         {
           "date": "2026-06-19",
           "gamePk": 824910,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -11497,7 +11521,7 @@
         {
           "date": "2026-06-20",
           "gamePk": 824909,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -11511,7 +11535,7 @@
         {
           "date": "2026-06-23",
           "gamePk": 823286,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -11525,7 +11549,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "1.2",
           "h": 1,
           "r": 0,
@@ -11539,7 +11563,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -11553,7 +11577,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11567,7 +11591,7 @@
         {
           "date": "2026-07-02",
           "gamePk": 824906,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.1",
           "h": 3,
           "r": 3,
@@ -11581,7 +11605,7 @@
         {
           "date": "2026-07-04",
           "gamePk": 824903,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11595,7 +11619,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11609,7 +11633,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11623,7 +11647,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.2",
           "h": 0,
           "r": 0,
@@ -11637,7 +11661,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "0.2",
           "h": 3,
           "r": 1,
@@ -11651,7 +11675,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -11665,7 +11689,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11679,7 +11703,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.0",
           "h": 2,
           "r": 3,
@@ -11693,7 +11717,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -11707,7 +11731,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11721,7 +11745,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -11735,7 +11759,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11749,7 +11773,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11763,7 +11787,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -11777,7 +11801,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11791,7 +11815,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11886,7 +11910,7 @@
         {
           "date": "2026-05-26",
           "gamePk": 824758,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -11900,7 +11924,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 824515,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.1",
           "h": 1,
           "r": 0,
@@ -11914,7 +11938,7 @@
         {
           "date": "2026-05-31",
           "gamePk": 824512,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -11928,7 +11952,7 @@
         {
           "date": "2026-06-04",
           "gamePk": 824919,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "1.1",
           "h": 1,
           "r": 0,
@@ -11942,7 +11966,7 @@
         {
           "date": "2026-06-05",
           "gamePk": 824914,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11956,7 +11980,7 @@
         {
           "date": "2026-06-07",
           "gamePk": 824916,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 2,
           "r": 0,
@@ -11970,7 +11994,7 @@
         {
           "date": "2026-06-10",
           "gamePk": 824590,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -11984,7 +12008,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 823616,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -11998,7 +12022,7 @@
         {
           "date": "2026-06-20",
           "gamePk": 824909,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "1.1",
           "h": 2,
           "r": 1,
@@ -12012,7 +12036,7 @@
         {
           "date": "2026-06-22",
           "gamePk": 823288,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -12026,7 +12050,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823284,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -12040,7 +12064,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -12054,7 +12078,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "0.1",
           "h": 2,
           "r": 1,
@@ -12068,7 +12092,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -12082,7 +12106,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.1",
           "h": 1,
           "r": 0,
@@ -12096,7 +12120,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 4,
           "r": 1,
@@ -12110,7 +12134,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -12124,7 +12148,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -12138,7 +12162,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -12152,7 +12176,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -12166,7 +12190,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -12180,7 +12204,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "2.0",
           "h": 3,
           "r": 1,
@@ -12194,7 +12218,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.2",
           "h": 2,
           "r": 1,
@@ -12208,7 +12232,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -12222,7 +12246,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -12236,7 +12260,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -12250,7 +12274,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -12264,7 +12288,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -12278,7 +12302,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.1",
           "h": 1,
           "r": 1,
@@ -12292,7 +12316,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -12373,7 +12397,7 @@
         {
           "date": "2026-03-27",
           "gamePk": 824946,
-          "opp": "Kansas City Royals",
+          "opp": "KC",
           "ip": "6.0",
           "h": 3,
           "r": 0,
@@ -12387,7 +12411,7 @@
         {
           "date": "2026-04-01",
           "gamePk": 824940,
-          "opp": "Athletics",
+          "opp": "ATH",
           "ip": "6.0",
           "h": 1,
           "r": 1,
@@ -12401,7 +12425,7 @@
         {
           "date": "2026-04-06",
           "gamePk": 824052,
-          "opp": "Los Angeles Angels",
+          "opp": "LAA",
           "ip": "4.0",
           "h": 5,
           "r": 6,
@@ -12415,7 +12439,7 @@
         {
           "date": "2026-04-12",
           "gamePk": 824938,
-          "opp": "Cleveland Guardians",
+          "opp": "CLE",
           "ip": "6.0",
           "h": 8,
           "r": 1,
@@ -12429,7 +12453,7 @@
         {
           "date": "2026-04-18",
           "gamePk": 823474,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "7.0",
           "h": 5,
           "r": 1,
@@ -12443,7 +12467,7 @@
         {
           "date": "2026-04-26",
           "gamePk": 824934,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "6.0",
           "h": 1,
           "r": 0,
@@ -12457,7 +12481,7 @@
         {
           "date": "2026-05-02",
           "gamePk": 824365,
-          "opp": "Colorado Rockies",
+          "opp": "COL",
           "ip": "7.0",
           "h": 3,
           "r": 1,
@@ -12471,7 +12495,7 @@
         {
           "date": "2026-05-08",
           "gamePk": 823957,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAD",
           "ip": "7.0",
           "h": 5,
           "r": 3,
@@ -12485,7 +12509,7 @@
         {
           "date": "2026-05-14",
           "gamePk": 824926,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ip": "6.0",
           "h": 5,
           "r": 1,
@@ -12499,7 +12523,7 @@
         {
           "date": "2026-05-20",
           "gamePk": 823866,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "7.0",
           "h": 4,
           "r": 1,
@@ -12513,7 +12537,7 @@
         {
           "date": "2026-05-28",
           "gamePk": 824757,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "5.0",
           "h": 6,
           "r": 2,
@@ -12527,7 +12551,7 @@
         {
           "date": "2026-06-04",
           "gamePk": 824919,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "5.2",
           "h": 10,
           "r": 3,
@@ -12541,7 +12565,7 @@
         {
           "date": "2026-06-10",
           "gamePk": 824590,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "5.2",
           "h": 6,
           "r": 2,
@@ -12555,7 +12579,7 @@
         {
           "date": "2026-06-20",
           "gamePk": 824909,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "5.2",
           "h": 5,
           "r": 2,
@@ -12569,7 +12593,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "6.0",
           "h": 8,
           "r": 2,
@@ -12583,7 +12607,7 @@
         {
           "date": "2026-07-04",
           "gamePk": 824903,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "5.0",
           "h": 7,
           "r": 3,
@@ -12597,7 +12621,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "3.0",
           "h": 2,
           "r": 0,
@@ -12611,7 +12635,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "7.0",
           "h": 2,
           "r": 0,
@@ -12625,7 +12649,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "6.0",
           "h": 5,
           "r": 3,
@@ -12639,7 +12663,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "6.0",
           "h": 2,
           "r": 0,
@@ -12653,7 +12677,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "6.0",
           "h": 5,
           "r": 3,
@@ -12734,7 +12758,7 @@
         {
           "date": "2026-03-29",
           "gamePk": 824944,
-          "opp": "Kansas City Royals",
+          "opp": "KC",
           "ip": "5.0",
           "h": 5,
           "r": 3,
@@ -12748,7 +12772,7 @@
         {
           "date": "2026-04-03",
           "gamePk": 825103,
-          "opp": "Arizona Diamondbacks",
+          "opp": "AZ",
           "ip": "6.0",
           "h": 1,
           "r": 0,
@@ -12762,7 +12786,7 @@
         {
           "date": "2026-04-08",
           "gamePk": 824050,
-          "opp": "Los Angeles Angels",
+          "opp": "LAA",
           "ip": "6.2",
           "h": 5,
           "r": 2,
@@ -12776,7 +12800,7 @@
         {
           "date": "2026-04-13",
           "gamePk": 824937,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "4.0",
           "h": 3,
           "r": 3,
@@ -12790,7 +12814,7 @@
         {
           "date": "2026-04-19",
           "gamePk": 823475,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "4.2",
           "h": 4,
           "r": 2,
@@ -12804,7 +12828,7 @@
         {
           "date": "2026-04-24",
           "gamePk": 824932,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "6.0",
           "h": 7,
           "r": 3,
@@ -12818,7 +12842,7 @@
         {
           "date": "2026-05-01",
           "gamePk": 824366,
-          "opp": "Colorado Rockies",
+          "opp": "COL",
           "ip": "5.0",
           "h": 7,
           "r": 6,
@@ -12832,7 +12856,7 @@
         {
           "date": "2026-05-12",
           "gamePk": 824927,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ip": "4.0",
           "h": 1,
           "r": 2,
@@ -12846,7 +12870,7 @@
         {
           "date": "2026-05-17",
           "gamePk": 824923,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "6.0",
           "h": 5,
           "r": 0,
@@ -12860,7 +12884,7 @@
         {
           "date": "2026-05-23",
           "gamePk": 824920,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "5.0",
           "h": 6,
           "r": 2,
@@ -12874,7 +12898,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 824515,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "4.2",
           "h": 7,
           "r": 3,
@@ -12888,7 +12912,7 @@
         {
           "date": "2026-06-03",
           "gamePk": 824917,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "6.0",
           "h": 5,
           "r": 2,
@@ -12902,7 +12926,7 @@
         {
           "date": "2026-06-09",
           "gamePk": 824591,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "3.2",
           "h": 4,
           "r": 3,
@@ -12916,7 +12940,7 @@
         {
           "date": "2026-06-16",
           "gamePk": 824912,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "2.0",
           "h": 4,
           "r": 3,
@@ -12930,7 +12954,7 @@
         {
           "date": "2026-06-22",
           "gamePk": 823288,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "4.2",
           "h": 3,
           "r": 1,
@@ -12944,7 +12968,7 @@
         {
           "date": "2026-06-27",
           "gamePk": 823207,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "4.0",
           "h": 1,
           "r": 0,
@@ -12958,7 +12982,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "5.0",
           "h": 5,
           "r": 2,
@@ -12972,7 +12996,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "5.0",
           "h": 3,
           "r": 0,
@@ -12986,7 +13010,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "5.0",
           "h": 7,
           "r": 3,
@@ -13000,7 +13024,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "5.0",
           "h": 6,
           "r": 3,
@@ -13014,7 +13038,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "4.2",
           "h": 5,
           "r": 3,
@@ -13028,7 +13052,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "6.0",
           "h": 5,
           "r": 0,
@@ -13042,7 +13066,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "6.0",
           "h": 3,
           "r": 0,
@@ -13095,7 +13119,7 @@
         {
           "date": "2026-05-19",
           "gamePk": 823865,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -13109,7 +13133,7 @@
         {
           "date": "2026-05-22",
           "gamePk": 824922,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13123,7 +13147,7 @@
         {
           "date": "2026-05-26",
           "gamePk": 824758,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "1.0",
           "h": 4,
           "r": 2,
@@ -13137,7 +13161,7 @@
         {
           "date": "2026-05-30",
           "gamePk": 824513,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13151,7 +13175,7 @@
         {
           "date": "2026-06-02",
           "gamePk": 824918,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "1.0",
           "h": 2,
           "r": 0,
@@ -13165,7 +13189,7 @@
         {
           "date": "2026-06-05",
           "gamePk": 824914,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -13179,7 +13203,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -13193,7 +13217,7 @@
         {
           "date": "2026-06-09",
           "gamePk": 824591,
-          "opp": "Chicago White Sox",
+          "opp": "CWS",
           "ip": "1.2",
           "h": 1,
           "r": 2,
@@ -13207,7 +13231,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 823616,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -13221,7 +13245,7 @@
         {
           "date": "2026-06-19",
           "gamePk": 824910,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -13235,7 +13259,7 @@
         {
           "date": "2026-06-23",
           "gamePk": 823286,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -13249,7 +13273,7 @@
         {
           "date": "2026-06-26",
           "gamePk": 823206,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13263,7 +13287,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13277,7 +13301,7 @@
         {
           "date": "2026-07-01",
           "gamePk": 824905,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13291,7 +13315,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 3,
           "r": 1,
@@ -13305,7 +13329,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 3,
           "r": 3,
@@ -13319,7 +13343,7 @@
         {
           "date": "2026-07-08",
           "gamePk": 823360,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13333,7 +13357,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13347,7 +13371,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13361,7 +13385,7 @@
         {
           "date": "2026-07-19",
           "gamePk": 824897,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -13375,7 +13399,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.2",
           "h": 1,
           "r": 1,
@@ -13389,7 +13413,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 2,
           "r": 0,
@@ -13403,7 +13427,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.0",
           "h": 0,
           "r": 1,
@@ -13417,7 +13441,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823598,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13431,7 +13455,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13445,7 +13469,7 @@
         {
           "date": "2026-08-02",
           "gamePk": 824891,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13459,7 +13483,7 @@
         {
           "date": "2026-08-04",
           "gamePk": 824888,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 3,
           "r": 2,
@@ -13473,7 +13497,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "0.2",
           "h": 3,
           "r": 2,
@@ -13487,7 +13511,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13501,7 +13525,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13582,7 +13606,7 @@
         {
           "date": "2026-03-31",
           "gamePk": 824942,
-          "opp": "Athletics",
+          "opp": "ATH",
           "ip": "4.1",
           "h": 2,
           "r": 0,
@@ -13596,7 +13620,7 @@
         {
           "date": "2026-04-05",
           "gamePk": 825102,
-          "opp": "Arizona Diamondbacks",
+          "opp": "AZ",
           "ip": "5.0",
           "h": 5,
           "r": 4,
@@ -13610,7 +13634,7 @@
         {
           "date": "2026-04-11",
           "gamePk": 824939,
-          "opp": "Cleveland Guardians",
+          "opp": "CLE",
           "ip": "5.0",
           "h": 2,
           "r": 1,
@@ -13624,7 +13648,7 @@
         {
           "date": "2026-04-17",
           "gamePk": 823476,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "6.0",
           "h": 4,
           "r": 0,
@@ -13638,7 +13662,7 @@
         {
           "date": "2026-04-22",
           "gamePk": 822748,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "3.0",
           "h": 3,
           "r": 2,
@@ -13652,7 +13676,7 @@
         {
           "date": "2026-04-28",
           "gamePk": 824931,
-          "opp": "Detroit Tigers",
+          "opp": "DET",
           "ip": "5.0",
           "h": 2,
           "r": 0,
@@ -13666,7 +13690,7 @@
         {
           "date": "2026-05-06",
           "gamePk": 823141,
-          "opp": "Seattle Mariners",
+          "opp": "SEA",
           "ip": "5.2",
           "h": 5,
           "r": 2,
@@ -13680,7 +13704,7 @@
         {
           "date": "2026-05-13",
           "gamePk": 824928,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13694,7 +13718,7 @@
         {
           "date": "2026-05-16",
           "gamePk": 824924,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -13708,7 +13732,7 @@
         {
           "date": "2026-05-19",
           "gamePk": 823865,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "5.0",
           "h": 5,
           "r": 4,
@@ -13722,7 +13746,7 @@
         {
           "date": "2026-05-24",
           "gamePk": 824921,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "5.2",
           "h": 5,
           "r": 1,
@@ -13736,7 +13760,7 @@
         {
           "date": "2026-05-30",
           "gamePk": 824513,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "5.0",
           "h": 4,
           "r": 2,
@@ -13750,7 +13774,7 @@
         {
           "date": "2026-06-05",
           "gamePk": 824914,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "5.0",
           "h": 3,
           "r": 3,
@@ -13764,7 +13788,7 @@
         {
           "date": "2026-06-13",
           "gamePk": 823616,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "5.1",
           "h": 4,
           "r": 1,
@@ -13778,7 +13802,7 @@
         {
           "date": "2026-06-19",
           "gamePk": 824910,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "6.0",
           "h": 6,
           "r": 1,
@@ -13792,7 +13816,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823284,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "4.0",
           "h": 4,
           "r": 3,
@@ -13806,7 +13830,7 @@
         {
           "date": "2026-06-30",
           "gamePk": 824907,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "5.0",
           "h": 5,
           "r": 4,
@@ -13820,7 +13844,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "4.1",
           "h": 6,
           "r": 5,
@@ -13834,7 +13858,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "4.0",
           "h": 1,
           "r": 0,
@@ -13848,7 +13872,7 @@
         {
           "date": "2026-07-27",
           "gamePk": 823597,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "5.0",
           "h": 8,
           "r": 3,
@@ -13862,7 +13886,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "7.0",
           "h": 1,
           "r": 0,
@@ -13876,7 +13900,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "3.0",
           "h": 0,
           "r": 0,
@@ -13890,7 +13914,7 @@
         {
           "date": "2026-08-11",
           "gamePk": 824886,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "6.0",
           "h": 4,
           "r": 0,
@@ -13943,7 +13967,7 @@
         {
           "date": "2026-05-06",
           "gamePk": 823141,
-          "opp": "Seattle Mariners",
+          "opp": "SEA",
           "ip": "0.1",
           "h": 2,
           "r": 0,
@@ -13957,7 +13981,7 @@
         {
           "date": "2026-05-10",
           "gamePk": 823954,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAD",
           "ip": "1.0",
           "h": 1,
           "r": 2,
@@ -13971,7 +13995,7 @@
         {
           "date": "2026-05-13",
           "gamePk": 824928,
-          "opp": "Chicago Cubs",
+          "opp": "CHC",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -13985,7 +14009,7 @@
         {
           "date": "2026-05-15",
           "gamePk": 824925,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "0.2",
           "h": 2,
           "r": 1,
@@ -13999,7 +14023,7 @@
         {
           "date": "2026-05-17",
           "gamePk": 824923,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "1.0",
           "h": 2,
           "r": 1,
@@ -14013,7 +14037,7 @@
         {
           "date": "2026-05-18",
           "gamePk": 823867,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14027,7 +14051,7 @@
         {
           "date": "2026-05-22",
           "gamePk": 824922,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14041,7 +14065,7 @@
         {
           "date": "2026-05-23",
           "gamePk": 824920,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14055,7 +14079,7 @@
         {
           "date": "2026-05-28",
           "gamePk": 824757,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14069,7 +14093,7 @@
         {
           "date": "2026-05-29",
           "gamePk": 824515,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14083,7 +14107,7 @@
         {
           "date": "2026-05-30",
           "gamePk": 824513,
-          "opp": "Cincinnati Reds",
+          "opp": "CIN",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14097,7 +14121,7 @@
         {
           "date": "2026-06-03",
           "gamePk": 824917,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -14111,7 +14135,7 @@
         {
           "date": "2026-06-06",
           "gamePk": 824915,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 2,
           "r": 0,
@@ -14125,7 +14149,7 @@
         {
           "date": "2026-06-07",
           "gamePk": 824916,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -14139,7 +14163,7 @@
         {
           "date": "2026-06-24",
           "gamePk": 823284,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -14153,7 +14177,7 @@
         {
           "date": "2026-06-28",
           "gamePk": 823204,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14167,7 +14191,7 @@
         {
           "date": "2026-07-02",
           "gamePk": 824906,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.2",
           "h": 2,
           "r": 3,
@@ -14181,7 +14205,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -14195,7 +14219,7 @@
         {
           "date": "2026-07-06",
           "gamePk": 824900,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14209,7 +14233,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14223,7 +14247,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -14237,7 +14261,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "0.1",
           "h": 2,
           "r": 3,
@@ -14251,7 +14275,7 @@
         {
           "date": "2026-07-21",
           "gamePk": 824895,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14265,7 +14289,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.2",
           "h": 2,
           "r": 2,
@@ -14279,7 +14303,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -14293,7 +14317,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "1.1",
           "h": 0,
           "r": 0,
@@ -14307,7 +14331,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14321,7 +14345,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14335,7 +14359,7 @@
         {
           "date": "2026-08-07",
           "gamePk": 823515,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "0.2",
           "h": 0,
           "r": 1,
@@ -14349,7 +14373,7 @@
         {
           "date": "2026-08-09",
           "gamePk": 823513,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 0,
           "r": 0,
@@ -14411,12 +14435,12 @@
           "sv": 1
         }
       },
-      "form": "cold",
+      "form": "neutral",
       "log": [
         {
           "date": "2026-05-20",
           "gamePk": 823866,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -14430,7 +14454,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14444,7 +14468,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -14458,7 +14482,7 @@
         {
           "date": "2026-07-17",
           "gamePk": 824901,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "2.0",
           "h": 3,
           "r": 1,
@@ -14472,7 +14496,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "2.1",
           "h": 1,
           "r": 0,
@@ -14486,7 +14510,7 @@
         {
           "date": "2026-07-22",
           "gamePk": 824896,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.1",
           "h": 3,
           "r": 4,
@@ -14500,7 +14524,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "2.0",
           "h": 1,
           "r": 0,
@@ -14514,7 +14538,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -14528,7 +14552,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -14542,7 +14566,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -14556,7 +14580,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "2.0",
           "h": 0,
           "r": 0,
@@ -14570,7 +14594,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -14584,7 +14608,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -14665,7 +14689,7 @@
         {
           "date": "2026-03-30",
           "gamePk": 824943,
-          "opp": "Athletics",
+          "opp": "ATH",
           "ip": "6.0",
           "h": 5,
           "r": 0,
@@ -14679,7 +14703,7 @@
         {
           "date": "2026-04-04",
           "gamePk": 825104,
-          "opp": "Arizona Diamondbacks",
+          "opp": "AZ",
           "ip": "7.0",
           "h": 4,
           "r": 2,
@@ -14693,7 +14717,7 @@
         {
           "date": "2026-04-10",
           "gamePk": 824941,
-          "opp": "Cleveland Guardians",
+          "opp": "CLE",
           "ip": "4.2",
           "h": 4,
           "r": 2,
@@ -14707,7 +14731,7 @@
         {
           "date": "2026-04-15",
           "gamePk": 824936,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "5.2",
           "h": 4,
           "r": 0,
@@ -14721,7 +14745,7 @@
         {
           "date": "2026-04-20",
           "gamePk": 822749,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "6.2",
           "h": 3,
           "r": 4,
@@ -14735,7 +14759,7 @@
         {
           "date": "2026-04-25",
           "gamePk": 824933,
-          "opp": "Philadelphia Phillies",
+          "opp": "PHI",
           "ip": "7.0",
           "h": 6,
           "r": 3,
@@ -14749,7 +14773,7 @@
         {
           "date": "2026-04-30",
           "gamePk": 824929,
-          "opp": "Detroit Tigers",
+          "opp": "DET",
           "ip": "6.0",
           "h": 6,
           "r": 1,
@@ -14763,7 +14787,7 @@
         {
           "date": "2026-05-05",
           "gamePk": 823142,
-          "opp": "Seattle Mariners",
+          "opp": "SEA",
           "ip": "6.0",
           "h": 2,
           "r": 2,
@@ -14777,7 +14801,7 @@
         {
           "date": "2026-05-10",
           "gamePk": 823954,
-          "opp": "Los Angeles Dodgers",
+          "opp": "LAD",
           "ip": "5.2",
           "h": 1,
           "r": 0,
@@ -14791,7 +14815,7 @@
         {
           "date": "2026-05-16",
           "gamePk": 824924,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "8.0",
           "h": 7,
           "r": 3,
@@ -14805,7 +14829,7 @@
         {
           "date": "2026-05-22",
           "gamePk": 824922,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "6.0",
           "h": 5,
           "r": 1,
@@ -14819,7 +14843,7 @@
         {
           "date": "2026-05-27",
           "gamePk": 824756,
-          "opp": "Boston Red Sox",
+          "opp": "BOS",
           "ip": "3.1",
           "h": 9,
           "r": 6,
@@ -14833,7 +14857,7 @@
         {
           "date": "2026-06-02",
           "gamePk": 824918,
-          "opp": "Toronto Blue Jays",
+          "opp": "TOR",
           "ip": "6.2",
           "h": 6,
           "r": 3,
@@ -14847,7 +14871,7 @@
         {
           "date": "2026-06-07",
           "gamePk": 824916,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "6.0",
           "h": 2,
           "r": 2,
@@ -14861,7 +14885,7 @@
         {
           "date": "2026-06-14",
           "gamePk": 823615,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "4.0",
           "h": 10,
           "r": 6,
@@ -14875,7 +14899,7 @@
         {
           "date": "2026-06-21",
           "gamePk": 824908,
-          "opp": "Milwaukee Brewers",
+          "opp": "MIL",
           "ip": "6.0",
           "h": 12,
           "r": 8,
@@ -14889,7 +14913,7 @@
         {
           "date": "2026-06-27",
           "gamePk": 823207,
-          "opp": "San Francisco Giants",
+          "opp": "SF",
           "ip": "4.0",
           "h": 5,
           "r": 5,
@@ -14903,7 +14927,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "4.0",
           "h": 5,
           "r": 4,
@@ -14917,7 +14941,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "6.0",
           "h": 5,
           "r": 2,
@@ -14931,7 +14955,7 @@
         {
           "date": "2026-07-25",
           "gamePk": 824811,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "5.0",
           "h": 4,
           "r": 2,
@@ -14945,7 +14969,7 @@
         {
           "date": "2026-07-31",
           "gamePk": 824892,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "6.0",
           "h": 4,
           "r": 1,
@@ -14959,7 +14983,7 @@
         {
           "date": "2026-08-05",
           "gamePk": 824889,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "7.0",
           "h": 1,
           "r": 1,
@@ -14973,7 +14997,7 @@
         {
           "date": "2026-08-10",
           "gamePk": 824887,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "5.0",
           "h": 10,
           "r": 7,
@@ -15011,7 +15035,7 @@
         {
           "date": "2026-07-03",
           "gamePk": 824904,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -15025,7 +15049,7 @@
         {
           "date": "2026-07-05",
           "gamePk": 824902,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -15039,7 +15063,7 @@
         {
           "date": "2026-07-09",
           "gamePk": 823359,
-          "opp": "Pittsburgh Pirates",
+          "opp": "PIT",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -15053,7 +15077,7 @@
         {
           "date": "2026-07-10",
           "gamePk": 823033,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "1.0",
           "h": 1,
           "r": 1,
@@ -15067,7 +15091,7 @@
         {
           "date": "2026-07-12",
           "gamePk": 823029,
-          "opp": "St. Louis Cardinals",
+          "opp": "STL",
           "ip": "0.2",
           "h": 1,
           "r": 1,
@@ -15081,7 +15105,7 @@
         {
           "date": "2026-07-18",
           "gamePk": 824899,
-          "opp": "Texas Rangers",
+          "opp": "TEX",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -15095,7 +15119,7 @@
         {
           "date": "2026-07-20",
           "gamePk": 824898,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.2",
           "h": 1,
           "r": 0,
@@ -15109,7 +15133,7 @@
         {
           "date": "2026-07-23",
           "gamePk": 824893,
-          "opp": "San Diego Padres",
+          "opp": "SD",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -15123,7 +15147,7 @@
         {
           "date": "2026-07-24",
           "gamePk": 824812,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -15137,7 +15161,7 @@
         {
           "date": "2026-07-26",
           "gamePk": 824810,
-          "opp": "Baltimore Orioles",
+          "opp": "BAL",
           "ip": "0.2",
           "h": 0,
           "r": 0,
@@ -15151,7 +15175,7 @@
         {
           "date": "2026-07-29",
           "gamePk": 823596,
-          "opp": "New York Mets",
+          "opp": "NYM",
           "ip": "0.1",
           "h": 0,
           "r": 0,
@@ -15165,7 +15189,7 @@
         {
           "date": "2026-07-30",
           "gamePk": 824894,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 1,
           "r": 0,
@@ -15179,7 +15203,7 @@
         {
           "date": "2026-08-01",
           "gamePk": 824890,
-          "opp": "Washington Nationals",
+          "opp": "WSH",
           "ip": "1.0",
           "h": 2,
           "r": 3,
@@ -15193,7 +15217,7 @@
         {
           "date": "2026-08-06",
           "gamePk": 824885,
-          "opp": "Miami Marlins",
+          "opp": "MIA",
           "ip": "0.2",
           "h": 3,
           "r": 2,
@@ -15207,7 +15231,7 @@
         {
           "date": "2026-08-08",
           "gamePk": 823514,
-          "opp": "New York Yankees",
+          "opp": "NYY",
           "ip": "1.0",
           "h": 2,
           "r": 1,
