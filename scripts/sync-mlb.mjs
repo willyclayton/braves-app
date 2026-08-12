@@ -129,6 +129,119 @@ function parseIpOuts(ip) {
   return Number(w || 0) * 3 + Number(f || 0);
 }
 
+function rateStr(value, digits = 3) {
+  if (!Number.isFinite(value) || value < 0) return digits === 3 ? '.000' : '0.00';
+  const s = value.toFixed(digits);
+  if (digits === 3 && s.startsWith('0')) return s.slice(1);
+  return s;
+}
+
+function hitWindowFromLog(log, games) {
+  if (!log?.length || games < 1) return null;
+  const slice = log.slice(-games);
+  let ab = 0;
+  let h = 0;
+  let hr = 0;
+  let r = 0;
+  let rbi = 0;
+  let bb = 0;
+  let so = 0;
+  let sb = 0;
+  let doubles = 0;
+  let triples = 0;
+  let hbp = 0;
+  let sf = 0;
+  let tb = 0;
+  let hasTb = false;
+  for (const g of slice) {
+    ab += Number(g.ab) || 0;
+    h += Number(g.h) || 0;
+    hr += Number(g.hr) || 0;
+    r += Number(g.r) || 0;
+    rbi += Number(g.rbi) || 0;
+    bb += Number(g.bb) || 0;
+    so += Number(g.so) || 0;
+    sb += Number(g.sb) || 0;
+    doubles += Number(g.doubles) || 0;
+    triples += Number(g.triples) || 0;
+    hbp += Number(g.hbp) || 0;
+    sf += Number(g.sf) || 0;
+    if (g.tb != null) {
+      hasTb = true;
+      tb += Number(g.tb) || 0;
+    }
+  }
+  if (!hasTb) {
+    const singles = Math.max(0, h - doubles - triples - hr);
+    tb = singles + 2 * doubles + 3 * triples + 4 * hr;
+  }
+  const obpDen = ab + bb + hbp + sf;
+  const avg = ab > 0 ? h / ab : 0;
+  const obp = obpDen > 0 ? (h + bb + hbp) / obpDen : 0;
+  const slg = ab > 0 ? tb / ab : 0;
+  return {
+    g: slice.length,
+    avg: rateStr(avg),
+    ops: rateStr(obp + slg),
+    obp: rateStr(obp),
+    slg: rateStr(slg),
+    hr,
+    h,
+    ab,
+    r,
+    rbi,
+    bb,
+    so,
+    sb,
+    doubles,
+    triples,
+  };
+}
+
+function pitWindowFromLog(log, games) {
+  if (!log?.length || games < 1) return null;
+  const slice = log.slice(-games);
+  let outs = 0;
+  let h = 0;
+  let r = 0;
+  let er = 0;
+  let bb = 0;
+  let so = 0;
+  for (const g of slice) {
+    outs += parseIpOuts(g.ip);
+    h += Number(g.h) || 0;
+    r += Number(g.r) || 0;
+    er += Number(g.er) || 0;
+    bb += Number(g.bb) || 0;
+    so += Number(g.so) || 0;
+  }
+  const ip = outs / 3;
+  const era = ip > 0 ? (er * 9) / ip : 0;
+  const whip = ip > 0 ? (h + bb) / ip : 0;
+  const whole = Math.floor(outs / 3);
+  const rem = outs % 3;
+  return {
+    g: slice.length,
+    ip: `${whole}.${rem}`,
+    era: ip > 0 ? era.toFixed(2) : '—',
+    whip: ip > 0 ? whip.toFixed(2) : '—',
+    so,
+    bb,
+    h,
+    er,
+  };
+}
+
+function windowsFromLog(log, group) {
+  const windows = {};
+  const build = group === 'hitting' ? hitWindowFromLog : pitWindowFromLog;
+  for (const n of WINDOWS) {
+    const w = build(log, n);
+    if (w) windows[`l${n}`] = w;
+  }
+  return windows;
+}
+
 function numStat(v) {
   if (v == null || v === '' || v === '—') return NaN;
   if (typeof v === 'number') return v;
@@ -379,6 +492,12 @@ async function gameLog(id, group, teamAbbrById = {}) {
         rbi: g.stat.rbi || 0,
         bb: g.stat.baseOnBalls || 0,
         so: g.stat.strikeOuts || 0,
+        sb: g.stat.stolenBases || 0,
+        doubles: g.stat.doubles || 0,
+        triples: g.stat.triples || 0,
+        hbp: g.stat.hitByPitch || 0,
+        sf: g.stat.sacFlies || 0,
+        tb: g.stat.totalBases,
         avg: g.stat.avg,
         ops: g.stat.ops,
       }));
@@ -666,6 +785,20 @@ async function main() {
   }
   await fillLogs(hitters, 'hitting');
   await fillLogs(pitchers, 'pitching');
+
+  // Always derive L5/L10/L20/L30 from the player's own last N games.
+  // MLB lastXGames omits windows when the player has fewer than N games,
+  // and the UI used to fall back to L5 — so L30 could show 0-for-6.
+  for (const h of hitters) {
+    const fromLog = windowsFromLog(h.log, 'hitting');
+    if (Object.keys(fromLog).length) h.windows = fromLog;
+    h.form = formHit(h.windows.l10 || h.windows.l5);
+  }
+  for (const p of pitchers) {
+    const fromLog = windowsFromLog(p.log, 'pitching');
+    if (Object.keys(fromLog).length) p.windows = fromLog;
+    p.form = formPitch(p.windows.l10 || p.windows.l5);
+  }
 
   // Sort defaults: hot first then by L10 OPS / ERA
   hitters.sort((a, b) => {

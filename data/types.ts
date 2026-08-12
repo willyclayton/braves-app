@@ -117,6 +117,12 @@ export type HitGameLog = {
   rbi: number;
   bb: number;
   so: number;
+  sb?: number;
+  doubles?: number;
+  triples?: number;
+  hbp?: number;
+  sf?: number;
+  tb?: number;
   avg?: string;
   ops?: string;
 };

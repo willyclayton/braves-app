@@ -126,11 +126,11 @@ export function LeagueRankings({ rankings = [], playerName }: Props) {
     <View style={styles.wrap}>
       <View style={styles.header}>
         <View style={styles.headerText}>
-          <Text style={styles.title}>Percentile rankings</Text>
+          <Text style={styles.title}>Season percentile rankings</Text>
           <View style={styles.titleRule} />
           <Text style={styles.subtitle} numberOfLines={2}>
             {avgPct != null
-              ? `${playerName} · MLB avg ${ordinal(avgPct)}${elite ? ` · ${elite} elite` : ''}`
+              ? `${playerName} · season · MLB avg ${ordinal(avgPct)}${elite ? ` · ${elite} elite` : ''}`
               : `Season vs MLB · ${playerName}`}
           </Text>
         </View>
