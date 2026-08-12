@@ -146,8 +146,10 @@ export default function PlayerScreen() {
   }
 
   if (hitter) {
-    const w = hitter.windows[window] || hitter.windows.l10 || hitter.season;
-    const form = formFromHitWindow(hitter.windows[window] || hitter.windows.l10);
+    const w = hitter.windows[window] || hitter.windows.l5 || hitter.windows.l10 || hitter.season;
+    const form = formFromHitWindow(
+      hitter.windows[window] || hitter.windows.l10 || hitter.windows.l5
+    );
     const sum = hitValues.reduce((a, b) => a + b, 0);
     const metricLabel = HIT_METRICS.find((m) => m.key === hitMetric)?.label || '';
 
@@ -179,7 +181,8 @@ export default function PlayerScreen() {
                   {formLabel(form)}
                 </Text>
                 <Text style={styles.seasonLine}>
-                  Season {hitter.season.avg} · {hitter.season.ops} OPS · {hitter.season.hr} HR
+                  Season {hitter.season.h}-{hitter.season.ab} · {hitter.season.avg} ·{' '}
+                  {hitter.season.ops} OPS · {hitter.season.hr} HR
                 </Text>
               </View>
             </View>
@@ -190,11 +193,11 @@ export default function PlayerScreen() {
 
           <View style={styles.statGrid}>
             {[
+              ['H-AB', `${w.h}-${w.ab}`],
               ['AVG', w.avg],
               ['OPS', w.ops],
               ['HR', String(w.hr)],
               ['RBI', String(w.rbi ?? 0)],
-              ['H', String(w.h)],
               ['G', String(w.g)],
             ].map(([label, val]) => (
               <View key={label} style={styles.statCell}>
