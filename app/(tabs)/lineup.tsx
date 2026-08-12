@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   spMeta: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
     marginTop: 2,
   },
   section: {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
-  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 12 },
+  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
   segTextOn: { color: colors.white },
   row: {
     flexDirection: 'row',
@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
   form: { fontSize: 14 },
   playerMeta: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 12,
+    color: colors.mist,
+    fontSize: 13,
     marginTop: 2,
   },
   trendMeta: {
@@ -309,6 +309,6 @@ const styles = StyleSheet.create({
   bullpenStat: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 13,
+    fontSize: 14,
   },
 });

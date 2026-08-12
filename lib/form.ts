@@ -136,3 +136,27 @@ export function batterGameStamp(b: {
 
   return null;
 }
+
+function parseIp(ip?: string | number) {
+  const [w, f] = String(ip ?? '0').split('.');
+  return Number(w || 0) + Number(f || 0) / 3;
+}
+
+/** Single-game pitcher stamp for logs and box scores. */
+export function pitcherGameStamp(p: {
+  ip?: string | number;
+  er?: number;
+  so?: number;
+  h?: number;
+}): GameStamp {
+  const ip = parseIp(p.ip);
+  const er = Number(p.er) || 0;
+  const so = Number(p.so) || 0;
+
+  if (ip < 1 && er < 3) return null;
+
+  if ((ip >= 6 && er <= 1) || so >= 8 || (ip >= 5 && er === 0)) return 'good';
+  if (er >= 4 || (ip <= 3 && er >= 3)) return 'bad';
+
+  return null;
+}

@@ -4,20 +4,46 @@ import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
-import { divisions, wildCards, type StandingRow } from '@/data/braves';
+import { divisions, type StandingRow } from '@/data/braves';
 
 type Mode = 'east' | 'wildcard' | 'overall';
+
+type DisplayRow = StandingRow & { badge?: string; leagueTag?: string };
+
+function sortByRecord(teams: StandingRow[]) {
+  return [...teams].sort((a, b) => {
+    const pct = parseFloat(b.pct) - parseFloat(a.pct);
+    if (pct !== 0) return pct;
+    return b.w - a.w;
+  });
+}
+
+function withGamesBack(teams: StandingRow[]): StandingRow[] {
+  const leader = teams[0];
+  return teams.map((t) => {
+    if (!leader || t.abbr === leader.abbr) return { ...t, gb: '—' };
+    const gamesBack = (leader.w - t.w + (t.l - leader.l)) / 2;
+    return {
+      ...t,
+      gb: gamesBack <= 0 ? '—' : gamesBack.toFixed(gamesBack % 1 === 0 ? 0 : 1),
+    };
+  });
+}
 
 function StandingTable({
   title,
   rows,
   gapKey = 'gb',
   gapLabel = 'GB',
+  cutoffAfter,
+  showLeague,
 }: {
   title: string;
-  rows: StandingRow[];
+  rows: DisplayRow[];
   gapKey?: 'gb' | 'wcgb';
   gapLabel?: string;
+  cutoffAfter?: number;
+  showLeague?: boolean;
 }) {
   return (
     <View style={styles.block}>
@@ -30,21 +56,40 @@ function StandingTable({
         <Text style={styles.headCell}>{gapLabel}</Text>
       </View>
       {rows.map((row, i) => (
-        <View key={row.abbr} style={[styles.row, row.highlight && styles.rowHot]}>
-          <View style={[styles.teamCol, styles.teamCell]}>
-            <Text style={[styles.rank, row.highlight && styles.rankHot]}>{i + 1}</Text>
-            <TeamLogo abbr={row.abbr} size={28} />
-            <View>
-              <Text style={[styles.team, row.highlight && styles.teamHot]}>{row.abbr}</Text>
-              <Text style={styles.streak}>{row.streak}</Text>
+        <View key={`${row.abbr}-${i}`}>
+          {cutoffAfter != null && i === cutoffAfter ? (
+            <View style={styles.cutoff}>
+              <View style={styles.cutoffLine} />
+              <Text style={styles.cutoffLabel}>CUTOFF</Text>
+              <View style={styles.cutoffLine} />
             </View>
+          ) : null}
+          <View style={[styles.row, row.highlight && styles.rowHot]}>
+            <View style={[styles.teamCol, styles.teamCell]}>
+              <Text style={[styles.rank, row.highlight && styles.rankHot]}>{i + 1}</Text>
+              <TeamLogo abbr={row.abbr} size={28} />
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <View style={styles.teamNameRow}>
+                  <Text style={[styles.team, row.highlight && styles.teamHot]}>{row.abbr}</Text>
+                  {row.badge ? (
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>{row.badge}</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={styles.streak}>
+                  {row.streak}
+                  {showLeague && row.leagueTag ? ` · ${row.leagueTag}` : ''}
+                </Text>
+              </View>
+            </View>
+            <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.w}</Text>
+            <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.l}</Text>
+            <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.pct}</Text>
+            <Text style={[styles.cell, row.highlight && styles.cellHot]}>
+              {gapKey === 'wcgb' ? row.wcgb ?? '—' : row.gb}
+            </Text>
           </View>
-          <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.w}</Text>
-          <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.l}</Text>
-          <Text style={[styles.cell, row.highlight && styles.cellHot]}>{row.pct}</Text>
-          <Text style={[styles.cell, row.highlight && styles.cellHot]}>
-            {gapKey === 'wcgb' ? row.wcgb ?? '—' : row.gb}
-          </Text>
         </View>
       ))}
     </View>
@@ -59,34 +104,49 @@ export default function StandingsScreen() {
     []
   );
 
-  const nlWild = useMemo(() => wildCards.find((w) => w.league === 'NL'), []);
+  const nlLeaders = useMemo(() => {
+    const leaders = divisions
+      .filter((d) => d.league === 'NL')
+      .map((d) => {
+        const top = d.teams[0];
+        const letter = d.division.charAt(0).toUpperCase();
+        return { ...top, badge: letter } as DisplayRow;
+      });
+    return withGamesBack(sortByRecord(leaders)) as DisplayRow[];
+  }, []);
+
+  const nlWild = useMemo(() => {
+    const leaderAbbrs = new Set(
+      divisions.filter((d) => d.league === 'NL').map((d) => d.teams[0]?.abbr)
+    );
+    const rest = divisions
+      .filter((d) => d.league === 'NL')
+      .flatMap((d) => d.teams.slice(1));
+    return sortByRecord(rest).filter((t) => !leaderAbbrs.has(t.abbr));
+  }, []);
+
+  const mlbOverall = useMemo(() => {
+    const teams = divisions.flatMap((d) =>
+      d.teams.map(
+        (t) =>
+          ({
+            ...t,
+            leagueTag: d.league,
+          }) as DisplayRow
+      )
+    );
+    return withGamesBack(sortByRecord(teams)) as DisplayRow[];
+  }, []);
 
   const nlOverall = useMemo(() => {
-    const teams = divisions
-      .filter((d) => d.league === 'NL')
-      .flatMap((d) => d.teams)
-      .slice()
-      .sort((a, b) => {
-        const pct = parseFloat(b.pct) - parseFloat(a.pct);
-        if (pct !== 0) return pct;
-        return b.w - a.w;
-      });
-    // GB vs NL leader
-    const leader = teams[0];
-    return teams.map((t) => {
-      if (!leader || t.abbr === leader.abbr) return { ...t, gb: '—' };
-      const gamesBack = (leader.w - t.w + (t.l - leader.l)) / 2;
-      return {
-        ...t,
-        gb: gamesBack <= 0 ? '—' : gamesBack.toFixed(gamesBack % 1 === 0 ? 0 : 1),
-      };
-    });
+    const teams = divisions.filter((d) => d.league === 'NL').flatMap((d) => d.teams);
+    return withGamesBack(sortByRecord(teams));
   }, []);
 
   return (
     <Screen>
       <FadeIn>
-        <Text style={styles.kicker}>NL</Text>
+        <Text style={styles.kicker}>{mode === 'overall' ? 'MLB' : 'NL'}</Text>
         <Text style={styles.title}>Standings</Text>
       </FadeIn>
 
@@ -95,7 +155,7 @@ export default function StandingsScreen() {
           [
             ['east', 'NL East'],
             ['wildcard', 'Wildcard'],
-            ['overall', 'Overall'],
+            ['overall', 'MLB'],
           ] as const
         ).map(([key, label]) => (
           <Pressable
@@ -113,16 +173,23 @@ export default function StandingsScreen() {
       ) : null}
 
       {mode === 'wildcard' ? (
-        <StandingTable
-          title="NL Wild Card"
-          rows={nlWild?.teams || []}
-          gapKey="wcgb"
-          gapLabel="WC"
-        />
+        <>
+          <StandingTable title="Division leaders" rows={nlLeaders} />
+          <StandingTable
+            title="NL Wild Card"
+            rows={nlWild}
+            gapKey="wcgb"
+            gapLabel="WC"
+            cutoffAfter={3}
+          />
+        </>
       ) : null}
 
       {mode === 'overall' ? (
-        <StandingTable title="NL Overall" rows={nlOverall} />
+        <>
+          <StandingTable title="MLB Overall" rows={mlbOverall} showLeague />
+          <StandingTable title="NL Overall" rows={nlOverall} />
+        </>
       ) : null}
     </Screen>
   );
@@ -163,7 +230,7 @@ const styles = StyleSheet.create({
   segText: {
     fontFamily: 'DMSans_700Bold',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
   },
   segTextOn: { color: colors.white },
   block: { marginTop: spacing.md },
@@ -184,10 +251,10 @@ const styles = StyleSheet.create({
   headCell: {
     width: 40,
     textAlign: 'right',
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
-    fontSize: 10,
-    letterSpacing: 1,
+    fontSize: 11,
+    letterSpacing: 0.8,
   },
   teamCol: { flex: 1, paddingRight: 8 },
   teamCell: { flexDirection: 'row', alignItems: 'center', gap: 8 },
@@ -212,16 +279,29 @@ const styles = StyleSheet.create({
     width: 16,
   },
   rankHot: { color: colors.gold },
+  teamNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   team: {
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
     fontSize: 14,
   },
   teamHot: { color: colors.cream },
+  badge: {
+    backgroundColor: 'rgba(234, 170, 0, 0.18)',
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+  },
+  badgeText: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 9,
+    letterSpacing: 0.6,
+  },
   streak: {
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 10,
+    color: colors.mist,
+    fontSize: 11,
   },
   cell: {
     width: 40,
@@ -233,5 +313,23 @@ const styles = StyleSheet.create({
   cellHot: {
     color: colors.white,
     fontFamily: 'DMSans_700Bold',
+  },
+  cutoff: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 8,
+  },
+  cutoffLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.gold,
+    opacity: 0.45,
+  },
+  cutoffLabel: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 10,
+    letterSpacing: 1.2,
   },
 });

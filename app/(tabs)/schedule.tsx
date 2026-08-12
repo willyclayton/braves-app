@@ -19,7 +19,7 @@ function resultLabel(braves?: number, opp?: number) {
 
 export default function ScheduleScreen() {
   const { screenTitle, compact } = usePhoneLayout();
-  const [filter, setFilter] = useState<Filter>('all');
+  const [filter, setFilter] = useState<Filter>('final');
 
   const games = useMemo(() => {
     if (filter === 'upcoming') {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
-  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 12 },
+  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
   segTextOn: { color: colors.white },
   row: {
     flexDirection: 'row',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   left: { width: 54 },
   date: { fontFamily: 'DMSans_700Bold', color: colors.white, fontSize: 13 },
-  time: { fontFamily: 'DMSans_400Regular', color: colors.mistDim, fontSize: 11, marginTop: 2 },
+  time: { fontFamily: 'DMSans_400Regular', color: colors.mist, fontSize: 12, marginTop: 2 },
   mid: { flex: 1 },
   matchup: {
     fontFamily: 'BebasNeue_400Regular',
@@ -170,11 +170,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   matchupCompact: { fontSize: 20 },
-  venue: { fontFamily: 'DMSans_400Regular', color: colors.mist, fontSize: 12, marginTop: 1 },
+  venue: { fontFamily: 'DMSans_400Regular', color: colors.mist, fontSize: 13, marginTop: 1 },
   right: { alignItems: 'flex-end', minWidth: 48 },
   result: { fontFamily: 'BebasNeue_400Regular', fontSize: 22 },
   win: { color: colors.success },
   loss: { color: colors.danger },
-  score: { fontFamily: 'DMSans_500Medium', color: colors.mist, fontSize: 12, marginTop: -2 },
-  chev: { fontFamily: 'BebasNeue_400Regular', color: colors.mistDim, fontSize: 28 },
+  score: { fontFamily: 'DMSans_500Medium', color: colors.mist, fontSize: 13, marginTop: -2 },
+  chev: { fontFamily: 'BebasNeue_400Regular', color: colors.textFaint, fontSize: 28 },
 });

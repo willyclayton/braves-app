@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: 'DMSans_500Medium',
-    color: colors.mistDim,
-    fontSize: 11,
+    color: colors.mist,
+    fontSize: 12,
     letterSpacing: 1.2,
   },
   value: {

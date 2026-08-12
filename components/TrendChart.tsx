@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   tooltipLabel: {
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 11,
+    fontSize: 12,
   },
   tooltipValue: {
     fontFamily: 'BebasNeue_400Regular',
@@ -408,8 +408,8 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 8,
     fontFamily: 'DMSans_400Regular',
-    color: colors.mistDim,
-    fontSize: 11,
+    color: colors.mist,
+    fontSize: 12,
   },
   legend: {
     flexDirection: 'row',

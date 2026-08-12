@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -9,10 +9,12 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GameStamp } from '@/components/GameStamp';
 import { TeamLogo } from '@/components/TeamLogo';
 import { colors, spacing } from '@/constants/theme';
-import { schedule } from '@/data/braves';
-import { batterGameStamp, type GameStamp } from '@/lib/form';
+import { playerById, schedule } from '@/data/braves';
+import { batterGameStamp, pitcherGameStamp, type GameStamp as GameStampKind } from '@/lib/form';
+import { shortName } from '@/lib/names';
 
 export function generateStaticParams() {
   return schedule
@@ -85,14 +87,14 @@ function batterTotals(rows: BoxBatter[]) {
   );
 }
 
-function Stamp({ kind }: { kind: Exclude<GameStamp, null> }) {
-  return (
-    <View style={[styles.stamp, kind === 'good' ? styles.stampGood : styles.stampBad]}>
-      <Text style={[styles.stampText, kind === 'good' ? styles.stampTextGood : styles.stampTextBad]}>
-        {kind === 'good' ? 'GOOD' : 'BAD'}
-      </Text>
-    </View>
-  );
+function playerHref(id: number) {
+  return playerById(id)
+    ? ({ pathname: '/player/[id]', params: { id: String(id) } } as const)
+    : null;
+}
+
+function Stamp({ kind }: { kind: Exclude<GameStampKind, null> }) {
+  return <GameStamp kind={kind} />;
 }
 
 function BatterTable({ rows }: { rows: BoxBatter[] }) {
@@ -112,21 +114,40 @@ function BatterTable({ rows }: { rows: BoxBatter[] }) {
       {rows.map((b) => {
         const sub = b.battingOrder != null && Number(b.battingOrder) % 100 > 0;
         const stamp = batterGameStamp(b);
-        return (
-          <View key={b.id} style={styles.tr}>
-            <View style={[styles.td, styles.tdName]}>
-              <Text style={styles.nameLine} numberOfLines={1}>
-                {sub ? '  ' : ''}
-                {b.name.split(' ').slice(-1)[0]} <Text style={styles.pos}>{b.pos}</Text>
-              </Text>
-              {stamp ? <Stamp kind={stamp} /> : null}
-            </View>
+        const href = playerHref(b.id);
+        const nameCell = (
+          <View style={[styles.td, styles.tdName]}>
+            <Text style={[styles.nameLine, href && styles.nameLink]} numberOfLines={1}>
+              {sub ? '  ' : ''}
+              {shortName(b.name)} <Text style={styles.pos}>{b.pos}</Text>
+            </Text>
+            {stamp ? <Stamp kind={stamp} /> : null}
+          </View>
+        );
+        const stats = (
+          <>
             <Text style={styles.tdNum}>{b.ab ?? 0}</Text>
             <Text style={styles.tdNum}>{b.r ?? 0}</Text>
             <Text style={styles.tdNum}>{b.h ?? 0}</Text>
             <Text style={styles.tdNum}>{b.rbi ?? 0}</Text>
             <Text style={styles.tdNum}>{b.bb ?? 0}</Text>
             <Text style={styles.tdNum}>{b.so ?? 0}</Text>
+          </>
+        );
+        if (href) {
+          return (
+            <Link key={b.id} href={href} asChild>
+              <Pressable style={styles.tr}>
+                {nameCell}
+                {stats}
+              </Pressable>
+            </Link>
+          );
+        }
+        return (
+          <View key={b.id} style={styles.tr}>
+            {nameCell}
+            {stats}
           </View>
         );
       })}
@@ -156,19 +177,44 @@ function PitcherTable({ rows }: { rows: BoxPitcher[] }) {
         <Text style={styles.th}>BB</Text>
         <Text style={styles.th}>SO</Text>
       </View>
-      {rows.map((p) => (
-        <View key={p.id} style={styles.tr}>
-          <Text style={[styles.tdNameText]} numberOfLines={1}>
-            {p.name.split(' ').slice(-1)[0]}
-          </Text>
-          <Text style={styles.tdNum}>{p.ip ?? '—'}</Text>
-          <Text style={styles.tdNum}>{p.h ?? 0}</Text>
-          <Text style={styles.tdNum}>{p.r ?? 0}</Text>
-          <Text style={styles.tdNum}>{p.er ?? 0}</Text>
-          <Text style={styles.tdNum}>{p.bb ?? 0}</Text>
-          <Text style={styles.tdNum}>{p.so ?? 0}</Text>
-        </View>
-      ))}
+      {rows.map((p) => {
+        const href = playerHref(p.id);
+        const stamp = pitcherGameStamp(p);
+        const nameCell = (
+          <View style={[styles.td, styles.tdName]}>
+            <Text style={[styles.nameLine, href && styles.nameLink]} numberOfLines={1}>
+              {shortName(p.name)}
+            </Text>
+            {stamp ? <Stamp kind={stamp} /> : null}
+          </View>
+        );
+        const stats = (
+          <>
+            <Text style={styles.tdNum}>{p.ip ?? '—'}</Text>
+            <Text style={styles.tdNum}>{p.h ?? 0}</Text>
+            <Text style={styles.tdNum}>{p.r ?? 0}</Text>
+            <Text style={styles.tdNum}>{p.er ?? 0}</Text>
+            <Text style={styles.tdNum}>{p.bb ?? 0}</Text>
+            <Text style={styles.tdNum}>{p.so ?? 0}</Text>
+          </>
+        );
+        if (href) {
+          return (
+            <Link key={p.id} href={href} asChild>
+              <Pressable style={styles.tr}>
+                {nameCell}
+                {stats}
+              </Pressable>
+            </Link>
+          );
+        }
+        return (
+          <View key={p.id} style={styles.tr}>
+            {nameCell}
+            {stats}
+          </View>
+        );
+      })}
     </View>
   );
 }
@@ -370,7 +416,7 @@ const styles = StyleSheet.create({
   metaLine: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
     textAlign: 'center',
   },
   error: {
@@ -385,14 +431,14 @@ const styles = StyleSheet.create({
     width: 40,
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
-    fontSize: 12,
+    fontSize: 13,
   },
   lineCell: {
     width: 28,
     textAlign: 'center',
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
   },
   lineBold: { color: colors.white, fontFamily: 'DMSans_700Bold' },
   teamToggle: {
@@ -441,9 +487,9 @@ const styles = StyleSheet.create({
   th: {
     width: 32,
     textAlign: 'right',
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: 'DMSans_700Bold',
     color: colors.mistDim,
-    fontSize: 10,
+    fontSize: 11,
   },
   thName: { flex: 1, width: undefined, textAlign: 'left' },
   tr: {
@@ -468,43 +514,24 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     color: colors.white,
     fontFamily: 'DMSans_700Bold',
-    fontSize: 12,
+    fontSize: 13,
+  },
+  nameLink: {
+    textDecorationLine: 'underline',
+    textDecorationColor: 'rgba(234, 170, 0, 0.45)',
   },
   tdNameText: {
     flex: 1,
     color: colors.white,
     fontFamily: 'DMSans_700Bold',
-    fontSize: 12,
+    fontSize: 13,
   },
   tdNum: {
     width: 32,
     textAlign: 'right',
     fontFamily: 'DMSans_500Medium',
     color: colors.mist,
-    fontSize: 12,
+    fontSize: 13,
   },
   pos: { color: colors.gold, fontFamily: 'DMSans_500Medium' },
-  stamp: {
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: 4,
-    flexShrink: 0,
-  },
-  stampGood: {
-    backgroundColor: 'rgba(61, 220, 132, 0.18)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(61, 220, 132, 0.45)',
-  },
-  stampBad: {
-    backgroundColor: 'rgba(255, 90, 106, 0.16)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255, 90, 106, 0.4)',
-  },
-  stampText: {
-    fontFamily: 'DMSans_700Bold',
-    fontSize: 8,
-    letterSpacing: 0.6,
-  },
-  stampTextGood: { color: colors.success },
-  stampTextBad: { color: colors.danger },
 });

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   record: {
     fontFamily: 'DMSans_500Medium',
-    color: colors.mist,
-    fontSize: 13,
+    color: colors.cream,
+    fontSize: 14,
   },
 });
