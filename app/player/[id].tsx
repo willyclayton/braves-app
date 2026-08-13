@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GameStamp } from '@/components/GameStamp';
 import { LeagueRankings } from '@/components/LeagueRankings';
 import { PlayerHeadshot } from '@/components/PlayerHeadshot';
+import { PlayerOriginButton } from '@/components/PlayerOrigin';
 import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -228,6 +229,7 @@ export default function PlayerScreen() {
                   </Link>
                 ) : null}
               </View>
+              <PlayerOriginButton playerId={hitter.id} playerName={hitter.name} group="hitting" />
             </View>
           </FadeIn>
 
@@ -369,6 +371,7 @@ export default function PlayerScreen() {
                 </Link>
               ) : null}
             </View>
+            <PlayerOriginButton playerId={p.id} playerName={p.name} group="pitching" />
           </View>
         </FadeIn>
 
