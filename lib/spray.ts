@@ -91,13 +91,14 @@ export function wallDistance(angleDeg: number) {
 
 export function assignZone(x: number, y: number): SprayZoneKey | null {
   const { dist, angle } = sprayPolar(x, y);
-  if (dist < 12 || Math.abs(angle) > 46) return null;
+  if (dist < 8) return null;
+  const clamped = Math.max(-44.99, Math.min(44.99, angle));
   const ring = dist < 155 ? 'infield' : 'outfield';
   for (const z of SPRAY_ZONES) {
     if (z.ring !== ring) continue;
-    if (angle >= z.a0 && angle < z.a1) return z.key;
+    if (clamped >= z.a0 && clamped < z.a1) return z.key;
   }
-  return ring === 'infield' ? (angle < 0 ? '3b' : '1b') : angle < 0 ? 'lf' : 'rf';
+  return ring === 'infield' ? (clamped < 0 ? '3b' : '1b') : clamped < 0 ? 'lf' : 'rf';
 }
 
 export function zoneCounts(events: SprayEvent[]) {
@@ -110,6 +111,23 @@ export function zoneCounts(events: SprayEvent[]) {
     if (key) counts[key] += 1;
   }
   return counts;
+}
+
+/** Percent of all hits in the sample (0% zones stay 0; hits always show at least 1%). */
+export function zonePercents(events: SprayEvent[]) {
+  const counts = zoneCounts(events);
+  const total = events.length;
+  const pcts = Object.fromEntries(SPRAY_ZONES.map((z) => [z.key, 0])) as Record<
+    SprayZoneKey,
+    number
+  >;
+  if (!total) return pcts;
+  for (const z of SPRAY_ZONES) {
+    const n = counts[z.key];
+    if (!n) continue;
+    pcts[z.key] = Math.max(1, Math.round((n / total) * 100));
+  }
+  return pcts;
 }
 
 export function summarizeSpray(events: SprayEvent[], stand: PlayerSpray['stand']) {
