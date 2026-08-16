@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { loadPlayerOrigin } from '../../lib/origin';
+import { loadPlayerSpray } from '../../lib/spray';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const idRaw = req.query.id;
@@ -11,12 +12,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const groupRaw = Array.isArray(req.query.group) ? req.query.group[0] : req.query.group;
   const group = groupRaw === 'pitching' ? 'pitching' : 'hitting';
+  const viewRaw = Array.isArray(req.query.view) ? req.query.view[0] : req.query.view;
 
   try {
+    if (viewRaw === 'spray') {
+      const spray = await loadPlayerSpray(id, group);
+      res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+      res.status(200).json(spray);
+      return;
+    }
+
     const origin = await loadPlayerOrigin(id, group);
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     res.status(200).json(origin);
   } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to load player history' });
+    res.status(500).json({
+      error: e.message || (viewRaw === 'spray' ? 'Failed to load spray chart' : 'Failed to load player history'),
+    });
   }
 }
