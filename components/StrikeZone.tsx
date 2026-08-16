@@ -25,6 +25,22 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const INNER = ['01', '02', '03', '04', '05', '06', '07', '08', '09'];
 
+const ZONE_NAME: Record<string, string> = {
+  '01': 'High in',
+  '02': 'High',
+  '03': 'High away',
+  '04': 'In',
+  '05': 'Middle',
+  '06': 'Away',
+  '07': 'Low in',
+  '08': 'Low',
+  '09': 'Low away',
+  '11': 'Chase high in',
+  '12': 'Chase high away',
+  '13': 'Chase low in',
+  '14': 'Chase low away',
+};
+
 type Props = {
   playerId: number;
   playerName: string;
@@ -36,39 +52,43 @@ function cellById(metric: ZoneMetric, id: string) {
 }
 
 function ZoneBox({
+  id,
   cell,
   metric,
   selected,
   onPress,
-  flex,
-  tall,
+  chase,
 }: {
+  id: string;
   cell?: ZoneCell;
   metric: ZoneMetric;
   selected: boolean;
   onPress: () => void;
-  flex?: number;
-  tall?: boolean;
+  chase?: boolean;
 }) {
   const t = cell ? cellStrength(cell, metric, metric.cells) : 0.2;
-  const bg = cell?.value == null ? 'rgba(255,255,255,0.06)' : strengthColor(t);
+  const empty = cell?.value == null;
+  const bg = empty ? 'rgba(255,255,255,0.06)' : strengthColor(t);
+  const label = Number(id) <= 9 ? String(Number(id)) : id;
   return (
     <Pressable
       onPress={onPress}
       style={[
-        styles.cell,
-        tall && styles.cellTall,
-        { flex: flex ?? 1, backgroundColor: bg },
+        chase ? styles.chase : styles.cell,
+        { backgroundColor: bg },
         selected && styles.cellOn,
       ]}
     >
-      <Text style={styles.cellVal}>{cell?.display || '—'}</Text>
+      <Text style={[styles.cellId, chase && styles.chaseId]}>{label}</Text>
+      <Text style={[styles.cellVal, chase && styles.chaseVal]} numberOfLines={1}>
+        {cell?.display || '—'}
+      </Text>
     </Pressable>
   );
 }
 
 export function StrikeZone({ playerId, playerName, group }: Props) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(group === 'pitching');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PlayerZone | null>(null);
@@ -109,31 +129,12 @@ export function StrikeZone({ playerId, playerName, group }: Props) {
     [metricList, metricKey]
   );
 
-  const title = group === 'pitching' ? 'Pitcher strike zone' : 'Batter strike zone';
-  const hint =
-    group === 'pitching'
-      ? pitch
-        ? metric?.key === 'strikePct'
-          ? 'Catcher’s view · red = more strikes'
-          : 'Catcher’s view · red = they throw it there'
-        : 'Catcher’s view · red = strength (weak contact)'
-      : 'Catcher’s view · red = strength';
+  const title = group === 'pitching' ? 'Pitcher strike zone' : 'Batter’s box';
+  const hint = pitch
+    ? `${pitch.name} · ${pitch.pct}% · ${pitch.velo} mph`
+    : 'Catcher’s view';
 
-  const detail = (() => {
-    const bits: string[] = [];
-    if (pitch) bits.push(`${pitch.name} · ${pitch.pct}% · ${pitch.velo} mph`);
-    if (selected && metric) {
-      const cell = cellById(metric, selected);
-      const where =
-        Number(selected) <= 9 ? `Zone ${Number(selected)}` : `Chase ${selected}`;
-      bits.push(`${where} · ${metric.label} ${cell?.display || '—'}`);
-    } else if (metric && !pitch) {
-      bits.push(`Tap a square · ${metric.label} by zone`);
-    } else if (metric) {
-      bits.push(`Tap a square · ${metric.label}`);
-    }
-    return bits.join(' · ');
-  })();
+  const picked = selected && metric ? cellById(metric, selected) : undefined;
 
   return (
     <View style={styles.wrap}>
@@ -161,15 +162,16 @@ export function StrikeZone({ playerId, playerName, group }: Props) {
           ) : metric ? (
             <>
               {group === 'pitching' && data?.pitchTypes.length ? (
-                <View style={styles.segRow}>
+                <View style={styles.tabRow}>
                   <Pressable
                     onPress={() => {
                       setPitchCode('ALL');
                       setMetricKey(data.metrics[0]?.key || null);
+                      setSelected(null);
                     }}
-                    style={[styles.seg, pitchCode === 'ALL' && styles.segOn]}
+                    style={[styles.tab, pitchCode === 'ALL' && styles.tabOn]}
                   >
-                    <Text style={[styles.segText, pitchCode === 'ALL' && styles.segTextOn]}>
+                    <Text style={[styles.tabText, pitchCode === 'ALL' && styles.tabTextOn]}>
                       All
                     </Text>
                   </Pressable>
@@ -179,11 +181,12 @@ export function StrikeZone({ playerId, playerName, group }: Props) {
                       onPress={() => {
                         setPitchCode(p.code);
                         setMetricKey(p.metrics[0]?.key || data.metrics[0]?.key || null);
+                        setSelected(null);
                       }}
-                      style={[styles.seg, pitchCode === p.code && styles.segOn]}
+                      style={[styles.tab, pitchCode === p.code && styles.tabOn]}
                     >
                       <Text
-                        style={[styles.segText, pitchCode === p.code && styles.segTextOn]}
+                        style={[styles.tabText, pitchCode === p.code && styles.tabTextOn]}
                       >
                         {p.code}
                       </Text>
@@ -192,14 +195,14 @@ export function StrikeZone({ playerId, playerName, group }: Props) {
                 </View>
               ) : null}
 
-              <View style={styles.segRow}>
+              <View style={styles.tabRow}>
                 {metricList.map((m) => (
                   <Pressable
                     key={m.key}
                     onPress={() => setMetricKey(m.key)}
-                    style={[styles.seg, metric.key === m.key && styles.segOn]}
+                    style={[styles.tab, metric.key === m.key && styles.tabOn]}
                   >
-                    <Text style={[styles.segText, metric.key === m.key && styles.segTextOn]}>
+                    <Text style={[styles.tabText, metric.key === m.key && styles.tabTextOn]}>
                       {m.label}
                     </Text>
                   </Pressable>
@@ -207,72 +210,95 @@ export function StrikeZone({ playerId, playerName, group }: Props) {
               </View>
 
               <View style={styles.board}>
-                <View style={styles.row}>
-                  <ZoneBox
-                    cell={cellById(metric, '11')}
-                    metric={metric}
-                    selected={selected === '11'}
-                    onPress={() => setSelected('11')}
-                  />
-                  <View style={{ flex: 2 }} />
-                  <ZoneBox
-                    cell={cellById(metric, '12')}
-                    metric={metric}
-                    selected={selected === '12'}
-                    onPress={() => setSelected('12')}
-                  />
-                </View>
-                <View style={styles.inner}>
-                  {[0, 1, 2].map((r) => (
-                    <View key={r} style={styles.row}>
-                      {INNER.slice(r * 3, r * 3 + 3).map((id) => (
-                        <ZoneBox
-                          key={id}
-                          cell={cellById(metric, id)}
-                          metric={metric}
-                          selected={selected === id}
-                          onPress={() => setSelected(id)}
-                          tall
-                        />
+                <View style={styles.grid}>
+                  <View style={styles.side}>
+                    <ZoneBox
+                      id="11"
+                      cell={cellById(metric, '11')}
+                      metric={metric}
+                      selected={selected === '11'}
+                      onPress={() => setSelected('11')}
+                      chase
+                    />
+                    <View style={{ flex: 1 }} />
+                    <ZoneBox
+                      id="13"
+                      cell={cellById(metric, '13')}
+                      metric={metric}
+                      selected={selected === '13'}
+                      onPress={() => setSelected('13')}
+                      chase
+                    />
+                  </View>
+
+                  <View style={styles.center}>
+                    <View style={styles.box}>
+                      {[0, 1, 2].map((r) => (
+                        <View key={r} style={styles.boxRow}>
+                          {INNER.slice(r * 3, r * 3 + 3).map((id) => (
+                            <ZoneBox
+                              key={id}
+                              id={id}
+                              cell={cellById(metric, id)}
+                              metric={metric}
+                              selected={selected === id}
+                              onPress={() => setSelected(id)}
+                            />
+                          ))}
+                        </View>
                       ))}
                     </View>
-                  ))}
-                </View>
-                <View style={styles.row}>
-                  <ZoneBox
-                    cell={cellById(metric, '13')}
-                    metric={metric}
-                    selected={selected === '13'}
-                    onPress={() => setSelected('13')}
-                  />
-                  <View style={styles.plateWrap}>
                     <View style={styles.plate} />
                   </View>
-                  <ZoneBox
-                    cell={cellById(metric, '14')}
-                    metric={metric}
-                    selected={selected === '14'}
-                    onPress={() => setSelected('14')}
-                  />
+
+                  <View style={styles.side}>
+                    <ZoneBox
+                      id="12"
+                      cell={cellById(metric, '12')}
+                      metric={metric}
+                      selected={selected === '12'}
+                      onPress={() => setSelected('12')}
+                      chase
+                    />
+                    <View style={{ flex: 1 }} />
+                    <ZoneBox
+                      id="14"
+                      cell={cellById(metric, '14')}
+                      metric={metric}
+                      selected={selected === '14'}
+                      onPress={() => setSelected('14')}
+                      chase
+                    />
+                  </View>
                 </View>
               </View>
 
-              <View style={styles.legend}>
-                <Text style={[styles.legendLabel, { color: '#1E4A7A' }]}>WEAK</Text>
+              <View style={styles.readout}>
+                {picked ? (
+                  <>
+                    <Text style={styles.readName}>{ZONE_NAME[selected!] || 'Zone'}</Text>
+                    <Text style={styles.readVal}>
+                      {picked.display}
+                      <Text style={styles.readMetric}>  {metric.label}</Text>
+                    </Text>
+                  </>
+                ) : (
+                  <Text style={styles.readHint}>
+                    {pitch
+                      ? metric.key === 'strikePct'
+                        ? 'Red = more strikes'
+                        : 'Red = they throw it there'
+                      : group === 'pitching'
+                        ? 'Red = pitcher strength'
+                        : 'Red = strength'}
+                  </Text>
+                )}
                 <View style={styles.legendBar}>
                   {['#1E4A7A', '#5B8FBF', '#C4A36A', '#E04A5A', '#C41E3A'].map((c) => (
                     <View key={c} style={[styles.legendSeg, { backgroundColor: c }]} />
                   ))}
                 </View>
-                <Text style={[styles.legendLabel, { color: '#C41E3A' }]}>STRONG</Text>
               </View>
-
-              <Text style={styles.caption}>{detail}</Text>
-              <Text style={styles.footnote}>
-                {group === 'pitching'
-                  ? 'All = results vs MLB. A pitch type shows where they throw it (Use%) and Strike%. Tap a square.'
-                  : 'Season hot/cold zones. Tap a square for that box.'}
-              </Text>
             </>
           ) : (
             <Text style={styles.empty}>No strike-zone data.</Text>
@@ -319,89 +345,122 @@ const styles = StyleSheet.create({
     borderTopColor: colors.line,
     paddingTop: 12,
   },
-  segRow: { flexDirection: 'row', gap: 6, marginBottom: 10, flexWrap: 'wrap' },
-  seg: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.line,
+  tabRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+    marginBottom: 8,
   },
-  segOn: { backgroundColor: colors.scarlet, borderColor: colors.scarlet },
-  segText: { fontFamily: 'DMSans_700Bold', color: colors.mist, fontSize: 13 },
-  segTextOn: { color: colors.white },
+  tab: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  tabOn: { backgroundColor: 'rgba(234, 170, 0, 0.18)' },
+  tabText: { fontFamily: 'DMSans_700Bold', color: colors.mistDim, fontSize: 13 },
+  tabTextOn: { color: colors.gold },
   board: {
     backgroundColor: '#0C1220',
     borderRadius: 12,
-    padding: 8,
-    gap: 6,
+    padding: 10,
   },
-  row: { flexDirection: 'row', gap: 6 },
-  inner: {
-    borderWidth: 2,
+  grid: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 8,
+  },
+  side: {
+    width: 58,
+    justifyContent: 'space-between',
+  },
+  center: { flex: 1 },
+  box: {
+    aspectRatio: 1,
+    borderWidth: 2.5,
     borderColor: colors.cream,
-    borderRadius: 8,
-    padding: 5,
-    gap: 5,
-    backgroundColor: 'rgba(245,240,232,0.04)',
+    borderRadius: 4,
+    overflow: 'hidden',
+    gap: 2,
+    backgroundColor: colors.cream,
   },
+  boxRow: { flex: 1, flexDirection: 'row', gap: 2 },
   cell: {
-    minHeight: 36,
-    borderRadius: 7,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  cellTall: { minHeight: 48 },
-  cellOn: {
+    paddingHorizontal: 2,
     borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  chase: {
+    height: 52,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  cellOn: {
     borderColor: colors.gold,
   },
+  cellId: {
+    fontFamily: 'DMSans_700Bold',
+    color: 'rgba(255,255,255,0.72)',
+    fontSize: 10,
+    letterSpacing: 0.4,
+  },
+  chaseId: { fontSize: 9 },
   cellVal: {
     fontFamily: 'DMSans_700Bold',
     color: colors.white,
-    fontSize: 12,
+    fontSize: 16,
+    marginTop: 1,
   },
-  plateWrap: { flex: 2, alignItems: 'center', justifyContent: 'center' },
+  chaseVal: { fontSize: 13 },
   plate: {
-    width: 28,
-    height: 16,
+    alignSelf: 'center',
+    width: 36,
+    height: 14,
+    marginTop: 8,
     backgroundColor: colors.cream,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-    transform: [{ rotate: '180deg' }],
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
-  legend: {
-    flexDirection: 'row',
+  readout: {
+    marginTop: 12,
     alignItems: 'center',
-    gap: 8,
-    marginTop: 10,
+    gap: 6,
   },
-  legendLabel: {
+  readName: {
+    fontFamily: 'DMSans_500Medium',
+    color: colors.mist,
+    fontSize: 13,
+  },
+  readVal: {
     fontFamily: 'DMSans_700Bold',
-    fontSize: 9,
-    letterSpacing: 1.1,
+    color: colors.cream,
+    fontSize: 22,
+  },
+  readMetric: {
+    fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 14,
+  },
+  readHint: {
+    fontFamily: 'DMSans_400Regular',
+    color: colors.mistDim,
+    fontSize: 13,
   },
   legendBar: {
-    flex: 1,
+    width: 88,
     flexDirection: 'row',
-    height: 6,
-    borderRadius: 3,
+    height: 4,
+    borderRadius: 2,
     overflow: 'hidden',
+    marginTop: 2,
   },
   legendSeg: { flex: 1 },
-  caption: {
-    fontFamily: 'DMSans_500Medium',
-    color: colors.cream,
-    fontSize: 13,
-    marginTop: 10,
-  },
-  footnote: {
-    fontFamily: 'DMSans_400Regular',
-    color: colors.mist,
-    fontSize: 12,
-    lineHeight: 16,
-    marginTop: 6,
-  },
   empty: {
     fontFamily: 'DMSans_400Regular',
     color: colors.mist,

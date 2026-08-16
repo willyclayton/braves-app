@@ -522,7 +522,7 @@ export function SprayChart({
   windowKey,
   windowDates,
 }: Props) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>('hits');
   const [scope, setScope] = useState<Scope>('season');
   const [width, setWidth] = useState(320);
