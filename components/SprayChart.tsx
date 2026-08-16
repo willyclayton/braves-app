@@ -449,7 +449,7 @@ export function SprayChart({
   windowKey,
   windowDates,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [mode, setMode] = useState<Mode>('hits');
   const [scope, setScope] = useState<Scope>('season');
   const [width, setWidth] = useState(320);
@@ -476,13 +476,13 @@ export function SprayChart({
     }
   }, [group, loading, playerId, spray]);
 
+  useEffect(() => {
+    if (open) load();
+  }, [open, load]);
+
   const toggleOpen = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setOpen((v) => {
-      const next = !v;
-      if (next) load();
-      return next;
-    });
+    setOpen((v) => !v);
   };
 
   const events = useMemo(() => {
