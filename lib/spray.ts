@@ -130,6 +130,28 @@ export function zonePercents(events: SprayEvent[]) {
   return pcts;
 }
 
+export type FieldThird = 'pull' | 'center' | 'oppo';
+
+export function fieldThird(x: number, y: number, stand: PlayerSpray['stand']): FieldThird {
+  const { angle } = sprayPolar(x, y);
+  if (Math.abs(angle) <= 12) return 'center';
+  if (stand === 'L') return angle > 0 ? 'pull' : 'oppo';
+  return angle < 0 ? 'pull' : 'oppo';
+}
+
+export function thirdPercents(events: SprayEvent[], stand: PlayerSpray['stand']) {
+  const counts = { pull: 0, center: 0, oppo: 0 };
+  for (const e of events) counts[fieldThird(e.x, e.y, stand)] += 1;
+  const total = events.length || 1;
+  const pct = (n: number) => (events.length ? Math.round((n / total) * 100) : 0);
+  return {
+    pull: pct(counts.pull),
+    center: pct(counts.center),
+    oppo: pct(counts.oppo),
+    counts,
+  };
+}
+
 export function summarizeSpray(events: SprayEvent[], stand: PlayerSpray['stand']) {
   let pull = 0;
   let center = 0;
