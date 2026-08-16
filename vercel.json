@@ -4,6 +4,9 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/player/[id].ts": { "maxDuration": 20 }
+  },
   "headers": [
     {
       "source": "/(.*)",
