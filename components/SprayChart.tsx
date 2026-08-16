@@ -28,15 +28,13 @@ import { colors, spacing } from '@/constants/theme';
 import type { WindowKey } from '@/data/braves';
 import { WINDOW_LABELS } from '@/data/braves';
 import {
-  SPRAY_ZONES,
   filterSprayByDates,
   summarizeSpray,
+  thirdPercents,
   wallDistance,
-  zoneCounts,
-  zonePercents,
+  type FieldThird,
   type PlayerSpray,
   type SprayEvent,
-  type SprayZone,
 } from '@/lib/spray';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -76,27 +74,22 @@ function polar(angleDeg: number, dist: number): Pt {
   return { x: Math.sin(rad) * dist, y: Math.cos(rad) * dist };
 }
 
-function sectorPath(zone: SprayZone) {
-  const steps = 10;
-  const inner: Pt[] = [];
-  const outer: Pt[] = [];
+function wedgePath(a0: number, a1: number) {
+  const steps = 12;
+  const pts: Pt[] = [toSvg(0, 0)];
   for (let i = 0; i <= steps; i++) {
-    const a = zone.a0 + ((zone.a1 - zone.a0) * i) / steps;
-    const wall = wallDistance(a);
-    const ri = Math.min(zone.r0, wall);
-    const ro = Math.min(zone.r1, wall - 2);
-    inner.push(toSvg(polar(a, ri).x, polar(a, ri).y));
-    outer.push(toSvg(polar(a, ro).x, polar(a, ro).y));
+    const a = a0 + ((a1 - a0) * i) / steps;
+    const p = polar(a, wallDistance(a) - 3);
+    pts.push(toSvg(p.x, p.y));
   }
-  const pts = [...inner, ...outer.reverse()];
+  pts.push(toSvg(0, 0));
   return pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(' ') + ' Z';
 }
 
-function zoneAnchor(zone: SprayZone): Pt {
-  const a = (zone.a0 + zone.a1) / 2;
-  const wall = wallDistance(a);
-  const r = Math.min((zone.r0 + zone.r1) / 2, wall - 18);
-  return toSvg(polar(a, r).x, polar(a, r).y);
+function wedgeAnchor(a0: number, a1: number): Pt {
+  const a = (a0 + a1) / 2;
+  const p = polar(a, Math.min(255, wallDistance(a) - 70));
+  return toSvg(p.x, p.y);
 }
 
 function fairClipPath() {
@@ -138,13 +131,11 @@ function infieldGrassPath() {
   return `M ${first.x} ${first.y} L ${second.x} ${second.y} L ${third.x} ${third.y} Q ${cut.x} ${cut.y} ${first.x} ${first.y} Z`;
 }
 
-function heatFill(count: number, max: number) {
-  if (!count || max < 1) return 'rgba(255,255,255,0.03)';
-  const t = count / max;
-  if (t < 0.34) return `rgba(46, 196, 182, ${0.16 + t * 0.55})`;
-  if (t < 0.67) return `rgba(234, 170, 0, ${0.28 + t * 0.42})`;
-  return `rgba(206, 17, 65, ${0.4 + t * 0.38})`;
-}
+const THIRDS = {
+  pull: { color: '206, 17, 65', label: 'PULL' },
+  center: { color: '234, 170, 0', label: 'CENTER' },
+  oppo: { color: '46, 196, 182', label: 'OPPO' },
+} as const;
 
 function hrArc(ev: SprayEvent) {
   const home = toSvg(0, 4);
@@ -240,72 +231,91 @@ function FieldMarks() {
 }
 
 function HitsHeat({
+  stand,
   events,
   clipId,
   progress,
 }: {
+  stand: PlayerSpray['stand'];
   events: SprayEvent[];
   clipId: string;
   progress: Animated.Value;
 }) {
-  const counts = zoneCounts(events);
-  const max = Math.max(1, ...SPRAY_ZONES.map((z) => counts[z.key]));
+  const thirds = thirdPercents(events, stand);
+  const max = Math.max(thirds.pull, thirds.center, thirds.oppo, 1);
+  const leftKey: FieldThird = stand === 'L' ? 'oppo' : 'pull';
+  const rightKey: FieldThird = stand === 'L' ? 'pull' : 'oppo';
+  const wedges: { key: FieldThird; a0: number; a1: number; pct: number }[] = [
+    { key: leftKey, a0: -45, a1: -12, pct: thirds[leftKey] },
+    { key: 'center', a0: -12, a1: 12, pct: thirds.center },
+    { key: rightKey, a0: 12, a1: 45, pct: thirds[rightKey] },
+  ];
   const opacity = progress.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
   return (
     <AnimatedG clipPath={`url(#${clipId})`} opacity={opacity}>
-      {SPRAY_ZONES.map((z) => (
-        <Path
-          key={z.key}
-          d={sectorPath(z)}
-          fill={heatFill(counts[z.key], max)}
-          stroke="rgba(11,20,38,0.25)"
-          strokeWidth={0.8}
-        />
-      ))}
+      {wedges.map((w) => {
+        const t = w.pct / max;
+        return (
+          <Path
+            key={w.key}
+            d={wedgePath(w.a0, w.a1)}
+            fill={`rgba(${THIRDS[w.key].color}, ${0.22 + t * 0.55})`}
+            stroke="rgba(11,20,38,0.35)"
+            strokeWidth={1}
+          />
+        );
+      })}
     </AnimatedG>
   );
 }
 
-function ZoneLabels({
+function ThirdLabels({
+  stand,
   events,
   width,
   height,
   progress,
 }: {
+  stand: PlayerSpray['stand'];
   events: SprayEvent[];
   width: number;
   height: number;
   progress: Animated.Value;
 }) {
-  const pcts = zonePercents(events);
+  const thirds = thirdPercents(events, stand);
+  const leftKey: FieldThird = stand === 'L' ? 'oppo' : 'pull';
+  const rightKey: FieldThird = stand === 'L' ? 'pull' : 'oppo';
+  const wedges: { key: FieldThird; a0: number; a1: number; pct: number }[] = [
+    { key: leftKey, a0: -45, a1: -12, pct: thirds[leftKey] },
+    { key: 'center', a0: -12, a1: 12, pct: thirds.center },
+    { key: rightKey, a0: 12, a1: 45, pct: thirds[rightKey] },
+  ];
   const opacity = progress.interpolate({
-    inputRange: [0, 0.45, 1],
+    inputRange: [0, 0.4, 1],
     outputRange: [0, 0, 1],
   });
   return (
     <>
-      {SPRAY_ZONES.map((z) => {
-        const pct = pcts[z.key];
-        if (!pct) return null;
-        const p = zoneAnchor(z);
+      {wedges.map((w) => {
+        const p = wedgeAnchor(w.a0, w.a1);
         return (
           <Animated.View
-            key={z.key}
+            key={w.key}
             pointerEvents="none"
             style={[
               styles.zoneTag,
               {
-                left: (p.x / VB_W) * width - 24,
-                top: (p.y / VB_H) * height - 18,
+                left: (p.x / VB_W) * width - 36,
+                top: (p.y / VB_H) * height - 28,
                 opacity,
               },
             ]}
           >
-            <Text style={styles.zoneName}>{z.label}</Text>
-            <Text style={styles.zonePct}>{pct}%</Text>
+            <Text style={styles.zoneName}>{THIRDS[w.key].label}</Text>
+            <Text style={styles.zonePct}>{w.pct}%</Text>
           </Animated.View>
         );
       })}
@@ -590,7 +600,12 @@ export function SprayChart({
                 <Svg width={width} height={height} viewBox={`0 0 ${VB_W} ${VB_H}`}>
                   <FieldBase clipId={clipId} />
                   {mode === 'hits' ? (
-                    <HitsHeat events={events} clipId={clipId} progress={progress} />
+                    <HitsHeat
+                      stand={spray?.stand || 'R'}
+                      events={events}
+                      clipId={clipId}
+                      progress={progress}
+                    />
                   ) : null}
                   {mode === 'hr' ? (
                     <HrStage homers={homers} progress={progress} clipId={clipId} />
@@ -598,7 +613,8 @@ export function SprayChart({
                   <FieldMarks />
                 </Svg>
                 {mode === 'hits' ? (
-                  <ZoneLabels
+                  <ThirdLabels
+                    stand={spray?.stand || 'R'}
                     events={events}
                     width={width}
                     height={height}
@@ -617,14 +633,19 @@ export function SprayChart({
               </View>
 
               {mode === 'hits' && events.length ? (
-                <View style={styles.legend}>
-                  <Text style={[styles.legendLabel, { color: '#2EC4B6' }]}>LOW %</Text>
-                  <View style={styles.legendBar}>
-                    {['#2EC4B6', '#7ED9C8', '#EAAA00', '#E07A2A', '#CE1141'].map((c) => (
-                      <View key={c} style={[styles.legendSeg, { backgroundColor: c }]} />
-                    ))}
-                  </View>
-                  <Text style={[styles.legendLabel, { color: colors.scarlet }]}>HIGH %</Text>
+                <View style={styles.thirdRow}>
+                  {(
+                    [
+                      ['pull', summary.pull, colors.scarlet],
+                      ['center', summary.center, colors.gold],
+                      ['oppo', summary.oppo, '#2EC4B6'],
+                    ] as const
+                  ).map(([key, pct, color]) => (
+                    <View key={key} style={styles.thirdCard}>
+                      <Text style={[styles.thirdName, { color }]}>{THIRDS[key].label}</Text>
+                      <Text style={styles.thirdPct}>{pct}%</Text>
+                    </View>
+                  ))}
                 </View>
               ) : null}
 
@@ -632,9 +653,9 @@ export function SprayChart({
 
               {mode === 'hits' && events.length ? (
                 <Text style={styles.footnote}>
-                  Share of {events.length} hits{isPitcher ? ' allowed' : ''} · {summary.singles}{' '}
+                  Percent of {events.length} hits{isPitcher ? ' allowed' : ''} · {summary.singles}{' '}
                   singles · {summary.doubles} doubles · {summary.triples} triples · {summary.homers}{' '}
-                  HR. Zone % is of this sample.
+                  HR.
                 </Text>
               ) : null}
               {mode === 'hr' && homers.length ? (
@@ -769,28 +790,54 @@ const styles = StyleSheet.create({
   },
   zoneTag: {
     position: 'absolute',
-    minWidth: 48,
+    minWidth: 72,
     alignItems: 'center',
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: 8,
-    backgroundColor: 'rgba(11, 20, 38, 0.78)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    backgroundColor: 'rgba(11, 20, 38, 0.82)',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(245, 240, 232, 0.18)',
+    borderColor: 'rgba(245, 240, 232, 0.22)',
   },
   zoneName: {
     fontFamily: 'DMSans_700Bold',
     color: colors.gold,
-    fontSize: 10,
-    letterSpacing: 0.8,
+    fontSize: 11,
+    letterSpacing: 1.1,
   },
   zonePct: {
     fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 20,
+    fontSize: 28,
     letterSpacing: 0.4,
-    lineHeight: 22,
+    lineHeight: 30,
     marginTop: 1,
+  },
+  thirdRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 12,
+  },
+  thirdCard: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: colors.navyLift,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+  },
+  thirdName: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 11,
+    letterSpacing: 1.2,
+  },
+  thirdPct: {
+    fontFamily: 'BebasNeue_400Regular',
+    color: colors.white,
+    fontSize: 32,
+    lineHeight: 34,
+    marginTop: 2,
   },
   playBtn: {
     position: 'absolute',
