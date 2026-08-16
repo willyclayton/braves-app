@@ -5,6 +5,7 @@ import { GameStamp } from '@/components/GameStamp';
 import { LeagueRankings } from '@/components/LeagueRankings';
 import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { PlayerOriginButton } from '@/components/PlayerOrigin';
+import { SprayChart } from '@/components/SprayChart';
 import { TeamLogo } from '@/components/TeamLogo';
 import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -249,6 +250,14 @@ export default function PlayerScreen() {
 
           <LeagueRankings rankings={hitter.rankings} playerName={hitter.name} />
 
+          <SprayChart
+            playerId={hitter.id}
+            playerName={hitter.name}
+            group="hitting"
+            windowKey={window}
+            windowDates={hitLog.map((g) => g.date)}
+          />
+
           <Text style={styles.chartTitle}>
             {WINDOW_LABELS[window]} · {metricLabel}
           </Text>
@@ -390,6 +399,14 @@ export default function PlayerScreen() {
         />
 
         <LeagueRankings rankings={p.rankings} playerName={p.name} />
+
+        <SprayChart
+          playerId={p.id}
+          playerName={p.name}
+          group="pitching"
+          windowKey={window}
+          windowDates={pitchLog.map((g) => g.date)}
+        />
 
         <Text style={styles.chartTitle}>
           {WINDOW_LABELS[window]} · {metricLabel}
