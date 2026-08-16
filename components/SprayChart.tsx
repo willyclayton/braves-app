@@ -170,14 +170,7 @@ function quadAt(t: number, a: Pt, c: Pt, b: Pt): Pt {
 
 function FieldBase({ clipId }: { clipId: string }) {
   const fair = fairClipPath();
-  const wall = wallPath();
-  const lf = toSvg(polar(-45, wallDistance(-45)).x, polar(-45, wallDistance(-45)).y);
-  const rf = toSvg(polar(45, wallDistance(45)).x, polar(45, wallDistance(45)).y);
-  const home = toSvg(0, 0);
   const mound = toSvg(0, 60.5);
-  const b1 = toSvg(63.6, 63.6);
-  const b2 = toSvg(0, 127.3);
-  const b3 = toSvg(-63.6, 63.6);
 
   return (
     <G>
@@ -195,6 +188,21 @@ function FieldBase({ clipId }: { clipId: string }) {
       <Path d={infieldGrassPath()} fill="#245C40" clipPath={`url(#${clipId})`} />
       <Circle cx={mound.x} cy={mound.y} r={9} fill="#8A6840" />
       <Circle cx={mound.x} cy={mound.y} r={2.2} fill={colors.cream} fillOpacity={0.7} />
+    </G>
+  );
+}
+
+function FieldMarks() {
+  const wall = wallPath();
+  const lf = toSvg(polar(-45, wallDistance(-45)).x, polar(-45, wallDistance(-45)).y);
+  const rf = toSvg(polar(45, wallDistance(45)).x, polar(45, wallDistance(45)).y);
+  const home = toSvg(0, 0);
+  const b1 = toSvg(63.6, 63.6);
+  const b2 = toSvg(0, 127.3);
+  const b3 = toSvg(-63.6, 63.6);
+
+  return (
+    <G>
       <Line
         x1={home.x}
         y1={home.y}
@@ -245,7 +253,15 @@ function HitsHeat({ events, clipId }: { events: SprayEvent[]; clipId: string }) 
   );
 }
 
-function ZoneLabels({ events }: { events: SprayEvent[] }) {
+function ZoneLabels({
+  events,
+  width,
+  height,
+}: {
+  events: SprayEvent[];
+  width: number;
+  height: number;
+}) {
   const counts = zoneCounts(events);
   return (
     <>
@@ -260,8 +276,8 @@ function ZoneLabels({ events }: { events: SprayEvent[] }) {
             style={[
               styles.zoneTag,
               {
-                left: (p.x / VB_W) * 100 + '%',
-                top: (p.y / VB_H) * 100 + '%',
+                left: (p.x / VB_W) * width - 18,
+                top: (p.y / VB_H) * height - 8,
               },
             ]}
           >
@@ -605,8 +621,11 @@ export function SprayChart({
                       onIndex={setHrIndex}
                     />
                   ) : null}
+                  <FieldMarks />
                 </Svg>
-                {mode === 'hits' ? <ZoneLabels events={events} /> : null}
+                {mode === 'hits' ? (
+                  <ZoneLabels events={events} width={width} height={height} />
+                ) : null}
                 {mode === 'hr' && homers.length ? (
                   <Pressable
                     onPress={() => setPlaying((v) => !v)}
@@ -775,7 +794,6 @@ const styles = StyleSheet.create({
   },
   zoneTag: {
     position: 'absolute',
-    transform: [{ translateX: -18 }, { translateY: -8 }],
   },
   zoneTagText: {
     fontFamily: 'DMSans_700Bold',

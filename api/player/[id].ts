@@ -26,6 +26,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     res.status(200).json(origin);
   } catch (e: any) {
-    res.status(500).json({ error: e.message || 'Failed to load player history' });
+    res.status(500).json({
+      error: e.message || (viewRaw === 'spray' ? 'Failed to load spray chart' : 'Failed to load player history'),
+    });
   }
 }
