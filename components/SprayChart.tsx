@@ -24,7 +24,7 @@ import Svg, {
   RadialGradient,
   Stop,
 } from 'react-native-svg';
-import { colors, radii, spacing } from '@/constants/theme';
+import { colors, spacing } from '@/constants/theme';
 import type { WindowKey } from '@/data/braves';
 import { WINDOW_LABELS } from '@/data/braves';
 import {
@@ -33,6 +33,7 @@ import {
   summarizeSpray,
   wallDistance,
   zoneCounts,
+  zonePercents,
   type PlayerSpray,
   type SprayEvent,
   type SprayZone,
@@ -44,6 +45,9 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedG = Animated.createAnimatedComponent(G);
+
+const SPRAY_MS = 1700;
 
 const VB_W = 300;
 const VB_H = 292;
@@ -235,11 +239,23 @@ function FieldMarks() {
   );
 }
 
-function HitsHeat({ events, clipId }: { events: SprayEvent[]; clipId: string }) {
+function HitsHeat({
+  events,
+  clipId,
+  progress,
+}: {
+  events: SprayEvent[];
+  clipId: string;
+  progress: Animated.Value;
+}) {
   const counts = zoneCounts(events);
   const max = Math.max(1, ...SPRAY_ZONES.map((z) => counts[z.key]));
+  const opacity = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
   return (
-    <G clipPath={`url(#${clipId})`}>
+    <AnimatedG clipPath={`url(#${clipId})`} opacity={opacity}>
       {SPRAY_ZONES.map((z) => (
         <Path
           key={z.key}
@@ -249,7 +265,7 @@ function HitsHeat({ events, clipId }: { events: SprayEvent[]; clipId: string }) 
           strokeWidth={0.8}
         />
       ))}
-    </G>
+    </AnimatedG>
   );
 }
 
@@ -257,34 +273,40 @@ function ZoneLabels({
   events,
   width,
   height,
+  progress,
 }: {
   events: SprayEvent[];
   width: number;
   height: number;
+  progress: Animated.Value;
 }) {
-  const counts = zoneCounts(events);
+  const pcts = zonePercents(events);
+  const opacity = progress.interpolate({
+    inputRange: [0, 0.45, 1],
+    outputRange: [0, 0, 1],
+  });
   return (
     <>
       {SPRAY_ZONES.map((z) => {
-        const n = counts[z.key];
-        if (!n) return null;
+        const pct = pcts[z.key];
+        if (!pct) return null;
         const p = zoneAnchor(z);
         return (
-          <View
+          <Animated.View
             key={z.key}
             pointerEvents="none"
             style={[
               styles.zoneTag,
               {
-                left: (p.x / VB_W) * width - 18,
-                top: (p.y / VB_H) * height - 8,
+                left: (p.x / VB_W) * width - 24,
+                top: (p.y / VB_H) * height - 18,
+                opacity,
               },
             ]}
           >
-            <Text style={styles.zoneTagText}>
-              {z.label} {n}
-            </Text>
-          </View>
+            <Text style={styles.zoneName}>{z.label}</Text>
+            <Text style={styles.zonePct}>{pct}%</Text>
+          </Animated.View>
         );
       })}
     </>
@@ -354,122 +376,69 @@ function ScopeDropdown({
 
 function HrStage({
   homers,
-  playing,
+  progress,
   clipId,
-  onIndex,
 }: {
   homers: SprayEvent[];
-  playing: boolean;
+  progress: Animated.Value;
   clipId: string;
-  onIndex: (i: number) => void;
 }) {
-  const [index, setIndex] = useState(0);
-  const progress = useRef(new Animated.Value(0)).current;
-  const [ball, setBall] = useState<Pt | null>(null);
-  const current = homers[index];
-  const arc = current ? hrArc(current) : null;
+  const arcs = useMemo(() => homers.map((hr) => hrArc(hr)), [homers]);
+  const [balls, setBalls] = useState<Pt[]>(() => arcs.map((a) => a.home));
 
   useEffect(() => {
     const id = progress.addListener(({ value }) => {
-      const live = homers[index] ? hrArc(homers[index]) : null;
-      if (!live) return;
-      setBall(quadAt(value, live.home, live.ctrl, live.land));
+      setBalls(arcs.map((a) => quadAt(value, a.home, a.ctrl, a.land)));
     });
     return () => progress.removeListener(id);
-  }, [homers, index, progress]);
+  }, [arcs, progress]);
 
-  useEffect(() => {
-    if (!playing || !homers.length) return;
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    let anim: Animated.CompositeAnimation | undefined;
-    let i = 0;
-    setIndex(0);
-    onIndex(0);
-
-    const run = (next: number) => {
-      if (cancelled) return;
-      i = next;
-      setIndex(next);
-      onIndex(next);
-      const a = hrArc(homers[next]);
-      progress.setValue(0);
-      setBall(a.home);
-      anim = Animated.timing(progress, {
-        toValue: 1,
-        duration: 1450,
-        easing: Easing.out(Easing.cubic),
-        useNativeDriver: false,
-      });
-      anim.start(({ finished }) => {
-        if (!finished || cancelled) return;
-        timer = setTimeout(() => run((next + 1) % homers.length), 520);
-      });
-    };
-
-    run(0);
-    return () => {
-      cancelled = true;
-      anim?.stop();
-      if (timer) clearTimeout(timer);
-    };
-  }, [playing, homers, onIndex, progress]);
-
-  const dash = arc
-    ? progress.interpolate({
-        inputRange: [0, 1],
-        outputRange: [arc.len, 0],
-      })
-    : 0;
-
-  const landed = homers.slice(0, index);
+  const landOp = progress.interpolate({
+    inputRange: [0.72, 1],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
 
   return (
-    <>
-      <G clipPath={`url(#${clipId})`}>
-        {landed.map((hr, i) => {
-          const a = hrArc(hr);
-          return (
-            <G key={`${hr.date}-${hr.gamePk || i}-done`}>
-              <Path d={a.d} fill="none" stroke="rgba(234,170,0,0.28)" strokeWidth={1.6} />
-              <Circle cx={a.land.x} cy={a.land.y} r={3.2} fill={colors.scarlet} fillOpacity={0.85} />
-            </G>
-          );
-        })}
-        {arc ? (
-          <>
-            <Line
-              x1={arc.home.x}
-              y1={arc.home.y}
-              x2={arc.land.x}
-              y2={arc.land.y}
-              stroke="rgba(245,240,232,0.16)"
-              strokeWidth={1}
-              strokeDasharray="3 4"
-            />
-            <AnimatedPath
-              d={arc.d}
-              fill="none"
-              stroke={colors.gold}
-              strokeWidth={2.6}
-              strokeLinecap="round"
-              strokeDasharray={[arc.len, arc.len]}
-              strokeDashoffset={dash}
-            />
-            {ball ? (
-              <AnimatedCircle
-                cx={ball.x}
-                cy={ball.y}
-                r={4.2}
-                fill={colors.white}
-                stroke={colors.gold}
-                strokeWidth={1.4}
-              />
-            ) : null}
-          </>
-        ) : null}
-      </G>
-    </>
+    <G clipPath={`url(#${clipId})`}>
+      {arcs.map((a, i) => (
+        <AnimatedPath
+          key={`${homers[i].date}-${homers[i].gamePk || i}`}
+          d={a.d}
+          fill="none"
+          stroke={colors.gold}
+          strokeWidth={1.8}
+          strokeLinecap="round"
+          strokeOpacity={0.82}
+          strokeDasharray={[a.len, a.len]}
+          strokeDashoffset={progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [a.len, 0],
+          })}
+        />
+      ))}
+      {balls.map((b, i) => (
+        <Circle
+          key={`ball-${i}`}
+          cx={b.x}
+          cy={b.y}
+          r={3.4}
+          fill={colors.white}
+          stroke={colors.gold}
+          strokeWidth={1}
+        />
+      ))}
+      {arcs.map((a, i) => (
+        <AnimatedCircle
+          key={`land-${i}`}
+          cx={a.land.x}
+          cy={a.land.y}
+          r={3.6}
+          fill={colors.scarlet}
+          opacity={landOp}
+        />
+      ))}
+    </G>
   );
 }
 
@@ -480,15 +449,15 @@ export function SprayChart({
   windowKey,
   windowDates,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [mode, setMode] = useState<Mode>('hits');
   const [scope, setScope] = useState<Scope>('season');
   const [width, setWidth] = useState(320);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [spray, setSpray] = useState<PlayerSpray | null>(null);
-  const [playing, setPlaying] = useState(true);
-  const [hrIndex, setHrIndex] = useState(0);
+  const [replayKey, setReplayKey] = useState(0);
+  const progress = useRef(new Animated.Value(0)).current;
   const clipId = `fair-${playerId}-${group}`;
 
   const load = useCallback(async () => {
@@ -507,13 +476,13 @@ export function SprayChart({
     }
   }, [group, loading, playerId, spray]);
 
+  useEffect(() => {
+    if (open) load();
+  }, [open, load]);
+
   const toggleOpen = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setOpen((v) => {
-      const next = !v;
-      if (next) load();
-      return next;
-    });
+    setOpen((v) => !v);
   };
 
   const events = useMemo(() => {
@@ -532,6 +501,19 @@ export function SprayChart({
     if (w > 0 && Math.abs(w - width) > 1) setWidth(w);
   };
 
+  useEffect(() => {
+    if (!open || loading || !spray) return;
+    progress.setValue(0);
+    const anim = Animated.timing(progress, {
+      toValue: 1,
+      duration: SPRAY_MS,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    });
+    anim.start();
+    return () => anim.stop();
+  }, [open, loading, spray, mode, scope, events.length, replayKey, progress]);
+
   const height = Math.round(width * (VB_H / VB_W));
   const windowLabel = WINDOW_LABELS[windowKey];
   const isPitcher = group === 'pitching';
@@ -539,21 +521,17 @@ export function SprayChart({
   const hitsLabel = isPitcher ? 'Hits' : 'Hits';
   const hrLabel = isPitcher ? 'HR allowed' : 'Home runs';
   const rangeNote = scope === 'window' ? windowLabel : 'Season';
+  const avgHrDist = homers.length
+    ? Math.round(
+        homers.reduce((s, h) => s + (h.dist || Math.hypot(h.x, h.y)), 0) / homers.length
+      )
+    : 0;
 
-  const currentHr = homers[hrIndex];
   const hitCaption =
     mode === 'hits'
       ? `${events.length} hit${events.length === 1 ? '' : 's'} · ${summary.pull}% pull · ${summary.center}% mid · ${summary.oppo}% oppo`
-      : currentHr
-        ? [
-            currentHr.date.slice(5),
-            currentHr.dist ? `${currentHr.dist} ft` : null,
-            currentHr.ev ? `${currentHr.ev} mph` : null,
-            currentHr.la != null ? `${currentHr.la}°` : null,
-            `${hrIndex + 1}/${homers.length}`,
-          ]
-            .filter(Boolean)
-            .join(' · ')
+      : homers.length
+        ? `${homers.length} home run${homers.length === 1 ? '' : 's'} · ${avgHrDist} ft avg`
         : 'No home runs in this sample';
 
   return (
@@ -611,45 +589,42 @@ export function SprayChart({
               <View style={[styles.field, { height }]} onLayout={onLayout}>
                 <Svg width={width} height={height} viewBox={`0 0 ${VB_W} ${VB_H}`}>
                   <FieldBase clipId={clipId} />
-                  {mode === 'hits' ? <HitsHeat events={events} clipId={clipId} /> : null}
+                  {mode === 'hits' ? (
+                    <HitsHeat events={events} clipId={clipId} progress={progress} />
+                  ) : null}
                   {mode === 'hr' ? (
-                    <HrStage
-                      key={`${scope}-${homers.length}`}
-                      homers={homers}
-                      playing={playing}
-                      clipId={clipId}
-                      onIndex={setHrIndex}
-                    />
+                    <HrStage homers={homers} progress={progress} clipId={clipId} />
                   ) : null}
                   <FieldMarks />
                 </Svg>
                 {mode === 'hits' ? (
-                  <ZoneLabels events={events} width={width} height={height} />
+                  <ZoneLabels
+                    events={events}
+                    width={width}
+                    height={height}
+                    progress={progress}
+                  />
                 ) : null}
-                {mode === 'hr' && homers.length ? (
+                {events.length ? (
                   <Pressable
-                    onPress={() => setPlaying((v) => !v)}
+                    onPress={() => setReplayKey((k) => k + 1)}
                     style={styles.playBtn}
-                    accessibilityLabel={playing ? 'Pause home run flights' : 'Play home run flights'}
+                    accessibilityLabel="Replay spray animation"
                   >
-                    <Ionicons
-                      name={playing ? 'pause' : 'play'}
-                      size={14}
-                      color={colors.navy}
-                    />
+                    <Ionicons name="refresh" size={14} color={colors.navy} />
                   </Pressable>
                 ) : null}
               </View>
 
               {mode === 'hits' && events.length ? (
                 <View style={styles.legend}>
-                  <Text style={[styles.legendLabel, { color: '#2EC4B6' }]}>FEW</Text>
+                  <Text style={[styles.legendLabel, { color: '#2EC4B6' }]}>LOW %</Text>
                   <View style={styles.legendBar}>
                     {['#2EC4B6', '#7ED9C8', '#EAAA00', '#E07A2A', '#CE1141'].map((c) => (
                       <View key={c} style={[styles.legendSeg, { backgroundColor: c }]} />
                     ))}
                   </View>
-                  <Text style={[styles.legendLabel, { color: colors.scarlet }]}>MANY</Text>
+                  <Text style={[styles.legendLabel, { color: colors.scarlet }]}>HIGH %</Text>
                 </View>
               ) : null}
 
@@ -657,14 +632,14 @@ export function SprayChart({
 
               {mode === 'hits' && events.length ? (
                 <Text style={styles.footnote}>
-                  {summary.singles} singles · {summary.doubles} doubles · {summary.triples} triples
-                  · {summary.homers} HR{isPitcher ? ' allowed' : ''} in {rangeNote.toLowerCase()}{' '}
-                  games. Colored areas show where contact clusters, not individual dots.
+                  Share of {events.length} hits{isPitcher ? ' allowed' : ''} · {summary.singles}{' '}
+                  singles · {summary.doubles} doubles · {summary.triples} triples · {summary.homers}{' '}
+                  HR. Zone % is of this sample.
                 </Text>
               ) : null}
               {mode === 'hr' && homers.length ? (
                 <Text style={styles.footnote}>
-                  Flight paths use Statcast landing spot, exit velocity, and launch angle.
+                  All {homers.length} flight paths play together from Statcast landing spots.
                 </Text>
               ) : null}
               {mode === 'hits' && !events.length ? (
@@ -794,15 +769,28 @@ const styles = StyleSheet.create({
   },
   zoneTag: {
     position: 'absolute',
+    minWidth: 48,
+    alignItems: 'center',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 8,
+    backgroundColor: 'rgba(11, 20, 38, 0.78)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(245, 240, 232, 0.18)',
   },
-  zoneTagText: {
+  zoneName: {
     fontFamily: 'DMSans_700Bold',
+    color: colors.gold,
+    fontSize: 10,
+    letterSpacing: 0.8,
+  },
+  zonePct: {
+    fontFamily: 'BebasNeue_400Regular',
     color: colors.white,
-    fontSize: 9,
+    fontSize: 20,
     letterSpacing: 0.4,
-    textShadowColor: 'rgba(0,0,0,0.65)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    lineHeight: 22,
+    marginTop: 1,
   },
   playBtn: {
     position: 'absolute',
