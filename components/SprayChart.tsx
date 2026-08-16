@@ -16,6 +16,7 @@ import {
 import Svg, {
   Circle,
   Defs,
+  Ellipse,
   G,
   Line,
   Path,
@@ -29,6 +30,7 @@ import type { WindowKey } from '@/data/braves';
 import { WINDOW_LABELS } from '@/data/braves';
 import {
   filterSprayByDates,
+  sprayPolar,
   summarizeSpray,
   thirdPercents,
   wallDistance,
@@ -48,10 +50,10 @@ const AnimatedG = Animated.createAnimatedComponent(G);
 const SPRAY_MS = 1700;
 
 const VB_W = 300;
-const VB_H = 292;
+const VB_H = 312;
 const CX = 150;
-const HY = 258;
-const SCALE = 0.5;
+const HY = 268;
+const SCALE = 0.42;
 
 type Mode = 'hits' | 'hr';
 type Scope = 'season' | 'window';
@@ -137,30 +139,61 @@ const THIRDS = {
   oppo: { color: '46, 196, 182', label: 'OPPO' },
 } as const;
 
-function hrArc(ev: SprayEvent) {
-  const home = toSvg(0, 4);
-  const land = toSvg(ev.x, ev.y);
-  const lift = 20 + Math.min(46, Math.max(8, ((ev.la ?? 28) / 45) * 42));
-  const ctrl = {
-    x: (home.x + land.x) / 2,
-    y: (home.y + land.y) / 2 - lift,
+function lerp(a: Pt, b: Pt, t: number): Pt {
+  return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+}
+
+function cubicAt(t: number, p0: Pt, p1: Pt, p2: Pt, p3: Pt): Pt {
+  const u = 1 - t;
+  const tt = t * t;
+  const uu = u * u;
+  return {
+    x: uu * u * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + tt * t * p3.x,
+    y: uu * u * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + tt * t * p3.y,
   };
+}
+
+/** Landing uses Statcast distance so longer HRs carry past the wall. */
+function hrArc(ev: SprayEvent) {
+  const { angle, dist: sprayDist } = sprayPolar(ev.x, ev.y);
+  const travel = ev.dist && ev.dist > 280 ? ev.dist : sprayDist;
+  const landFt = polar(angle, travel);
+  const home = toSvg(0, 6);
+  const land = toSvg(landFt.x, landFt.y);
+  const la = ev.la ?? 28;
+  const apexFt = Math.max(36, (travel * Math.tan((Math.min(la, 50) * Math.PI) / 180)) / 4);
+  const lift = apexFt * SCALE * 2.35;
+  const g1 = lerp(home, land, 0.28);
+  const g2 = lerp(home, land, 0.62);
+  const c1 = { x: g1.x, y: g1.y - lift };
+  const c2 = { x: g2.x, y: g2.y - lift * 0.72 };
   const flat = Math.hypot(land.x - home.x, land.y - home.y);
   return {
     home,
     land,
-    ctrl,
-    d: `M ${home.x} ${home.y} Q ${ctrl.x} ${ctrl.y} ${land.x} ${land.y}`,
-    len: Math.max(80, flat + lift * 0.9),
+    c1,
+    c2,
+    travel,
+    d: `M ${home.x} ${home.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${land.x} ${land.y}`,
+    ground: `M ${home.x} ${home.y} L ${land.x} ${land.y}`,
+    len: Math.max(90, flat + lift * 1.35),
   };
 }
 
-function quadAt(t: number, a: Pt, c: Pt, b: Pt): Pt {
-  const u = 1 - t;
-  return {
-    x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
-    y: u * u * a.y + 2 * u * t * c.y + t * t * b.y,
-  };
+function standsPath() {
+  const steps = 18;
+  const inner: Pt[] = [];
+  const outer: Pt[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const a = -48 + (96 * i) / steps;
+    const wall = wallDistance(Math.max(-45, Math.min(45, a)));
+    const inn = polar(a, wall);
+    const out = polar(a, wall + 78);
+    inner.push(toSvg(inn.x, inn.y));
+    outer.push(toSvg(out.x, out.y));
+  }
+  const pts = [...inner, ...outer.reverse()];
+  return pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(' ') + ' Z';
 }
 
 function FieldBase({ clipId }: { clipId: string }) {
@@ -178,6 +211,7 @@ function FieldBase({ clipId }: { clipId: string }) {
           <Stop offset="1" stopColor="#10281F" stopOpacity="1" />
         </RadialGradient>
       </Defs>
+      <Path d={standsPath()} fill="#2A1C22" />
       <Path d={fair} fill={`url(#${clipId}-grass)`} />
       <Path d={infieldDirtPath()} fill="#7A5A36" fillOpacity={0.92} clipPath={`url(#${clipId})`} />
       <Path d={infieldGrassPath()} fill="#245C40" clipPath={`url(#${clipId})`} />
@@ -214,7 +248,7 @@ function FieldMarks() {
         stroke="rgba(245,240,232,0.55)"
         strokeWidth={1.2}
       />
-      <Path d={wall} fill="none" stroke="rgba(245,240,232,0.62)" strokeWidth={2.2} />
+      <Path d={wall} fill="none" stroke="rgba(245,240,232,0.78)" strokeWidth={3} />
       {[b1, b2, b3].map((b, i) => (
         <Polygon
           key={i}
@@ -384,42 +418,61 @@ function ScopeDropdown({
   );
 }
 
+type FlightBall = { air: Pt; ground: Pt; r: number };
+
 function HrStage({
   homers,
   progress,
-  clipId,
 }: {
   homers: SprayEvent[];
   progress: Animated.Value;
-  clipId: string;
 }) {
   const arcs = useMemo(() => homers.map((hr) => hrArc(hr)), [homers]);
-  const [balls, setBalls] = useState<Pt[]>(() => arcs.map((a) => a.home));
+  const [balls, setBalls] = useState<FlightBall[]>(() =>
+    arcs.map((a) => ({ air: a.home, ground: a.home, r: 5 }))
+  );
 
   useEffect(() => {
     const id = progress.addListener(({ value }) => {
-      setBalls(arcs.map((a) => quadAt(value, a.home, a.ctrl, a.land)));
+      setBalls(
+        arcs.map((a) => {
+          const air = cubicAt(value, a.home, a.c1, a.c2, a.land);
+          const ground = lerp(a.home, a.land, value);
+          const height = Math.max(0, ground.y - air.y);
+          return { air, ground, r: 5.4 - Math.min(2.6, height / 26) };
+        })
+      );
     });
     return () => progress.removeListener(id);
   }, [arcs, progress]);
 
   const landOp = progress.interpolate({
-    inputRange: [0.72, 1],
+    inputRange: [0.78, 1],
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
   return (
-    <G clipPath={`url(#${clipId})`}>
+    <G>
+      {arcs.map((a, i) => (
+        <Path
+          key={`gnd-${i}`}
+          d={a.ground}
+          fill="none"
+          stroke="rgba(245,240,232,0.18)"
+          strokeWidth={1}
+          strokeDasharray="3 4"
+        />
+      ))}
       {arcs.map((a, i) => (
         <AnimatedPath
           key={`${homers[i].date}-${homers[i].gamePk || i}`}
           d={a.d}
           fill="none"
           stroke={colors.gold}
-          strokeWidth={1.8}
+          strokeWidth={2}
           strokeLinecap="round"
-          strokeOpacity={0.82}
+          strokeOpacity={0.88}
           strokeDasharray={[a.len, a.len]}
           strokeDashoffset={progress.interpolate({
             inputRange: [0, 1],
@@ -428,14 +481,24 @@ function HrStage({
         />
       ))}
       {balls.map((b, i) => (
+        <Ellipse
+          key={`sh-${i}`}
+          cx={b.ground.x}
+          cy={b.ground.y}
+          rx={b.r * 1.15}
+          ry={b.r * 0.42}
+          fill="rgba(0,0,0,0.38)"
+        />
+      ))}
+      {balls.map((b, i) => (
         <Circle
           key={`ball-${i}`}
-          cx={b.x}
-          cy={b.y}
-          r={3.4}
+          cx={b.air.x}
+          cy={b.air.y}
+          r={b.r}
           fill={colors.white}
           stroke={colors.gold}
-          strokeWidth={1}
+          strokeWidth={1.1}
         />
       ))}
       {arcs.map((a, i) => (
@@ -443,7 +506,7 @@ function HrStage({
           key={`land-${i}`}
           cx={a.land.x}
           cy={a.land.y}
-          r={3.6}
+          r={4}
           fill={colors.scarlet}
           opacity={landOp}
         />
@@ -608,7 +671,7 @@ export function SprayChart({
                     />
                   ) : null}
                   {mode === 'hr' ? (
-                    <HrStage homers={homers} progress={progress} clipId={clipId} />
+                    <HrStage homers={homers} progress={progress} />
                   ) : null}
                   <FieldMarks />
                 </Svg>
@@ -660,7 +723,8 @@ export function SprayChart({
               ) : null}
               {mode === 'hr' && homers.length ? (
                 <Text style={styles.footnote}>
-                  All {homers.length} flight paths play together from Statcast landing spots.
+                  All {homers.length} fly balls use Statcast distance and launch angle — longer
+                  homers carry past the wall.
                 </Text>
               ) : null}
               {mode === 'hits' && !events.length ? (
