@@ -142,40 +142,38 @@ export function fieldThird(x: number, y: number, stand: PlayerSpray['stand']): F
 export function thirdPercents(events: SprayEvent[], stand: PlayerSpray['stand']) {
   const counts = { pull: 0, center: 0, oppo: 0 };
   for (const e of events) counts[fieldThird(e.x, e.y, stand)] += 1;
-  const total = events.length || 1;
-  const pct = (n: number) => (events.length ? Math.round((n / total) * 100) : 0);
-  return {
-    pull: pct(counts.pull),
-    center: pct(counts.center),
-    oppo: pct(counts.oppo),
-    counts,
-  };
+  const keys: FieldThird[] = ['pull', 'center', 'oppo'];
+  if (!events.length) {
+    return { pull: 0, center: 0, oppo: 0, counts };
+  }
+  const raw = keys.map((key) => {
+    const exact = (counts[key] / events.length) * 100;
+    return { key, exact, pct: Math.floor(exact), frac: exact - Math.floor(exact) };
+  });
+  let leftover = 100 - raw.reduce((s, r) => s + r.pct, 0);
+  [...raw]
+    .filter((r) => counts[r.key] > 0)
+    .sort((a, b) => b.frac - a.frac)
+    .forEach((r) => {
+      if (leftover <= 0) return;
+      r.pct += 1;
+      leftover -= 1;
+    });
+  const pcts = Object.fromEntries(raw.map((r) => [r.key, r.pct])) as Record<FieldThird, number>;
+  return { ...pcts, counts };
 }
 
 export function summarizeSpray(events: SprayEvent[], stand: PlayerSpray['stand']) {
-  let pull = 0;
-  let center = 0;
-  let oppo = 0;
-  for (const e of events) {
-    const { angle } = sprayPolar(e.x, e.y);
-    if (Math.abs(angle) <= 10) center += 1;
-    else if (stand === 'L') {
-      if (angle > 0) pull += 1;
-      else oppo += 1;
-    } else if (angle < 0) pull += 1;
-    else oppo += 1;
-  }
-  const n = events.length || 1;
-  const pct = (v: number) => Math.round((v / n) * 100);
+  const thirds = thirdPercents(events, stand);
   return {
     total: events.length,
     singles: events.filter((e) => e.result === 'single').length,
     doubles: events.filter((e) => e.result === 'double').length,
     triples: events.filter((e) => e.result === 'triple').length,
     homers: events.filter((e) => e.result === 'home_run').length,
-    pull: pct(pull),
-    center: pct(center),
-    oppo: pct(oppo),
+    pull: thirds.pull,
+    center: thirds.center,
+    oppo: thirds.oppo,
   };
 }
 
