@@ -195,7 +195,11 @@ function batterSections(
   const fieldRv = num(raw?.fielding_run_value ?? oaa?.fielding_runs_prevented);
 
   const sweet = num(sc?.anglesweetspotpercent);
-  const sweetPct = percentileAmong(scRows, playerId, (r) => num(r.anglesweetspotpercent), true);
+  const sweetPool = scRows.filter((r) => {
+    const attempts = num(r.attempts);
+    return Number.isFinite(attempts) && attempts >= 150 && Number.isFinite(num(r.anglesweetspotpercent));
+  });
+  const sweetPct = percentileAmong(sweetPool, playerId, (r) => num(r.anglesweetspotpercent), true);
   const basePct = percentileAmong(brvRows, playerId, (r) => num(r.runner_runs_tot), true);
   const fieldPct = percentileAmong(
     oaaRows,
@@ -365,7 +369,7 @@ export async function loadPlayerSavant(
       loadCsv(percentileUrl(type)),
       loadCsv(customUrl(type, group === 'pitching' ? pitcherCustom : batterCustom)),
       loadCsv(
-        `https://baseballsavant.mlb.com/leaderboard/expected_statistics?type=${type}&year=${SAVANT_SEASON}&min=1&csv=true`
+        `https://baseballsavant.mlb.com/leaderboard/expected_statistics?type=${type}&year=${SAVANT_SEASON}&min=q&csv=true`
       ),
       group === 'hitting'
         ? loadCsv(

@@ -178,11 +178,12 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   label: {
-    width: 118,
+    width: 128,
     textAlign: 'right',
     fontFamily: 'DMSans_500Medium',
     color: '#444',
-    fontSize: 12,
+    fontSize: 11,
+    lineHeight: 14,
   },
   barCol: { flex: 1, minWidth: 0 },
   track: {
