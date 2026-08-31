@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { loadPlayerOrigin } from '../../lib/origin';
+import { loadPlayerSavant } from '../../lib/savant';
 import { loadPlayerSpray } from '../../lib/spray';
 import { loadPlayerZone } from '../../lib/zone';
 
@@ -23,6 +24,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
 
+    if (viewRaw === 'savant') {
+      const savant = await loadPlayerSavant(id, group);
+      res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+      res.status(200).json(savant);
+      return;
+    }
+
     if (viewRaw === 'zone') {
       const zone = await loadPlayerZone(id, group);
       res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
@@ -39,9 +47,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         e.message ||
         (viewRaw === 'spray'
           ? 'Failed to load spray chart'
-          : viewRaw === 'zone'
-            ? 'Failed to load strike zone'
-            : 'Failed to load player history'),
+          : viewRaw === 'savant'
+            ? 'Failed to load Statcast'
+            : viewRaw === 'zone'
+              ? 'Failed to load strike zone'
+              : 'Failed to load player history'),
     });
   }
 }

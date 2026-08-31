@@ -2,13 +2,12 @@ import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GameStamp } from '@/components/GameStamp';
-import { LeagueRankings } from '@/components/LeagueRankings';
 import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { PlayerOriginButton } from '@/components/PlayerOrigin';
-import { SprayChart } from '@/components/SprayChart';
+import { SavantEmbed } from '@/components/SavantEmbed';
+import { SavantTableHeader, SavantTabs, type SavantTab } from '@/components/SavantTabs';
 import { StrikeZone } from '@/components/StrikeZone';
 import { TeamLogo } from '@/components/TeamLogo';
-import { TrendChart } from '@/components/TrendChart';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
@@ -19,6 +18,8 @@ import {
   pitcherById,
   WINDOW_KEYS,
   WINDOW_LABELS,
+  type Hitter,
+  type Pitcher,
   type WindowKey,
 } from '@/data/braves';
 import {
@@ -27,30 +28,10 @@ import {
   formFromPitchWindow,
   formGlyph,
   formLabel,
-  parseInnings,
   pitcherGameStamp,
 } from '@/lib/form';
 import { opponentAbbr } from '@/lib/teams';
 import { resolveHitWindow, resolvePitchWindow, WINDOW_SIZE } from '@/lib/windows';
-
-type HitMetric = 'h' | 'rbi' | 'hr' | 'r' | 'so';
-type PitchMetric = 'so' | 'er' | 'h' | 'bb' | 'ip';
-
-const HIT_METRICS: { key: HitMetric; label: string }[] = [
-  { key: 'h', label: 'Hits' },
-  { key: 'rbi', label: 'RBI' },
-  { key: 'hr', label: 'HR' },
-  { key: 'r', label: 'Runs' },
-  { key: 'so', label: 'SO' },
-];
-
-const PITCH_METRICS: { key: PitchMetric; label: string }[] = [
-  { key: 'so', label: 'K' },
-  { key: 'er', label: 'ER' },
-  { key: 'h', label: 'H' },
-  { key: 'bb', label: 'BB' },
-  { key: 'ip', label: 'IP' },
-];
 
 const WINDOW_GAMES = WINDOW_SIZE;
 
@@ -107,6 +88,127 @@ function StatStrip({
   );
 }
 
+function StatTable({
+  rows,
+}: {
+  rows: { label: string; values: string[] }[];
+}) {
+  return (
+    <View style={styles.table}>
+      {rows.map((row) => (
+        <View key={row.label} style={styles.tableRow}>
+          <Text style={styles.tableLabel}>{row.label}</Text>
+          {row.values.map((v, i) => (
+            <Text key={`${row.label}-${i}`} style={styles.tableVal}>
+              {v}
+            </Text>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function HitStandard({ player }: { player: Hitter }) {
+  const s = player.season;
+  return (
+    <StatTable
+      rows={[
+        { label: 'G', values: [String(s.g)] },
+        { label: 'AVG', values: [s.avg] },
+        { label: 'OBP', values: [s.obp || '—'] },
+        { label: 'SLG', values: [s.slg || '—'] },
+        { label: 'OPS', values: [s.ops] },
+        { label: 'HR', values: [String(s.hr)] },
+        { label: 'RBI', values: [String(s.rbi ?? 0)] },
+        { label: 'H', values: [String(s.h)] },
+        { label: 'BB', values: [String(s.bb ?? 0)] },
+        { label: 'SO', values: [String(s.so ?? 0)] },
+        { label: 'SB', values: [String(s.sb ?? 0)] },
+      ]}
+    />
+  );
+}
+
+function HitSplits({ player }: { player: Hitter }) {
+  const cols = WINDOW_KEYS.map((k) => resolveHitWindow(player, k));
+  return (
+    <View>
+      <View style={styles.tableRow}>
+        <Text style={styles.tableLabel} />
+        {WINDOW_KEYS.map((k) => (
+          <Text key={k} style={styles.tableHead}>
+            {WINDOW_LABELS[k]}
+          </Text>
+        ))}
+      </View>
+      <StatTable
+        rows={[
+          { label: 'AVG', values: cols.map((c) => c.avg) },
+          { label: 'OPS', values: cols.map((c) => c.ops) },
+          { label: 'HR', values: cols.map((c) => String(c.hr)) },
+          { label: 'RBI', values: cols.map((c) => String(c.rbi ?? 0)) },
+          { label: 'H', values: cols.map((c) => String(c.h)) },
+        ]}
+      />
+    </View>
+  );
+}
+
+function PitchStandard({ player }: { player: Pitcher }) {
+  const s = player.season;
+  return (
+    <StatTable
+      rows={[
+        { label: 'G', values: [String(s.g)] },
+        { label: 'IP', values: [s.ip] },
+        { label: 'ERA', values: [s.era] },
+        { label: 'WHIP', values: [s.whip] },
+        { label: 'K', values: [String(s.so)] },
+        { label: 'BB', values: [String(s.bb ?? 0)] },
+        { label: 'H', values: [String(s.h ?? 0)] },
+        { label: 'ER', values: [String(s.er ?? 0)] },
+        { label: 'W', values: [String(s.w ?? 0)] },
+        { label: 'SV', values: [String(s.sv ?? 0)] },
+      ]}
+    />
+  );
+}
+
+function PitchSplits({ player }: { player: Pitcher }) {
+  const cols = WINDOW_KEYS.map((k) => resolvePitchWindow(player, k));
+  return (
+    <View>
+      <View style={styles.tableRow}>
+        <Text style={styles.tableLabel} />
+        {WINDOW_KEYS.map((k) => (
+          <Text key={k} style={styles.tableHead}>
+            {WINDOW_LABELS[k]}
+          </Text>
+        ))}
+      </View>
+      <StatTable
+        rows={[
+          { label: 'ERA', values: cols.map((c) => c.era) },
+          { label: 'WHIP', values: cols.map((c) => c.whip) },
+          { label: 'IP', values: cols.map((c) => c.ip) },
+          { label: 'K', values: cols.map((c) => String(c.so)) },
+          { label: 'BB', values: cols.map((c) => String(c.bb ?? 0)) },
+        ]}
+      />
+    </View>
+  );
+}
+
+function RoleDropdown({ label }: { label: string }) {
+  return (
+    <View style={styles.roleDrop}>
+      <Text style={styles.roleDropText}>{label}</Text>
+      <Text style={styles.roleDropCaret}>▾</Text>
+    </View>
+  );
+}
+
 export default function PlayerScreen() {
   const { id, window: windowParam } = useLocalSearchParams<{
     id: string;
@@ -115,8 +217,7 @@ export default function PlayerScreen() {
   const hitter = hitterById(id);
   const pitcher = !hitter ? pitcherById(id) : undefined;
   const [window, setWindow] = useState<WindowKey>(() => parseWindowParam(windowParam));
-  const [hitMetric, setHitMetric] = useState<HitMetric>('h');
-  const [pitchMetric, setPitchMetric] = useState<PitchMetric>('so');
+  const [tab, setTab] = useState<SavantTab>('STATCAST');
   const games = WINDOW_GAMES[window];
 
   useEffect(() => {
@@ -132,36 +233,6 @@ export default function PlayerScreen() {
     [pitcher, games]
   );
 
-  const hitValues = useMemo(
-    () => hitLog.map((g) => Number(g[hitMetric]) || 0),
-    [hitLog, hitMetric]
-  );
-  const hitLabels = useMemo(
-    () =>
-      hitLog.map((g) => {
-        const d = g.date?.slice(5) || '';
-        const abbr = opponentAbbr(g.opp);
-        return d ? `${d} ${abbr}` : abbr || 'Game';
-      }),
-    [hitLog]
-  );
-  const pitchValues = useMemo(
-    () =>
-      pitchLog.map((g) => {
-        if (pitchMetric === 'ip') return parseInnings(g.ip);
-        return Number(g[pitchMetric]) || 0;
-      }),
-    [pitchLog, pitchMetric]
-  );
-  const pitchLabels = useMemo(
-    () =>
-      pitchLog.map((g) => {
-        const d = g.date?.slice(5) || '';
-        const abbr = opponentAbbr(g.opp);
-        return d ? `${d} ${abbr}` : abbr || 'Game';
-      }),
-    [pitchLog]
-  );
 
   if (!hitter && !pitcher) {
     return (
@@ -184,8 +255,6 @@ export default function PlayerScreen() {
   if (hitter) {
     const w = resolveHitWindow(hitter, window);
     const form = formFromHitWindow(w);
-    const sum = hitValues.reduce((a, b) => a + b, 0);
-    const metricLabel = HIT_METRICS.find((m) => m.key === hitMetric)?.label || '';
 
     return (
       <>
@@ -249,85 +318,71 @@ export default function PlayerScreen() {
             ]}
           />
 
-          <LeagueRankings rankings={hitter.rankings} playerName={hitter.name} />
+          <SavantEmbed playerId={hitter.id} group="hitting" />
 
-          <SprayChart
-            playerId={hitter.id}
-            playerName={hitter.name}
-            group="hitting"
-            windowKey={window}
-            windowDates={hitLog.map((g) => g.date)}
+          <SavantTabs value={tab} onChange={setTab} />
+          <RoleDropdown label="BATTING" />
+          <SavantTableHeader
+            title={
+              tab === 'STATCAST'
+                ? 'Statcast Batting Statistics'
+                : tab === 'STANDARD'
+                  ? 'Standard Batting Statistics'
+                  : tab === 'SPLITS'
+                    ? 'Recent Splits'
+                    : 'Game Logs'
+            }
           />
 
-          <StrikeZone playerId={hitter.id} playerName={hitter.name} group="hitting" />
-
-          <Text style={styles.chartTitle}>
-            {WINDOW_LABELS[window]} · {metricLabel}
-          </Text>
-          <View style={styles.segRow}>
-            {HIT_METRICS.map((m) => (
-              <Pressable
-                key={m.key}
-                onPress={() => setHitMetric(m.key)}
-                style={[styles.segSm, hitMetric === m.key && styles.segOn]}
-              >
-                <Text style={[styles.segText, hitMetric === m.key && styles.segTextOn]}>
-                  {m.label}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-
-          <TrendChart
-            values={hitValues}
-            labels={hitLabels}
-            color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
-          />
-          <Text style={styles.chartSum}>
-            {sum} {metricLabel.toLowerCase()} across {hitLog.length} games
-          </Text>
-
-          <Text style={styles.chartTitle}>Recent games · {WINDOW_LABELS[window]}</Text>
-          <View style={styles.logHead}>
-            <Text style={styles.logHeadDate}>DATE</Text>
-            <Text style={styles.logHeadOpp}>OPP</Text>
-            <Text style={styles.logHeadBadge} />
-            <Text style={styles.logHeadStat}>H-AB</Text>
-            <Text style={styles.logHeadStat}>RBI</Text>
-            <Text style={styles.logHeadStat}>HR</Text>
-          </View>
-          {[...hitLog].reverse().map((g, i) => {
-            const abbr = opponentAbbr(g.opp);
-            const stamp = batterGameStamp(g);
-            const row = (
-              <View style={styles.logRow}>
-                <Text style={styles.logDate}>{g.date.slice(5)}</Text>
-                <View style={styles.logOppCell}>
-                  <TeamLogo abbr={abbr} size={20} />
-                  <Text style={styles.logOpp}>{abbr}</Text>
-                </View>
-                <View style={styles.logBadge}>
-                  {stamp ? <GameStamp kind={stamp} /> : null}
-                </View>
-                <Text style={styles.logStat}>
-                  {g.h}-{g.ab}
-                </Text>
-                <Text style={styles.logStat}>{g.rbi}</Text>
-                <Text style={styles.logStat}>{g.hr}</Text>
+          {tab === 'STATCAST' ? (
+            <StrikeZone playerId={hitter.id} playerName={hitter.name} group="hitting" />
+          ) : null}
+          {tab === 'STANDARD' ? <HitStandard player={hitter} /> : null}
+          {tab === 'SPLITS' ? <HitSplits player={hitter} /> : null}
+          {tab === 'GAME LOGS' ? (
+            <>
+              <View style={styles.logHead}>
+                <Text style={styles.logHeadDate}>DATE</Text>
+                <Text style={styles.logHeadOpp}>OPP</Text>
+                <Text style={styles.logHeadBadge} />
+                <Text style={styles.logHeadStat}>H-AB</Text>
+                <Text style={styles.logHeadStat}>RBI</Text>
+                <Text style={styles.logHeadStat}>HR</Text>
               </View>
-            );
-            return g.gamePk ? (
-              <Link
-                key={`${g.date}-${i}`}
-                href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
-                asChild
-              >
-                <Pressable>{row}</Pressable>
-              </Link>
-            ) : (
-              <View key={`${g.date}-${i}`}>{row}</View>
-            );
-          })}
+              {[...hitLog].reverse().map((g, i) => {
+                const abbr = opponentAbbr(g.opp);
+                const stamp = batterGameStamp(g);
+                const row = (
+                  <View style={styles.logRow}>
+                    <Text style={styles.logDate}>{g.date.slice(5)}</Text>
+                    <View style={styles.logOppCell}>
+                      <TeamLogo abbr={abbr} size={20} />
+                      <Text style={styles.logOpp}>{abbr}</Text>
+                    </View>
+                    <View style={styles.logBadge}>
+                      {stamp ? <GameStamp kind={stamp} /> : null}
+                    </View>
+                    <Text style={styles.logStat}>
+                      {g.h}-{g.ab}
+                    </Text>
+                    <Text style={styles.logStat}>{g.rbi}</Text>
+                    <Text style={styles.logStat}>{g.hr}</Text>
+                  </View>
+                );
+                return g.gamePk ? (
+                  <Link
+                    key={`${g.date}-${i}`}
+                    href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
+                    asChild
+                  >
+                    <Pressable>{row}</Pressable>
+                  </Link>
+                ) : (
+                  <View key={`${g.date}-${i}`}>{row}</View>
+                );
+              })}
+            </>
+          ) : null}
         </Screen>
       </>
     );
@@ -336,8 +391,6 @@ export default function PlayerScreen() {
   const p = pitcher!;
   const w = resolvePitchWindow(p, window);
   const form = formFromPitchWindow(w);
-  const sum = pitchValues.reduce((a, b) => a + b, 0);
-  const metricLabel = PITCH_METRICS.find((m) => m.key === pitchMetric)?.label || '';
 
   return (
     <>
@@ -401,84 +454,69 @@ export default function PlayerScreen() {
           ]}
         />
 
-        <LeagueRankings rankings={p.rankings} playerName={p.name} />
+        <SavantEmbed playerId={p.id} group="pitching" />
 
-        <SprayChart
-          playerId={p.id}
-          playerName={p.name}
-          group="pitching"
-          windowKey={window}
-          windowDates={pitchLog.map((g) => g.date)}
+        <SavantTabs value={tab} onChange={setTab} />
+        <RoleDropdown label="PITCHING" />
+        <SavantTableHeader
+          title={
+            tab === 'STATCAST'
+              ? 'Statcast Pitching Statistics'
+              : tab === 'STANDARD'
+                ? 'Standard Pitching Statistics'
+                : tab === 'SPLITS'
+                  ? 'Recent Splits'
+                  : 'Game Logs'
+          }
         />
 
-        <StrikeZone playerId={p.id} playerName={p.name} group="pitching" />
-
-        <Text style={styles.chartTitle}>
-          {WINDOW_LABELS[window]} · {metricLabel}
-        </Text>
-        <View style={styles.segRow}>
-          {PITCH_METRICS.map((m) => (
-            <Pressable
-              key={m.key}
-              onPress={() => setPitchMetric(m.key)}
-              style={[styles.segSm, pitchMetric === m.key && styles.segOn]}
-            >
-              <Text style={[styles.segText, pitchMetric === m.key && styles.segTextOn]}>
-                {m.label}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-
-        <TrendChart
-          values={pitchValues}
-          labels={pitchLabels}
-          color={form === 'hot' ? '#FF8A4C' : form === 'cold' ? '#7EC8FF' : colors.gold}
-        />
-        <Text style={styles.chartSum}>
-          {pitchMetric === 'ip' ? sum.toFixed(1) : Math.round(sum * 10) / 10} {metricLabel} across{' '}
-          {pitchLog.length} appearances
-        </Text>
-
-        <Text style={styles.chartTitle}>Recent appearances · {WINDOW_LABELS[window]}</Text>
-        <View style={styles.logHead}>
-          <Text style={styles.logHeadDate}>DATE</Text>
-          <Text style={styles.logHeadOpp}>OPP</Text>
-          <Text style={styles.logHeadBadge} />
-          <Text style={styles.logHeadStat}>IP</Text>
-          <Text style={styles.logHeadStat}>K</Text>
-          <Text style={styles.logHeadStat}>ER</Text>
-        </View>
-        {[...pitchLog].reverse().map((g, i) => {
-          const abbr = opponentAbbr(g.opp);
-          const stamp = pitcherGameStamp(g);
-          const row = (
-            <View style={styles.logRow}>
-              <Text style={styles.logDate}>{g.date.slice(5)}</Text>
-              <View style={styles.logOppCell}>
-                <TeamLogo abbr={abbr} size={20} />
-                <Text style={styles.logOpp}>{abbr}</Text>
-              </View>
-              <View style={styles.logBadge}>
-                {stamp ? <GameStamp kind={stamp} /> : null}
-              </View>
-              <Text style={styles.logStat}>{g.ip}</Text>
-              <Text style={styles.logStat}>{g.so}</Text>
-              <Text style={styles.logStat}>{g.er}</Text>
+        {tab === 'STATCAST' ? (
+          <StrikeZone playerId={p.id} playerName={p.name} group="pitching" />
+        ) : null}
+        {tab === 'STANDARD' ? <PitchStandard player={p} /> : null}
+        {tab === 'SPLITS' ? <PitchSplits player={p} /> : null}
+        {tab === 'GAME LOGS' ? (
+          <>
+            <View style={styles.logHead}>
+              <Text style={styles.logHeadDate}>DATE</Text>
+              <Text style={styles.logHeadOpp}>OPP</Text>
+              <Text style={styles.logHeadBadge} />
+              <Text style={styles.logHeadStat}>IP</Text>
+              <Text style={styles.logHeadStat}>K</Text>
+              <Text style={styles.logHeadStat}>ER</Text>
             </View>
-          );
-          return g.gamePk ? (
-            <Link
-              key={`${g.date}-${i}`}
-              href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
-              asChild
-            >
-              <Pressable>{row}</Pressable>
-            </Link>
-          ) : (
-            <View key={`${g.date}-${i}`}>{row}</View>
-          );
-        })}
+            {[...pitchLog].reverse().map((g, i) => {
+              const abbr = opponentAbbr(g.opp);
+              const stamp = pitcherGameStamp(g);
+              const row = (
+                <View style={styles.logRow}>
+                  <Text style={styles.logDate}>{g.date.slice(5)}</Text>
+                  <View style={styles.logOppCell}>
+                    <TeamLogo abbr={abbr} size={20} />
+                    <Text style={styles.logOpp}>{abbr}</Text>
+                  </View>
+                  <View style={styles.logBadge}>
+                    {stamp ? <GameStamp kind={stamp} /> : null}
+                  </View>
+                  <Text style={styles.logStat}>{g.ip}</Text>
+                  <Text style={styles.logStat}>{g.so}</Text>
+                  <Text style={styles.logStat}>{g.er}</Text>
+                </View>
+              );
+              return g.gamePk ? (
+                <Link
+                  key={`${g.date}-${i}`}
+                  href={{ pathname: '/game/[pk]', params: { pk: String(g.gamePk) } }}
+                  asChild
+                >
+                  <Pressable>{row}</Pressable>
+                </Link>
+              ) : (
+                <View key={`${g.date}-${i}`}>{row}</View>
+              );
+            })}
+          </>
+        ) : null}
       </Screen>
     </>
   );
@@ -596,19 +634,64 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   statValAccent: { color: colors.gold },
-  chartTitle: {
-    fontFamily: 'BebasNeue_400Regular',
-    color: colors.white,
-    fontSize: 24,
-    marginTop: 8,
-    marginBottom: 8,
+  roleDrop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#C5C5C5',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 4,
   },
-  chartSum: {
-    fontFamily: 'DMSans_500Medium',
-    color: colors.mist,
-    fontSize: 14,
-    marginTop: 4,
+  roleDropText: {
+    fontFamily: 'DMSans_700Bold',
+    color: '#222',
+    fontSize: 13,
+    letterSpacing: 0.8,
+  },
+  roleDropCaret: {
+    fontFamily: 'DMSans_400Regular',
+    color: '#666',
+    fontSize: 12,
+  },
+  table: {
+    backgroundColor: 'rgba(26, 47, 85, 0.45)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.line,
+    borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: spacing.md,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
+  },
+  tableLabel: {
+    width: 52,
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mist,
+    fontSize: 12,
+  },
+  tableHead: {
+    flex: 1,
+    textAlign: 'right',
+    fontFamily: 'DMSans_700Bold',
+    color: colors.mistDim,
+    fontSize: 11,
+    letterSpacing: 0.6,
+  },
+  tableVal: {
+    flex: 1,
+    textAlign: 'right',
+    fontFamily: 'DMSans_500Medium',
+    color: colors.cream,
+    fontSize: 14,
   },
   logHead: {
     flexDirection: 'row',
