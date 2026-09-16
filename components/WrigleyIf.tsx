@@ -143,9 +143,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    flexGrow: 1,
+    flexBasis: '30%',
+    minWidth: '30%',
     backgroundColor: 'rgba(11, 20, 38, 0.45)',
     borderRadius: 8,
-    paddingVertical: 4,
+    paddingVertical: 5,
     paddingHorizontal: 6,
   },
   seedAtl: {
