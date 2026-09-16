@@ -6,6 +6,7 @@ import { BrandMark } from '@/components/BrandMark';
 import { MagicNumbers } from '@/components/MagicNumbers';
 import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { TeamLogo } from '@/components/TeamLogo';
+import { WrigleyIf } from '@/components/WrigleyIf';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
@@ -34,6 +35,7 @@ import { resultLabel } from '@/lib/gameWindow';
 import { computeTeamMagic } from '@/lib/magicNumber';
 import { shortName } from '@/lib/names';
 import { resolveHitWindow, resolvePitchWindow } from '@/lib/windows';
+import { wrigleyPath } from '@/lib/wrigleyPath';
 
 type Role = 'batters' | 'pitchers';
 
@@ -249,6 +251,10 @@ export default function HomeScreen() {
   const games = useMemo(() => nearbyGames(), []);
   const liveDivisions = useLiveDivisions();
   const magic = useMemo(() => computeTeamMagic(liveDivisions), [liveDivisions]);
+  const wrigley = useMemo(
+    () => wrigleyPath(liveDivisions, schedule),
+    [liveDivisions]
+  );
   const searching = query.trim().length > 0;
 
   const batterList = useMemo(() => {
@@ -293,6 +299,12 @@ export default function HomeScreen() {
       {!searching && magic ? (
         <FadeIn delay={20}>
           <MagicNumbers magic={magic} />
+        </FadeIn>
+      ) : null}
+
+      {!searching && wrigley ? (
+        <FadeIn delay={30}>
+          <WrigleyIf path={wrigley} />
         </FadeIn>
       ) : null}
 
