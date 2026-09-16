@@ -47,6 +47,15 @@ export type StandingRow = {
   highlight?: boolean;
   leagueId?: number;
   divisionId?: number;
+  /** MLB Stats API division magic number (`E` / `-` / integer string). */
+  magicNumber?: string;
+  eliminationNumber?: string;
+  wildCardEliminationNumber?: string;
+  clinched?: boolean;
+  /** `x` = playoff berth, `y` = division. */
+  clinchIndicator?: string;
+  divisionChamp?: boolean;
+  divisionLeader?: boolean;
 };
 
 export type KeyStat = {
