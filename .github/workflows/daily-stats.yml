@@ -2,8 +2,10 @@ name: Daily stats update
 
 on:
   schedule:
-    # 7:07 AM America/New_York — offset minute avoids top-of-hour queue delay
+    # Morning recap, then again after night games so the snapshot is not a day behind.
     - cron: '7 7 * * *'
+      timezone: America/New_York
+    - cron: '37 23 * * *'
       timezone: America/New_York
   workflow_dispatch:
 

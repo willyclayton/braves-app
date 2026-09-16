@@ -1,4 +1,4 @@
-import type { DivisionBoard, StandingRow } from '@/data/types';
+import type { DivisionBoard, StandingRow } from '../data/types';
 
 /** MLB regular-season length. Used unless a team has already played more. */
 export const SEASON_GAMES = 162;

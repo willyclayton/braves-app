@@ -34,3 +34,19 @@ export function gameDayLabel(gameDate: string, now = new Date()): string {
   if (gameDate === addDaysYmd(today, 1)) return 'Tomorrow';
   return formatShortDate(gameDate);
 }
+
+/**
+ * MLB season year in Eastern Time.
+ * Jan–Feb still belong to the previous season (offseason / spring ramp).
+ */
+export function mlbSeasonYear(now = new Date()): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'numeric',
+  }).formatToParts(now);
+  const year = Number(parts.find((p) => p.type === 'year')?.value);
+  const month = Number(parts.find((p) => p.type === 'month')?.value);
+  if (!year || !month) return now.getFullYear();
+  return month < 3 ? year - 1 : year;
+}

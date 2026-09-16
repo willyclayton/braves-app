@@ -11,7 +11,6 @@ import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
 import {
   dataAsOf,
-  divisions,
   hitters,
   pitchers,
   schedule,
@@ -22,6 +21,7 @@ import {
   type Pitcher,
   type WindowKey,
 } from '@/data/braves';
+import { useLiveDivisions } from '@/hooks/useLiveDivisions';
 import { usePhoneLayout } from '@/hooks/usePhoneLayout';
 import { etDateString, formatShortDate, gameDayLabel } from '@/lib/dates';
 import {
@@ -247,7 +247,8 @@ export default function HomeScreen() {
   const [window, setWindow] = useState<WindowKey>('l10');
   const [query, setQuery] = useState('');
   const games = useMemo(() => nearbyGames(), []);
-  const magic = useMemo(() => computeTeamMagic(divisions), []);
+  const liveDivisions = useLiveDivisions();
+  const magic = useMemo(() => computeTeamMagic(liveDivisions), [liveDivisions]);
   const searching = query.trim().length > 0;
 
   const batterList = useMemo(() => {
