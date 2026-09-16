@@ -35,15 +35,19 @@ function sortByRecord(teams: StandingRow[]) {
 }
 
 /**
- * Classic MLB magic number as published on statsapi (no extra +1).
- * Combination of our wins and their losses that leaves them unable to catch us.
+ * Combination of our wins + their losses that leaves them unable to catch us.
+ *
+ * Division numbers omit the extra +1 so they match MLB's published magicNumber
+ * (tiebreakers already folded in). Playoff-berth numbers use `outright` so a
+ * tie with the first team out is not treated as a clinch.
  */
 export function magicVs(
   us: Pick<StandingRow, 'w'>,
   them: Pick<StandingRow, 'l'>,
-  seasonGames = SEASON_GAMES
+  seasonGames = SEASON_GAMES,
+  outright = false
 ) {
-  return seasonGames - us.w - them.l;
+  return seasonGames - us.w - them.l + (outright ? 1 : 0);
 }
 
 function parseApiNumber(raw?: string | null): number | 'eliminated' | null {
@@ -65,12 +69,13 @@ function figureFromNumber(
 function bindingMagic(
   us: StandingRow,
   rivals: StandingRow[],
-  seasonGames: number
+  seasonGames: number,
+  outright = false
 ): MagicFigure {
   if (rivals.length === 0) return { status: 'clinched', value: null };
   let best: MagicFigure | null = null;
   for (const rival of rivals) {
-    const n = magicVs(us, rival, seasonGames);
+    const n = magicVs(us, rival, seasonGames, outright);
     const fig = figureFromNumber(n, { abbr: rival.abbr, team: rival.team });
     if (!best) {
       best = fig;
@@ -158,7 +163,7 @@ function playoffFigure(
     if (officialWc === 'eliminated') {
       return { status: 'eliminated', value: null };
     }
-    return bindingMagic(us, outside, seasonGames);
+    return bindingMagic(us, outside, seasonGames, true);
   }
 
   const officialWc = parseApiNumber(us.wildCardEliminationNumber);
