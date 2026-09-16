@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "@vercel/node": "^5.9.3",
+    "tsx": "^4.23.13",
     "typescript": "~6.0.3",
     "vercel": "^58.4.4"
   },
@@ -40,6 +41,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "sync": "node scripts/sync-mlb.mjs",
+    "test": "tsx --test lib/*.test.ts",
     "build:web": "node scripts/sync-mlb.mjs && expo export -p web",
     "deploy": "vercel --prod"
   },

@@ -4,7 +4,8 @@ import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
 import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
-import { divisions, type StandingRow } from '@/data/braves';
+import type { StandingRow } from '@/data/braves';
+import { useLiveDivisions } from '@/hooks/useLiveDivisions';
 
 type Mode = 'east' | 'wildcard' | 'overall';
 
@@ -98,10 +99,11 @@ function StandingTable({
 
 export default function StandingsScreen() {
   const [mode, setMode] = useState<Mode>('east');
+  const divisions = useLiveDivisions();
 
   const nlEast = useMemo(
     () => divisions.find((d) => d.league === 'NL' && d.division.includes('East')),
-    []
+    [divisions]
   );
 
   const nlLeaders = useMemo(() => {
@@ -113,7 +115,7 @@ export default function StandingsScreen() {
         return { ...top, badge: letter } as DisplayRow;
       });
     return withGamesBack(sortByRecord(leaders)) as DisplayRow[];
-  }, []);
+  }, [divisions]);
 
   const nlWild = useMemo(() => {
     const leaderAbbrs = new Set(
@@ -123,7 +125,7 @@ export default function StandingsScreen() {
       .filter((d) => d.league === 'NL')
       .flatMap((d) => d.teams.slice(1));
     return sortByRecord(rest).filter((t) => !leaderAbbrs.has(t.abbr));
-  }, []);
+  }, [divisions]);
 
   const mlbOverall = useMemo(() => {
     const teams = divisions.flatMap((d) =>
@@ -136,12 +138,12 @@ export default function StandingsScreen() {
       )
     );
     return withGamesBack(sortByRecord(teams)) as DisplayRow[];
-  }, []);
+  }, [divisions]);
 
   const nlOverall = useMemo(() => {
     const teams = divisions.filter((d) => d.league === 'NL').flatMap((d) => d.teams);
     return withGamesBack(sortByRecord(teams));
-  }, []);
+  }, [divisions]);
 
   return (
     <Screen>

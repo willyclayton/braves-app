@@ -7,11 +7,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+function mlbSeasonYear(now = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'numeric',
+  }).formatToParts(now);
+  const year = Number(parts.find((p) => p.type === 'year')?.value);
+  const month = Number(parts.find((p) => p.type === 'month')?.value);
+  if (!year || !month) return now.getFullYear();
+  return month < 3 ? year - 1 : year;
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'live.json');
 const BRAVES_ID = 144;
-const SEASON = 2026;
+const SEASON = mlbSeasonYear();
 const BASE = 'https://statsapi.mlb.com/api/v1';
 const WINDOWS = [5, 10, 20, 30];
 const LOG_GAMES = 30;
