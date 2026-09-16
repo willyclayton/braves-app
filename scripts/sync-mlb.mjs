@@ -586,21 +586,37 @@ async function main() {
   const divisions = [];
   const wildCards = [];
   for (const rec of standingsRes.records) {
-    const rowsOut = rec.teamRecords.map((tr) => ({
-      team: tr.team.name,
-      abbr: byId[tr.team.id] || tr.team.name,
-      teamId: tr.team.id,
-      w: tr.wins,
-      l: tr.losses,
-      pct: tr.winningPercentage,
-      gb: tr.gamesBack === '-' ? '—' : tr.gamesBack,
-      wcgb: tr.wildCardGamesBack === '-' ? '—' : tr.wildCardGamesBack,
-      streak: tr.streak?.streakCode || '',
-      rank: Number(tr.divisionRank || tr.leagueRank || 0),
-      highlight: tr.team.id === BRAVES_ID,
-      leagueId: rec.league.id,
-      divisionId: rec.division?.id,
-    }));
+    const rowsOut = rec.teamRecords.map((tr) => {
+      const row = {
+        team: tr.team.name,
+        abbr: byId[tr.team.id] || tr.team.name,
+        teamId: tr.team.id,
+        w: tr.wins,
+        l: tr.losses,
+        pct: tr.winningPercentage,
+        gb: tr.gamesBack === '-' ? '—' : tr.gamesBack,
+        wcgb: tr.wildCardGamesBack === '-' ? '—' : tr.wildCardGamesBack,
+        streak: tr.streak?.streakCode || '',
+        rank: Number(tr.divisionRank || tr.leagueRank || 0),
+        highlight: tr.team.id === BRAVES_ID,
+        leagueId: rec.league.id,
+        divisionId: rec.division?.id,
+      };
+      if (tr.magicNumber && tr.magicNumber !== '-') {
+        row.magicNumber = String(tr.magicNumber);
+      }
+      if (tr.eliminationNumber && tr.eliminationNumber !== '-') {
+        row.eliminationNumber = String(tr.eliminationNumber);
+      }
+      if (tr.wildCardEliminationNumber && tr.wildCardEliminationNumber !== '-') {
+        row.wildCardEliminationNumber = String(tr.wildCardEliminationNumber);
+      }
+      if (tr.clinched) row.clinched = true;
+      if (tr.clinchIndicator) row.clinchIndicator = tr.clinchIndicator;
+      if (tr.divisionChamp) row.divisionChamp = true;
+      if (tr.divisionLeader) row.divisionLeader = true;
+      return row;
+    });
     if (rec.standingsType === 'regularSeason') {
       divisions.push({
         leagueId: rec.league.id,

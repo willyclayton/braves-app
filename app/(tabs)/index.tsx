@@ -3,6 +3,7 @@ import { Link } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { BrandMark } from '@/components/BrandMark';
+import { MagicNumbers } from '@/components/MagicNumbers';
 import { PlayerHeadshot } from '@/components/PlayerHeadshot';
 import { TeamLogo } from '@/components/TeamLogo';
 import { FadeIn } from '@/components/ui/FadeIn';
@@ -10,6 +11,7 @@ import { Screen } from '@/components/ui/Screen';
 import { colors, spacing } from '@/constants/theme';
 import {
   dataAsOf,
+  divisions,
   hitters,
   pitchers,
   schedule,
@@ -29,6 +31,7 @@ import {
   parseInnings,
 } from '@/lib/form';
 import { resultLabel } from '@/lib/gameWindow';
+import { computeTeamMagic } from '@/lib/magicNumber';
 import { shortName } from '@/lib/names';
 import { resolveHitWindow, resolvePitchWindow } from '@/lib/windows';
 
@@ -244,6 +247,7 @@ export default function HomeScreen() {
   const [window, setWindow] = useState<WindowKey>('l10');
   const [query, setQuery] = useState('');
   const games = useMemo(() => nearbyGames(), []);
+  const magic = useMemo(() => computeTeamMagic(divisions), []);
   const searching = query.trim().length > 0;
 
   const batterList = useMemo(() => {
@@ -284,6 +288,12 @@ export default function HomeScreen() {
           {teamPulse.rank} · {teamPulse.streak} · L10 {teamPulse.lastTen}
         </Text>
       </FadeIn>
+
+      {!searching && magic ? (
+        <FadeIn delay={20}>
+          <MagicNumbers magic={magic} />
+        </FadeIn>
+      ) : null}
 
       {!searching ? (
         <FadeIn delay={40} style={[styles.gamesBleed, { marginHorizontal: -pagePad }]}>
