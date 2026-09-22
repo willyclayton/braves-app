@@ -1,6 +1,6 @@
 {
-  "syncedAt": "2026-09-21T16:58:52.415Z",
-  "dataAsOf": "Sep 21, 2026",
+  "syncedAt": "2026-09-22T08:46:04.393Z",
+  "dataAsOf": "Sep 22, 2026",
   "teamPulse": {
     "record": "92-64",
     "rank": "1st · NL East",
@@ -223,11 +223,11 @@
       "abbr": "WSH",
       "teamId": 120,
       "w": 73,
-      "l": 83,
-      "pct": ".468",
-      "gb": "19.0",
-      "wcgb": "13.0",
-      "streak": "L1",
+      "l": 84,
+      "pct": ".465",
+      "gb": "19.5",
+      "wcgb": "13.5",
+      "streak": "L2",
       "rank": 4,
       "highlight": false,
       "leagueId": 104,
@@ -319,28 +319,28 @@
           "abbr": "TOR",
           "teamId": 141,
           "w": 77,
-          "l": 79,
-          "pct": ".494",
-          "gb": "18.5",
-          "wcgb": "3.0",
-          "streak": "W1",
+          "l": 80,
+          "pct": ".490",
+          "gb": "19.0",
+          "wcgb": "3.5",
+          "streak": "L1",
           "rank": 4,
           "highlight": false,
           "leagueId": 103,
           "divisionId": 201,
           "eliminationNumber": "E",
-          "wildCardEliminationNumber": "3"
+          "wildCardEliminationNumber": "2"
         },
         {
           "team": "Orioles",
           "abbr": "BAL",
           "teamId": 110,
-          "w": 75,
+          "w": 76,
           "l": 81,
-          "pct": ".481",
-          "gb": "20.5",
-          "wcgb": "5.0",
-          "streak": "L3",
+          "pct": ".484",
+          "gb": "20.0",
+          "wcgb": "4.5",
+          "streak": "W1",
           "rank": 5,
           "highlight": false,
           "leagueId": 103,
@@ -390,14 +390,14 @@
           "eliminationNumber": "6"
         },
         {
-          "team": "Twins",
-          "abbr": "MIN",
-          "teamId": 142,
-          "w": 73,
+          "team": "Tigers",
+          "abbr": "DET",
+          "teamId": 116,
+          "w": 74,
           "l": 83,
-          "pct": ".468",
-          "gb": "8.0",
-          "wcgb": "7.0",
+          "pct": ".471",
+          "gb": "7.5",
+          "wcgb": "6.5",
           "streak": "W1",
           "rank": 3,
           "highlight": false,
@@ -407,15 +407,15 @@
           "wildCardEliminationNumber": "E"
         },
         {
-          "team": "Tigers",
-          "abbr": "DET",
-          "teamId": 116,
+          "team": "Twins",
+          "abbr": "MIN",
+          "teamId": 142,
           "w": 73,
-          "l": 83,
-          "pct": ".468",
-          "gb": "8.0",
-          "wcgb": "7.0",
-          "streak": "L2",
+          "l": 84,
+          "pct": ".465",
+          "gb": "8.5",
+          "wcgb": "7.5",
+          "streak": "L1",
           "rank": 4,
           "highlight": false,
           "leagueId": 103,
@@ -598,11 +598,11 @@
           "abbr": "WSH",
           "teamId": 120,
           "w": 73,
-          "l": 83,
-          "pct": ".468",
-          "gb": "19.0",
-          "wcgb": "13.0",
-          "streak": "L1",
+          "l": 84,
+          "pct": ".465",
+          "gb": "19.5",
+          "wcgb": "13.5",
+          "streak": "L2",
           "rank": 4,
           "highlight": false,
           "leagueId": 104,
@@ -785,12 +785,12 @@
           "team": "Giants",
           "abbr": "SF",
           "teamId": 137,
-          "w": 64,
+          "w": 65,
           "l": 92,
-          "pct": ".410",
-          "gb": "32.0",
-          "wcgb": "22.0",
-          "streak": "L3",
+          "pct": ".414",
+          "gb": "31.5",
+          "wcgb": "21.5",
+          "streak": "W1",
           "rank": 4,
           "highlight": false,
           "leagueId": 104,
@@ -876,23 +876,6 @@
           "eliminationNumber": "6"
         },
         {
-          "team": "Blue Jays",
-          "abbr": "TOR",
-          "teamId": 141,
-          "w": 77,
-          "l": 79,
-          "pct": ".494",
-          "gb": "18.5",
-          "wcgb": "3.0",
-          "streak": "W1",
-          "rank": 4,
-          "highlight": false,
-          "leagueId": 103,
-          "divisionId": 201,
-          "eliminationNumber": "E",
-          "wildCardEliminationNumber": "3"
-        },
-        {
           "team": "Astros",
           "abbr": "HOU",
           "teamId": 117,
@@ -910,15 +893,32 @@
           "wildCardEliminationNumber": "4"
         },
         {
+          "team": "Blue Jays",
+          "abbr": "TOR",
+          "teamId": 141,
+          "w": 77,
+          "l": 80,
+          "pct": ".490",
+          "gb": "19.0",
+          "wcgb": "3.5",
+          "streak": "L1",
+          "rank": 4,
+          "highlight": false,
+          "leagueId": 103,
+          "divisionId": 201,
+          "eliminationNumber": "E",
+          "wildCardEliminationNumber": "2"
+        },
+        {
           "team": "Orioles",
           "abbr": "BAL",
           "teamId": 110,
-          "w": 75,
+          "w": 76,
           "l": 81,
-          "pct": ".481",
-          "gb": "20.5",
-          "wcgb": "5.0",
-          "streak": "L3",
+          "pct": ".484",
+          "gb": "20.0",
+          "wcgb": "4.5",
+          "streak": "W1",
           "rank": 5,
           "highlight": false,
           "leagueId": 103,
@@ -927,33 +927,16 @@
           "wildCardEliminationNumber": "2"
         },
         {
-          "team": "Twins",
-          "abbr": "MIN",
-          "teamId": 142,
-          "w": 73,
-          "l": 83,
-          "pct": ".468",
-          "gb": "8.0",
-          "wcgb": "7.0",
-          "streak": "W1",
-          "rank": 3,
-          "highlight": false,
-          "leagueId": 103,
-          "divisionId": 201,
-          "eliminationNumber": "E",
-          "wildCardEliminationNumber": "E"
-        },
-        {
           "team": "Tigers",
           "abbr": "DET",
           "teamId": 116,
-          "w": 73,
+          "w": 74,
           "l": 83,
-          "pct": ".468",
-          "gb": "8.0",
-          "wcgb": "7.0",
-          "streak": "L2",
-          "rank": 4,
+          "pct": ".471",
+          "gb": "7.5",
+          "wcgb": "6.5",
+          "streak": "W1",
+          "rank": 3,
           "highlight": false,
           "leagueId": 103,
           "divisionId": 201,
@@ -975,6 +958,23 @@
           "leagueId": 103,
           "divisionId": 201,
           "eliminationNumber": "2",
+          "wildCardEliminationNumber": "E"
+        },
+        {
+          "team": "Twins",
+          "abbr": "MIN",
+          "teamId": 142,
+          "w": 73,
+          "l": 84,
+          "pct": ".465",
+          "gb": "8.5",
+          "wcgb": "7.5",
+          "streak": "L1",
+          "rank": 4,
+          "highlight": false,
+          "leagueId": 103,
+          "divisionId": 201,
+          "eliminationNumber": "E",
           "wildCardEliminationNumber": "E"
         },
         {
@@ -1155,11 +1155,11 @@
           "abbr": "WSH",
           "teamId": 120,
           "w": 73,
-          "l": 83,
-          "pct": ".468",
-          "gb": "19.0",
-          "wcgb": "13.0",
-          "streak": "L1",
+          "l": 84,
+          "pct": ".465",
+          "gb": "19.5",
+          "wcgb": "13.5",
+          "streak": "L2",
           "rank": 4,
           "highlight": false,
           "leagueId": 104,
@@ -1205,12 +1205,12 @@
           "team": "Giants",
           "abbr": "SF",
           "teamId": 137,
-          "w": 64,
+          "w": 65,
           "l": 92,
-          "pct": ".410",
-          "gb": "32.0",
-          "wcgb": "22.0",
-          "streak": "L3",
+          "pct": ".414",
+          "gb": "31.5",
+          "wcgb": "21.5",
+          "streak": "W1",
           "rank": 4,
           "highlight": false,
           "leagueId": 104,
@@ -4631,19 +4631,19 @@
           "key": "r",
           "label": "Runs",
           "value": "2",
-          "mlb": 565,
-          "nl": 273,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 566,
+          "nl": 274,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "1",
           "mlb": 618,
-          "nl": 302,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 303,
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -5349,8 +5349,8 @@
           "value": "20",
           "mlb": 77,
           "nl": 41,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -5358,8 +5358,8 @@
           "value": "18",
           "mlb": 165,
           "nl": 82,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -5367,8 +5367,8 @@
           "value": "55",
           "mlb": 133,
           "nl": 76,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -5376,17 +5376,17 @@
           "value": "60",
           "mlb": 129,
           "nl": 68,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "102",
-          "mlb": 148,
-          "nl": 79,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 149,
+          "nl": 80,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "sb",
@@ -5394,8 +5394,8 @@
           "value": "20",
           "mlb": 37,
           "nl": 25,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -6101,8 +6101,8 @@
           "value": "12",
           "mlb": 168,
           "nl": 79,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -6110,35 +6110,35 @@
           "value": "18",
           "mlb": 165,
           "nl": 82,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "40",
-          "mlb": 209,
-          "nl": 109,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 210,
+          "nl": 110,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "50",
-          "mlb": 172,
-          "nl": 89,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 173,
+          "nl": 90,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "80",
-          "mlb": 209,
+          "mlb": 210,
           "nl": 107,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -6844,8 +6844,8 @@
           "value": "11",
           "mlb": 180,
           "nl": 84,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -6853,8 +6853,8 @@
           "value": "28",
           "mlb": 44,
           "nl": 31,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -6862,17 +6862,17 @@
           "value": "70",
           "mlb": 73,
           "nl": 41,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "63",
-          "mlb": 112,
+          "mlb": 113,
           "nl": 59,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -6880,8 +6880,8 @@
           "value": "151",
           "mlb": 30,
           "nl": 21,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -6896,7 +6896,7 @@
           "key": "ops",
           "label": "OPS",
           "value": ".712",
-          "mlb": 95,
+          "mlb": 96,
           "nl": 53,
           "mlbOf": 133,
           "nlOf": 67
@@ -7621,10 +7621,10 @@
           "key": "hr",
           "label": "HR",
           "value": "24",
-          "mlb": 43,
+          "mlb": 44,
           "nl": 24,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -7632,8 +7632,8 @@
           "value": "20",
           "mlb": 137,
           "nl": 67,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -7641,8 +7641,8 @@
           "value": "77",
           "mlb": 47,
           "nl": 27,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -7650,8 +7650,8 @@
           "value": "83",
           "mlb": 41,
           "nl": 29,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -7659,8 +7659,8 @@
           "value": "149",
           "mlb": 34,
           "nl": 23,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -8402,8 +8402,8 @@
           "value": "40",
           "mlb": 4,
           "nl": 3,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -8411,8 +8411,8 @@
           "value": "33",
           "mlb": 7,
           "nl": 5,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -8420,8 +8420,8 @@
           "value": "89",
           "mlb": 19,
           "nl": 10,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -8429,8 +8429,8 @@
           "value": "98",
           "mlb": 8,
           "nl": 5,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -8438,8 +8438,8 @@
           "value": "153",
           "mlb": 26,
           "nl": 17,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -8472,7 +8472,7 @@
           "key": "slg",
           "label": "SLG",
           "value": ".506",
-          "mlb": 13,
+          "mlb": 14,
           "nl": 8,
           "mlbOf": 133,
           "nlOf": 67
@@ -9181,8 +9181,8 @@
           "value": "26",
           "mlb": 29,
           "nl": 17,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -9190,8 +9190,8 @@
           "value": "32",
           "mlb": 11,
           "nl": 8,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -9199,8 +9199,8 @@
           "value": "85",
           "mlb": 30,
           "nl": 16,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -9208,8 +9208,8 @@
           "value": "75",
           "mlb": 62,
           "nl": 41,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -9217,8 +9217,8 @@
           "value": "165",
           "mlb": 8,
           "nl": 5,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -9698,37 +9698,37 @@
           "key": "doubles",
           "label": "2B",
           "value": "5",
-          "mlb": 386,
-          "nl": 187,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 387,
+          "nl": 189,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "3",
           "mlb": 539,
-          "nl": 263,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 264,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "8",
-          "mlb": 474,
-          "nl": 234,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 475,
+          "nl": 236,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "9",
           "mlb": 518,
-          "nl": 250,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 251,
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -10434,8 +10434,8 @@
           "value": "22",
           "mlb": 58,
           "nl": 31,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
@@ -10443,17 +10443,17 @@
           "value": "27",
           "mlb": 50,
           "nl": 35,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "72",
-          "mlb": 63,
+          "mlb": 64,
           "nl": 36,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -10461,8 +10461,8 @@
           "value": "85",
           "mlb": 38,
           "nl": 26,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -10470,8 +10470,8 @@
           "value": "144",
           "mlb": 47,
           "nl": 32,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -10495,7 +10495,7 @@
           "key": "obp",
           "label": "OBP",
           "value": ".298",
-          "mlb": 118,
+          "mlb": 117,
           "nl": 63,
           "mlbOf": 133,
           "nlOf": 67
@@ -10504,7 +10504,7 @@
           "key": "slg",
           "label": "SLG",
           "value": ".402",
-          "mlb": 87,
+          "mlb": 88,
           "nl": 48,
           "mlbOf": 133,
           "nlOf": 67
@@ -11213,17 +11213,17 @@
           "value": "17",
           "mlb": 104,
           "nl": 53,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
           "label": "2B",
           "value": "21",
-          "mlb": 128,
-          "nl": 60,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 129,
+          "nl": 61,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -11231,8 +11231,8 @@
           "value": "69",
           "mlb": 82,
           "nl": 46,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -11240,8 +11240,8 @@
           "value": "62",
           "mlb": 116,
           "nl": 62,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -11249,8 +11249,8 @@
           "value": "120",
           "mlb": 105,
           "nl": 58,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "avg",
@@ -11651,36 +11651,36 @@
           "label": "2B",
           "value": "1",
           "mlb": 529,
-          "nl": 262,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 263,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "3",
           "mlb": 539,
-          "nl": 263,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 264,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "2",
-          "mlb": 565,
-          "nl": 273,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 566,
+          "nl": 274,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "4",
-          "mlb": 572,
-          "nl": 276,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 573,
+          "nl": 278,
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -12385,36 +12385,36 @@
           "label": "2B",
           "value": "1",
           "mlb": 529,
-          "nl": 262,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 263,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "9",
           "mlb": 460,
-          "nl": 228,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 229,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "8",
-          "mlb": 474,
-          "nl": 234,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlb": 475,
+          "nl": 236,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "14",
           "mlb": 483,
-          "nl": 234,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 235,
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -13078,46 +13078,46 @@
           "key": "hr",
           "label": "HR",
           "value": "3",
-          "mlb": 382,
+          "mlb": 383,
           "nl": 188,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
           "label": "2B",
           "value": "4",
           "mlb": 415,
-          "nl": 201,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 202,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
           "label": "RBI",
           "value": "10",
           "mlb": 449,
-          "nl": 221,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 222,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
           "label": "Runs",
           "value": "11",
           "mlb": 447,
-          "nl": 218,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 219,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
           "label": "Hits",
           "value": "17",
           "mlb": 469,
-          "nl": 228,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 229,
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     },
@@ -13823,17 +13823,17 @@
           "value": "8",
           "mlb": 244,
           "nl": 119,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "doubles",
           "label": "2B",
           "value": "6",
           "mlb": 358,
-          "nl": 170,
-          "mlbOf": 747,
-          "nlOf": 386
+          "nl": 171,
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "rbi",
@@ -13841,8 +13841,8 @@
           "value": "44",
           "mlb": 192,
           "nl": 100,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "r",
@@ -13850,8 +13850,8 @@
           "value": "39",
           "mlb": 228,
           "nl": 115,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         },
         {
           "key": "h",
@@ -13859,8 +13859,8 @@
           "value": "67",
           "mlb": 252,
           "nl": 126,
-          "mlbOf": 747,
-          "nlOf": 386
+          "mlbOf": 750,
+          "nlOf": 388
         }
       ]
     }
@@ -14357,8 +14357,8 @@
           "value": "61",
           "mlb": 242,
           "nl": 120,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -14366,8 +14366,8 @@
           "value": "1",
           "mlb": 422,
           "nl": 212,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "sv",
@@ -14375,17 +14375,17 @@
           "value": "34",
           "mlb": 5,
           "nl": 3,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
           "label": "IP",
           "value": "58.0",
-          "mlb": 270,
+          "mlb": 271,
           "nl": 133,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -14878,10 +14878,10 @@
           "key": "so",
           "label": "K",
           "value": "91",
-          "mlb": 139,
+          "mlb": 140,
           "nl": 69,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -14889,8 +14889,8 @@
           "value": "7",
           "mlb": 93,
           "nl": 49,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "sv",
@@ -14898,17 +14898,17 @@
           "value": "3",
           "mlb": 69,
           "nl": 31,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "holds",
           "label": "HLD",
           "value": "18",
-          "mlb": 24,
+          "mlb": 25,
           "nl": 11,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -14916,8 +14916,8 @@
           "value": "71.1",
           "mlb": 192,
           "nl": 96,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -15412,8 +15412,8 @@
           "value": "74",
           "mlb": 180,
           "nl": 90,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -15421,8 +15421,8 @@
           "value": "2",
           "mlb": 328,
           "nl": 168,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -15430,8 +15430,8 @@
           "value": "87.0",
           "mlb": 152,
           "nl": 78,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -15616,19 +15616,19 @@
           "key": "so",
           "label": "K",
           "value": "11",
-          "mlb": 595,
-          "nl": 300,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlb": 597,
+          "nl": 301,
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
           "label": "IP",
           "value": "15.1",
-          "mlb": 577,
-          "nl": 289,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlb": 578,
+          "nl": 290,
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -16067,8 +16067,8 @@
           "value": "133",
           "mlb": 62,
           "nl": 28,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -16076,8 +16076,8 @@
           "value": "7",
           "mlb": 93,
           "nl": 49,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -16085,8 +16085,8 @@
           "value": "144.0",
           "mlb": 68,
           "nl": 34,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -16543,8 +16543,8 @@
           "value": "190",
           "mlb": 13,
           "nl": 6,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -16552,8 +16552,8 @@
           "value": "14",
           "mlb": 9,
           "nl": 5,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -16561,8 +16561,8 @@
           "value": "157.0",
           "mlb": 44,
           "nl": 19,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -17055,19 +17055,19 @@
           "key": "so",
           "label": "K",
           "value": "102",
-          "mlb": 112,
+          "mlb": 113,
           "nl": 55,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
           "label": "W",
           "value": "9",
-          "mlb": 48,
+          "mlb": 49,
           "nl": 28,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -17075,8 +17075,8 @@
           "value": "142.0",
           "mlb": 73,
           "nl": 36,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -17571,8 +17571,8 @@
           "value": "50",
           "mlb": 303,
           "nl": 151,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -17580,8 +17580,8 @@
           "value": "4",
           "mlb": 205,
           "nl": 100,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "sv",
@@ -17589,8 +17589,8 @@
           "value": "2",
           "mlb": 98,
           "nl": 50,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "holds",
@@ -17598,8 +17598,8 @@
           "value": "14",
           "mlb": 44,
           "nl": 21,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -17607,8 +17607,8 @@
           "value": "46.2",
           "mlb": 333,
           "nl": 164,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -18101,10 +18101,10 @@
           "key": "so",
           "label": "K",
           "value": "114",
-          "mlb": 87,
+          "mlb": 88,
           "nl": 41,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -18112,8 +18112,8 @@
           "value": "10",
           "mlb": 36,
           "nl": 22,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -18121,8 +18121,8 @@
           "value": "147.2",
           "mlb": 64,
           "nl": 32,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -18589,8 +18589,8 @@
           "value": "31",
           "mlb": 418,
           "nl": 209,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -18598,17 +18598,17 @@
           "value": "5",
           "mlb": 158,
           "nl": 79,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "sv",
           "label": "SV",
           "value": "1",
-          "mlb": 141,
-          "nl": 77,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlb": 142,
+          "nl": 78,
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -18616,8 +18616,8 @@
           "value": "32.0",
           "mlb": 435,
           "nl": 218,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -18748,17 +18748,17 @@
           "value": "8",
           "mlb": 632,
           "nl": 317,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
           "label": "IP",
           "value": "9.0",
-          "mlb": 649,
-          "nl": 326,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlb": 650,
+          "nl": 327,
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -19041,10 +19041,10 @@
           "key": "so",
           "label": "K",
           "value": "58",
-          "mlb": 260,
+          "mlb": 261,
           "nl": 128,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -19052,17 +19052,17 @@
           "value": "1",
           "mlb": 422,
           "nl": 212,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "sv",
           "label": "SV",
           "value": "1",
-          "mlb": 141,
-          "nl": 77,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlb": 142,
+          "nl": 78,
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -19070,8 +19070,8 @@
           "value": "62.2",
           "mlb": 239,
           "nl": 118,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -19244,8 +19244,8 @@
           "value": "24",
           "mlb": 469,
           "nl": 240,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
@@ -19253,8 +19253,8 @@
           "value": "28.0",
           "mlb": 465,
           "nl": 235,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     },
@@ -19749,8 +19749,8 @@
           "value": "76",
           "mlb": 172,
           "nl": 85,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "w",
@@ -19758,8 +19758,8 @@
           "value": "6",
           "mlb": 115,
           "nl": 60,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "holds",
@@ -19767,17 +19767,17 @@
           "value": "30",
           "mlb": 4,
           "nl": 1,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         },
         {
           "key": "ip",
           "label": "IP",
           "value": "65.0",
-          "mlb": 220,
+          "mlb": 221,
           "nl": 108,
-          "mlbOf": 861,
-          "nlOf": 439
+          "mlbOf": 863,
+          "nlOf": 440
         }
       ]
     }
