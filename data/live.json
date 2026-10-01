@@ -1,6 +1,6 @@
 {
-  "syncedAt": "2026-09-30T16:47:47.731Z",
-  "dataAsOf": "Sep 30, 2026",
+  "syncedAt": "2026-10-01T10:24:05.318Z",
+  "dataAsOf": "Oct 1, 2026",
   "teamPulse": {
     "record": "94-68",
     "rank": "1st · NL East",
@@ -5466,7 +5466,7 @@
           "key": "avg",
           "label": "AVG",
           "value": ".284",
-          "mlb": 16,
+          "mlb": 17,
           "nl": 11,
           "mlbOf": 134,
           "nlOf": 68
