@@ -1,6 +1,6 @@
 {
-  "syncedAt": "2026-10-15T15:33:39.695Z",
-  "dataAsOf": "Oct 15, 2026",
+  "syncedAt": "2026-10-16T08:26:50.062Z",
+  "dataAsOf": "Oct 16, 2026",
   "teamPulse": {
     "record": "94-68",
     "rank": "1st · NL East",
@@ -4409,64 +4409,6 @@
       }
     },
     {
-      "id": 680577,
-      "name": "DaShawn Keirsey Jr.",
-      "form": "cold",
-      "windows": {
-        "l10": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        },
-        "l15": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        },
-        "l30": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        }
-      }
-    },
-    {
       "id": 669221,
       "name": "Sean Murphy",
       "form": "neutral",
@@ -4697,6 +4639,12 @@
           "triples": 1
         }
       }
+    },
+    {
+      "id": 689172,
+      "name": "Brett Wisely",
+      "form": "neutral",
+      "windows": {}
     }
   ],
   "hitters": [
@@ -13119,231 +13067,6 @@
       ]
     },
     {
-      "id": 680577,
-      "name": "DaShawn Keirsey Jr.",
-      "pos": "CF",
-      "number": 49,
-      "season": {
-        "g": 5,
-        "avg": ".200",
-        "ops": ".400",
-        "obp": ".200",
-        "slg": ".200",
-        "hr": 0,
-        "h": 1,
-        "ab": 5,
-        "r": 3,
-        "rbi": 1,
-        "bb": 0,
-        "so": 2,
-        "sb": 0,
-        "doubles": 0,
-        "triples": 0
-      },
-      "windows": {
-        "l5": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        },
-        "l10": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        },
-        "l20": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        },
-        "l30": {
-          "g": 5,
-          "avg": ".200",
-          "ops": ".400",
-          "obp": ".200",
-          "slg": ".200",
-          "hr": 0,
-          "h": 1,
-          "ab": 5,
-          "r": 3,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0
-        }
-      },
-      "form": "cold",
-      "log": [
-        {
-          "date": "2026-09-11",
-          "gamePk": 824873,
-          "opp": "PHI",
-          "ab": 0,
-          "r": 1,
-          "h": 0,
-          "hr": 0,
-          "rbi": 0,
-          "bb": 0,
-          "so": 0,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0,
-          "hbp": 0,
-          "sf": 0,
-          "tb": 0,
-          "avg": ".000",
-          "ops": ".000"
-        },
-        {
-          "date": "2026-09-12",
-          "gamePk": 824870,
-          "opp": "PHI",
-          "ab": 1,
-          "r": 1,
-          "h": 1,
-          "hr": 0,
-          "rbi": 0,
-          "bb": 0,
-          "so": 0,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0,
-          "hbp": 0,
-          "sf": 0,
-          "tb": 1,
-          "avg": "1.000",
-          "ops": "2.000"
-        },
-        {
-          "date": "2026-09-23",
-          "gamePk": 824868,
-          "opp": "CIN",
-          "ab": 0,
-          "r": 1,
-          "h": 0,
-          "hr": 0,
-          "rbi": 0,
-          "bb": 0,
-          "so": 0,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0,
-          "hbp": 0,
-          "sf": 0,
-          "tb": 0,
-          "avg": "1.000",
-          "ops": "2.000"
-        },
-        {
-          "date": "2026-09-26",
-          "gamePk": 823813,
-          "opp": "MIA",
-          "ab": 0,
-          "r": 0,
-          "h": 0,
-          "hr": 0,
-          "rbi": 0,
-          "bb": 0,
-          "so": 0,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0,
-          "hbp": 0,
-          "sf": 0,
-          "tb": 0,
-          "avg": "1.000",
-          "ops": "2.000"
-        },
-        {
-          "date": "2026-09-27",
-          "gamePk": 823814,
-          "opp": "MIA",
-          "ab": 4,
-          "r": 0,
-          "h": 0,
-          "hr": 0,
-          "rbi": 1,
-          "bb": 0,
-          "so": 2,
-          "sb": 0,
-          "doubles": 0,
-          "triples": 0,
-          "hbp": 0,
-          "sf": 0,
-          "tb": 0,
-          "avg": ".200",
-          "ops": ".400"
-        }
-      ],
-      "rankings": [
-        {
-          "key": "rbi",
-          "label": "RBI",
-          "value": "1",
-          "mlb": 587,
-          "nl": 285,
-          "mlbOf": 751,
-          "nlOf": 389
-        },
-        {
-          "key": "r",
-          "label": "Runs",
-          "value": "3",
-          "mlb": 553,
-          "nl": 270,
-          "mlbOf": 751,
-          "nlOf": 389
-        },
-        {
-          "key": "h",
-          "label": "Hits",
-          "value": "1",
-          "mlb": 621,
-          "nl": 305,
-          "mlbOf": 751,
-          "nlOf": 389
-        }
-      ]
-    },
-    {
       "id": 669221,
       "name": "Sean Murphy",
       "pos": "C",
@@ -16021,6 +15744,33 @@
           "nlOf": 389
         }
       ]
+    },
+    {
+      "id": 689172,
+      "name": "Brett Wisely",
+      "pos": "2B",
+      "number": 0,
+      "season": {
+        "g": 0,
+        "avg": ".000",
+        "ops": ".000",
+        "obp": ".000",
+        "slg": ".000",
+        "hr": 0,
+        "h": 0,
+        "ab": 0,
+        "r": 0,
+        "rbi": 0,
+        "bb": 0,
+        "so": 0,
+        "sb": 0,
+        "doubles": 0,
+        "triples": 0
+      },
+      "windows": {},
+      "form": "neutral",
+      "log": [],
+      "rankings": []
     }
   ],
   "pitchers": [
