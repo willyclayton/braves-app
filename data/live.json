@@ -1,6 +1,6 @@
 {
-  "syncedAt": "2026-11-17T20:47:25.509Z",
-  "dataAsOf": "Nov 17, 2026",
+  "syncedAt": "2026-11-18T13:20:03.952Z",
+  "dataAsOf": "Nov 18, 2026",
   "teamPulse": {
     "record": "94-68",
     "rank": "1st · NL East",
@@ -19374,6 +19374,54 @@
           "nlOf": 440
         }
       ]
+    },
+    {
+      "id": 678142,
+      "name": "Cedric De Grandpre",
+      "pos": "RP",
+      "number": 0,
+      "season": {
+        "g": 0,
+        "gs": 0,
+        "ip": "0.0",
+        "era": "—",
+        "whip": "—",
+        "so": 0,
+        "bb": 0,
+        "h": 0,
+        "er": 0,
+        "w": 0,
+        "l": 0,
+        "sv": 0
+      },
+      "windows": {},
+      "form": "neutral",
+      "log": [],
+      "rankings": []
+    },
+    {
+      "id": 805175,
+      "name": "Davis Polo",
+      "pos": "RP",
+      "number": 0,
+      "season": {
+        "g": 0,
+        "gs": 0,
+        "ip": "0.0",
+        "era": "—",
+        "whip": "—",
+        "so": 0,
+        "bb": 0,
+        "h": 0,
+        "er": 0,
+        "w": 0,
+        "l": 0,
+        "sv": 0
+      },
+      "windows": {},
+      "form": "neutral",
+      "log": [],
+      "rankings": []
     },
     {
       "id": 666214,
