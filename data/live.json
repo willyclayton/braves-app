@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-11-27T14:11:39.099Z",
+  "syncedAt": "2026-11-27T21:05:21.299Z",
   "dataAsOf": "Nov 27, 2026",
   "teamPulse": {
     "record": "94-68",
@@ -4295,6 +4295,12 @@
     {
       "id": 689172,
       "name": "Brett Wisely",
+      "form": "neutral",
+      "windows": {}
+    },
+    {
+      "id": 595777,
+      "name": "Jurickson Profar",
       "form": "neutral",
       "windows": {}
     }
@@ -11736,6 +11742,33 @@
       "form": "neutral",
       "log": [],
       "rankings": []
+    },
+    {
+      "id": 595777,
+      "name": "Jurickson Profar",
+      "pos": "LF",
+      "number": 17,
+      "season": {
+        "g": 0,
+        "avg": ".000",
+        "ops": ".000",
+        "obp": ".000",
+        "slg": ".000",
+        "hr": 0,
+        "h": 0,
+        "ab": 0,
+        "r": 0,
+        "rbi": 0,
+        "bb": 0,
+        "so": 0,
+        "sb": 0,
+        "doubles": 0,
+        "triples": 0
+      },
+      "windows": {},
+      "form": "neutral",
+      "log": [],
+      "rankings": []
     }
   ],
   "pitchers": [
@@ -16920,6 +16953,212 @@
           "value": "73.1",
           "mlb": 195,
           "nl": 99,
+          "mlbOf": 868,
+          "nlOf": 440
+        }
+      ]
+    },
+    {
+      "id": 675911,
+      "name": "Spencer Strider",
+      "pos": "SP",
+      "number": 99,
+      "season": {
+        "g": 8,
+        "gs": 8,
+        "ip": "39.0",
+        "era": "5.31",
+        "whip": "1.36",
+        "so": 46,
+        "bb": 20,
+        "h": 33,
+        "er": 23,
+        "w": 4,
+        "l": 2,
+        "sv": 0
+      },
+      "windows": {
+        "l5": {
+          "g": 5,
+          "ip": "24.1",
+          "era": "7.03",
+          "whip": "1.44",
+          "so": 28,
+          "bb": 10,
+          "h": 25,
+          "er": 19
+        },
+        "l10": {
+          "g": 8,
+          "ip": "39.0",
+          "era": "5.31",
+          "whip": "1.36",
+          "so": 46,
+          "bb": 20,
+          "h": 33,
+          "er": 23
+        },
+        "l20": {
+          "g": 8,
+          "ip": "39.0",
+          "era": "5.31",
+          "whip": "1.36",
+          "so": 46,
+          "bb": 20,
+          "h": 33,
+          "er": 23
+        },
+        "l30": {
+          "g": 8,
+          "ip": "39.0",
+          "era": "5.31",
+          "whip": "1.36",
+          "so": 46,
+          "bb": 20,
+          "h": 33,
+          "er": 23
+        }
+      },
+      "form": "neutral",
+      "log": [
+        {
+          "date": "2026-05-03",
+          "gamePk": 824364,
+          "opp": "COL",
+          "ip": "3.1",
+          "h": 4,
+          "r": 3,
+          "er": 3,
+          "bb": 5,
+          "so": 6,
+          "era": "8.10",
+          "whip": "2.70",
+          "decision": ""
+        },
+        {
+          "date": "2026-05-09",
+          "gamePk": 823955,
+          "opp": "LAD",
+          "ip": "6.0",
+          "h": 1,
+          "r": 0,
+          "er": 0,
+          "bb": 2,
+          "so": 8,
+          "era": "2.89",
+          "whip": "1.29",
+          "decision": ""
+        },
+        {
+          "date": "2026-05-15",
+          "gamePk": 824925,
+          "opp": "BOS",
+          "ip": "5.1",
+          "h": 3,
+          "r": 1,
+          "er": 1,
+          "bb": 3,
+          "so": 4,
+          "era": "2.45",
+          "whip": "1.23",
+          "decision": ""
+        },
+        {
+          "date": "2026-05-21",
+          "gamePk": 823864,
+          "opp": "MIA",
+          "ip": "6.1",
+          "h": 4,
+          "r": 3,
+          "er": 3,
+          "bb": 2,
+          "so": 9,
+          "era": "3.00",
+          "whip": "1.14",
+          "decision": ""
+        },
+        {
+          "date": "2026-05-26",
+          "gamePk": 824758,
+          "opp": "BOS",
+          "ip": "5.0",
+          "h": 3,
+          "r": 3,
+          "er": 3,
+          "bb": 3,
+          "so": 5,
+          "era": "3.46",
+          "whip": "1.15",
+          "decision": ""
+        },
+        {
+          "date": "2026-05-31",
+          "gamePk": 824512,
+          "opp": "CIN",
+          "ip": "5.0",
+          "h": 7,
+          "r": 4,
+          "er": 3,
+          "bb": 2,
+          "so": 8,
+          "era": "3.77",
+          "whip": "1.26",
+          "decision": ""
+        },
+        {
+          "date": "2026-06-06",
+          "gamePk": 824915,
+          "opp": "PIT",
+          "ip": "5.0",
+          "h": 5,
+          "r": 3,
+          "er": 3,
+          "bb": 2,
+          "so": 3,
+          "era": "4.00",
+          "whip": "1.28",
+          "decision": ""
+        },
+        {
+          "date": "2026-06-12",
+          "gamePk": 823617,
+          "opp": "NYM",
+          "ip": "3.0",
+          "h": 6,
+          "r": 7,
+          "er": 7,
+          "bb": 1,
+          "so": 3,
+          "era": "5.31",
+          "whip": "1.36",
+          "decision": ""
+        }
+      ],
+      "rankings": [
+        {
+          "key": "so",
+          "label": "K",
+          "value": "46",
+          "mlb": 338,
+          "nl": 170,
+          "mlbOf": 868,
+          "nlOf": 440
+        },
+        {
+          "key": "w",
+          "label": "W",
+          "value": "4",
+          "mlb": 213,
+          "nl": 106,
+          "mlbOf": 868,
+          "nlOf": 440
+        },
+        {
+          "key": "ip",
+          "label": "IP",
+          "value": "39.0",
+          "mlb": 397,
+          "nl": 198,
           "mlbOf": 868,
           "nlOf": 440
         }
